@@ -29,6 +29,7 @@ build:
   tags:
     - ugrad
   script:
+    - cd codeanalyzer-backend
     - yarn
   artifacts:
     paths:
@@ -46,6 +47,7 @@ deploy_develop:
   tags:
     - ugrad
   script:
+    - cd codeanalyzer-backend
     - echo "dbURL=$DATABASE_TEST_URL" >> .env
     - echo "dbUserName=$DATABASE_TEST_USERNAME" >> .env
     - echo "dbPassword=$DATABASE_TEST_PASSWORD" >> .env
@@ -64,6 +66,7 @@ deploy_release:
     paths:
       - node_modules
   script:
+    - cd codeanalyzer-backend
     - echo "dbURL=$DATABASE_PROD_URL" > .env
     - echo "dbUserName=$DATABASE_PROD_USERNAME" >> .env
     - echo "dbPassword=$DATABASE_PROD_PASSWORD" >> .env
