@@ -49,7 +49,7 @@ deploy_develop:
     - chmod og-rwx ${DEPLOY_SSH_KEY}
     - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" codeanalyzer-backend "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-codeanalyzer-backend"
   only:
-    - dev
+    - uat
 
 deploy_release:
   stage: deploy
