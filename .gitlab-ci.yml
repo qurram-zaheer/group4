@@ -41,15 +41,15 @@ deploy_develop:
   tags:
     - dalfcs_gitlab_docker_ci
   script:
+    - apt-get install zip unzip
     - echo "dbURL=$DATABASE_TEST_URL" >> .env
     - echo "dbUserName=$DATABASE_TEST_USERNAME" >> .env
     - echo "dbPassword=$DATABASE_TEST_PASSWORD" >> .env
     - echo "dbDriver=$DATABASE_DRIVER" >> .env
     - echo "Deploying the develop pipeline"
     - chmod og-rwx ${DEPLOY_SSH_KEY}
-    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" .gitignore "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}.gitignore"
-    # - zip -r ${CI_COMMIT_SHORT_SHA}.zip codeanalyzer-backend
-    # - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${CI_COMMIT_SHORT_SHA}.zip "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}.zip"
+    - zip -r ${CI_COMMIT_SHORT_SHA}.zip codeanalyzer-backend
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${CI_COMMIT_SHORT_SHA}.zip "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}.zip"
   only:
     - uat
 
