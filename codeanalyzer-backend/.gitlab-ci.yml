@@ -1,0 +1,75 @@
+image: node:16.14.0
+
+trigger:
+  branches:
+    include:
+      - uat
+  paths:
+    include:
+      - codeanalyzer-backend
+      - node_modules/
+
+before_script:
+  # Install yarn as outlined in (https://yarnpkg.com/lang/en/docs/install/#alternatives-stable)
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  # Make available in the current terminal
+  - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  tags:
+    - ugrad
+  script:
+    - yarn
+  artifacts:
+    paths:
+      - node_modules/
+
+test:
+  stage: test
+  script:
+    - echo "Pipeline test started"
+  tags:
+    - ugrad
+
+deploy_develop:
+  stage: deploy
+  tags:
+    - ugrad
+  script:
+    - echo "dbURL=$DATABASE_TEST_URL" >> .env
+    - echo "dbUserName=$DATABASE_TEST_USERNAME" >> .env
+    - echo "dbPassword=$DATABASE_TEST_PASSWORD" >> .env
+    - echo "dbDriver=$DATABASE_DRIVER" >> .env
+    - echo "Deploying the develop pipeline"
+    - chmod og-rwx ${DEPLOY_SSH_KEY}
+    - git clone -b uat https://git.cs.dal.ca/courses/2022-winter/csci-5308/group4.git
+  only:
+    - dev
+
+deploy_release:
+  stage: deploy
+  tags:
+    - ugrad
+  artifacts:
+    paths:
+      - node_modules
+  script:
+    - echo "dbURL=$DATABASE_PROD_URL" > .env
+    - echo "dbUserName=$DATABASE_PROD_USERNAME" >> .env
+    - echo "dbPassword=$DATABASE_PROD_PASSWORD" >> .env
+    - echo "dbDriver=$DATABASE_DRIVER" >> .env
+    - echo "Deploying the release pipeline"
+    - chmod og-rwx ${DEPLOY_PROD_SSH_KEY}
+    - git clone -b main https://git.cs.dal.ca/courses/2022-winter/csci-5308/group4.git
+  only:
+    - main
