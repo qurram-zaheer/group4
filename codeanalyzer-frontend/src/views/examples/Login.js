@@ -32,7 +32,40 @@ import {
   Col,
 } from "reactstrap";
 
+import React, {
+  useState
+} from 'react';
+
+import LoginForm from './LoginForm';
+
+
 const Login = () => {
+
+  const [user, setUser] = useState({email:""});
+  const [error, setError] = useState("");
+
+  const OnSignIn = details => {
+    // TODO: JWT handling
+    // Request Response
+    console.log(details);
+
+    // const requestOptions = {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     identifier: details.email,
+    //     password: details.password
+    //   })
+    // };
+
+    // fetch('/api/auth/local', requestOptions)
+    // .then((response) => {
+    //   console.log(response.json());
+    // })
+
+    //setError("Incorrect e-mail or password ");
+  }
+
   return (
     <>
       <Col lg="5" md="7">
@@ -82,54 +115,7 @@ const Login = () => {
             <div className="text-center text-muted mb-4">
               <small>Or sign in with credentials</small>
             </div>
-            <Form role="form">
-              <FormGroup className="mb-3">
-                <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-email-83" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Email"
-                    type="email"
-                    autoComplete="new-email"
-                  />
-                </InputGroup>
-              </FormGroup>
-              <FormGroup>
-                <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-lock-circle-open" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Password"
-                    type="password"
-                    autoComplete="new-password"
-                  />
-                </InputGroup>
-              </FormGroup>
-              <div className="custom-control custom-control-alternative custom-checkbox">
-                <input
-                  className="custom-control-input"
-                  id=" customCheckLogin"
-                  type="checkbox"
-                />
-                <label
-                  className="custom-control-label"
-                  htmlFor=" customCheckLogin"
-                >
-                  <span className="text-muted">Remember me</span>
-                </label>
-              </div>
-              <div className="text-center">
-                <Button className="my-4" color="primary" type="button">
-                  Sign in
-                </Button>
-              </div>
-            </Form>
+            <LoginForm OnSignIn={OnSignIn} error={error}></LoginForm>
           </CardBody>
         </Card>
         <Row className="mt-3">
