@@ -21,7 +21,7 @@ stages:
 build:
   stage: build
   tags:
-    - ugrad
+    - dalfcs_gitlab_docker_ci
   script:
     - cd codeanalyzer-backend
     - npm install
@@ -34,12 +34,12 @@ test:
   script:
     - echo "Pipeline test started"
   tags:
-    - ugrad
+    - dalfcs_gitlab_docker_ci
 
 deploy_develop:
   stage: deploy
   tags:
-    - ugrad
+    - dalfcs_gitlab_docker_ci
   script:
     - echo "dbURL=$DATABASE_TEST_URL" >> .env
     - echo "dbUserName=$DATABASE_TEST_USERNAME" >> .env
@@ -54,7 +54,7 @@ deploy_develop:
 deploy_release:
   stage: deploy
   tags:
-    - ugrad
+    - dalfcs_gitlab_docker_ci
   artifacts:
     paths:
       - node_modules
