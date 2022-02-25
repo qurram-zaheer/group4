@@ -9,6 +9,11 @@ image: node:latest
 #       - codeanalyzer-backend
 #       - node_modules/
 
+before-script:
+  - cloud-init status --wait
+  - sudo apt-get update
+  - sudo apt-get install -y zip unzip
+
 cache:
   paths:
     - node_modules/
