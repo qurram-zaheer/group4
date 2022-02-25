@@ -47,8 +47,9 @@ deploy_develop:
     - echo "dbDriver=$DATABASE_DRIVER" >> .env
     - echo "Deploying the develop pipeline"
     - chmod og-rwx ${DEPLOY_SSH_KEY}
-    - zip -r ${CI_COMMIT_SHORT_SHA}.zip codeanalyzer-backend
-    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${CI_COMMIT_SHORT_SHA}.zip "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}.zip"
+    - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" .gitignore "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}.gitignore"
+    # - zip -r ${CI_COMMIT_SHORT_SHA}.zip codeanalyzer-backend
+    # - scp -r -o StrictHostKeyChecking=no -i "${DEPLOY_SSH_KEY}" ${CI_COMMIT_SHORT_SHA}.zip "${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_DIR}/${CI_PROJECT_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}.zip"
   only:
     - uat
 
