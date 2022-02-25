@@ -47,7 +47,12 @@ const Login = () => {
 
   const OnSignIn = details => {
     // TODO: JWT handling
-    // Request Response
+
+    // Check if email/password are entered
+    if(details.email.length===0 || details.password.length===0){
+      setError("Incomplete details");
+      return;
+    }
 
     const requestOptions = {
       method: 'POST',
@@ -63,6 +68,7 @@ const Login = () => {
     .then(response => response.json())
     .then(data => {
         if(data.data === null){
+          // Credentials not valid
           setError("Invalid email or password");
         }else {
           console.log(data['jwt']);
@@ -70,10 +76,6 @@ const Login = () => {
         }
     })
 
-
-
-
-    //setError("Incorrect e-mail or password ");
   }
 
   return (
