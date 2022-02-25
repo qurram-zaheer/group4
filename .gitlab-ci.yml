@@ -10,7 +10,7 @@ image: node:latest
 #       - node_modules/
 
 default:
-  before-script:
+  before_script:
     - cloud-init status --wait
     - sudo apt-get update
     - sudo apt-get install -y zip unzip
