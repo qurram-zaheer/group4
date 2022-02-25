@@ -43,25 +43,35 @@ const Login = () => {
 
   const [user, setUser] = useState({email:""});
   const [error, setError] = useState("");
+  const [isAuthenticated, setAuthenticated] = useState(false);
 
   const OnSignIn = details => {
     // TODO: JWT handling
     // Request Response
-    console.log(details);
 
-    // const requestOptions = {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     identifier: details.email,
-    //     password: details.password
-    //   })
-    // };
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        identifier: details.email,
+        password: details.password
+      })
+    };
 
-    // fetch('/api/auth/local', requestOptions)
-    // .then((response) => {
-    //   console.log(response.json());
-    // })
+    // Change this URL when going to PROD
+    const login_request = fetch('http://localhost:1337/api/auth/local', requestOptions)
+    .then(response => response.json())
+    .then(data => {
+        if(data.data === null){
+          setError("Invalid email or password");
+        }else {
+          console.log(data['jwt']);
+          setAuthenticated(true);
+        }
+    })
+
+
+
 
     //setError("Incorrect e-mail or password ");
   }
@@ -115,7 +125,7 @@ const Login = () => {
             <div className="text-center text-muted mb-4">
               <small>Or sign in with credentials</small>
             </div>
-            <LoginForm OnSignIn={OnSignIn} error={error}></LoginForm>
+            <LoginForm OnSignIn={OnSignIn} error={error} isAuthenticated={isAuthenticated}></LoginForm>
           </CardBody>
         </Card>
         <Row className="mt-3">
