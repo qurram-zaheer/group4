@@ -1,18 +1,11 @@
 image: node:latest
 
-# trigger:
-#   branches:
-#     include:
-#       - uat
-#   paths:
-#     include:
-#       - codeanalyzer-backend
-#       - node_modules/
-
 default:
   before_script:
-    - apt-get update
-    - apt-get install -y zip unzip
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - apt-get install -u zip unzip
+    - gem install dpl
 
 cache:
   paths:
@@ -21,7 +14,8 @@ cache:
 stages:
   - build
   - test
-  - deploy
+  - deploy_uat
+  - deploy_prod
 
 build:
   stage: build
@@ -30,9 +24,6 @@ build:
   script:
     - cd codeanalyzer-backend
     - npm install
-  artifacts:
-    paths:
-      - node_modules/
 
 test:
   stage: test
@@ -41,7 +32,7 @@ test:
   tags:
     - dalfcs_gitlab_docker_ci
 
-deploy_develop:
+deploy_uat:
   stage: deploy
   tags:
     - dalfcs_gitlab_docker_ci
@@ -58,13 +49,8 @@ deploy_develop:
   only:
     - uat
 
-deploy_release:
+deploy_prod:
   stage: deploy
-  tags:
-    - dalfcs_gitlab_docker_ci
-  artifacts:
-    paths:
-      - node_modules
   script:
     - cd codeanalyzer-backend
     - echo "dbURL=$DATABASE_PROD_URL" > .env
@@ -73,6 +59,6 @@ deploy_release:
     - echo "dbDriver=$DATABASE_DRIVER" >> .env
     - echo "Deploying the release pipeline"
     - chmod og-rwx ${DEPLOY_PROD_SSH_KEY}
-    - git clone -b main https://git.cs.dal.ca/courses/2022-winter/csci-5308/group4.git
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
   only:
     - main
