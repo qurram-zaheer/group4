@@ -14,7 +14,8 @@ cache:
 stages:
   - build
   - test
-  - deploy
+  - deploy_uat
+  - deploy_prod
 
 build:
   stage: build
@@ -32,7 +33,7 @@ test:
     - dalfcs_gitlab_docker_ci
 
 deploy_uat:
-  stage: deploy
+  stage: deploy_uat
   tags:
     - dalfcs_gitlab_docker_ci
   script:
@@ -49,7 +50,7 @@ deploy_uat:
     - uat
 
 deploy_prod:
-  stage: deploy
+  stage: deploy_prod
   script:
     - cd codeanalyzer-backend
     - echo "dbURL=$DATABASE_PROD_URL" > .env
