@@ -2,3 +2,6 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+
+codeanalyzer-backend\node_modules
+codeanalyzer-frontend\node_modules
