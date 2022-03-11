@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "github_auths",
+  "info": {
+    "singularName": "github-auth",
+    "pluralName": "github-auths",
+    "displayName": "GithubAuth",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "gaid": {
+      "type": "uid"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "accessToken": {
+      "type": "text"
+    },
+    "refreshToken": {
+      "type": "text"
+    },
+    "expiresAt": {
+      "type": "string"
+    }
+  }
+}
