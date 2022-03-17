@@ -26,6 +26,8 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
 
+import { PrivateRoute } from "auth/PrivateRoute";
+
 const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
@@ -40,7 +42,7 @@ const Admin = (props) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
-          <Route
+          <PrivateRoute
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
