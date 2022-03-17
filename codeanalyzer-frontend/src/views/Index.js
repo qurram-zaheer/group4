@@ -15,13 +15,15 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
+
+import useQuery from "../hooks/useQuery";
 // reactstrap components
 import {
   Button,
@@ -46,11 +48,37 @@ import {
   chartExample2,
 } from "variables/charts.js";
 
+import { api } from "../lib/api"
+
 import Header from "components/Headers/Header.js";
 
 const Index = (props) => {
   const [activeNav, setActiveNav] = useState(1);
+  const query = useQuery();
   const [chartExample1Data, setChartExample1Data] = useState("data1");
+
+  useEffect(() => {
+    ;(async () => {
+    const accessToken = query.get('access_token');
+    const refreshToken = query.get('refresh_token');
+    const expiresIn = query.get('raw[expires_in]');
+    const userRegistration = await api.authGithubUser(accessToken);
+    if(userRegistration && userRegistration.user){
+      const createGithubAuths = await api.createGithubAuths({
+        data: {
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          expiresIn: expiresIn,
+          user: userRegistration.user,
+        }
+      });
+
+      if(createGithubAuths){
+        console.log('User Registration was Successful!');
+      }
+    }
+  })()
+  }, []);
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());

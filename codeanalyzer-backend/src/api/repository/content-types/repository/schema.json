@@ -4,7 +4,8 @@
   "info": {
     "singularName": "repository",
     "pluralName": "repositories",
-    "displayName": "repository"
+    "displayName": "repository",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -24,6 +25,27 @@
     },
     "url": {
       "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "has_issues": {
+      "type": "boolean"
+    },
+    "has_projects": {
+      "type": "boolean"
+    },
+    "size": {
+      "type": "biginteger"
+    },
+    "repoCreatedAt": {
+      "type": "datetime"
+    },
+    "repoUpdatedAt": {
+      "type": "datetime"
+    },
+    "repoPushedAt": {
+      "type": "datetime"
     }
   }
 }

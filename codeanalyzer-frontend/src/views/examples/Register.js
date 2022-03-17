@@ -45,8 +45,7 @@ const Register = () => {
               <Button
                 className="btn-neutral btn-icon mr-4"
                 color="default"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
+                href="http://localhost:1337/api/connect/github"
               >
                 <span className="btn-inner--icon">
                   <img

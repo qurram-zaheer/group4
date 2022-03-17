@@ -90,8 +90,7 @@ const Login = () => {
               <Button
                 className="btn-neutral btn-icon"
                 color="default"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
+                href="http://localhost:1337/api/connect/github"
               >
                 <span className="btn-inner--icon">
                   <img
@@ -102,7 +101,9 @@ const Login = () => {
                     }
                   />
                 </span>
-                <span className="btn-inner--text">Github</span>
+                  <span className="btn-inner--text">
+                  Github
+                  </span>
               </Button>
               <Button
                 className="btn-neutral btn-icon"

@@ -18,6 +18,9 @@
     "uid": {
       "type": "uid",
       "targetField": "language"
+    },
+    "loc": {
+      "type": "biginteger"
     }
   }
 }
