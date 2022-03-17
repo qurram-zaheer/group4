@@ -12,7 +12,7 @@ import {
 import React, { useState } from 'react';
 import { Redirect } from "react-router-dom";
 
-function LoginForm( {OnSignIn, error, isAuthenticated} ){
+function LoginForm( {OnSignIn, error} ){
 
     const [details, setDetails] = useState({email:"", password:""});
 
@@ -25,7 +25,6 @@ function LoginForm( {OnSignIn, error, isAuthenticated} ){
     return (
         <Form role="form" onSubmit={submitHandler}>
               {(error!=="") ? (<div style={{ color:"red" }}>{error}</div>) : ""}
-              {(isAuthenticated) ? (<Redirect to="/admin/user-profile" />) : ""}
               <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">

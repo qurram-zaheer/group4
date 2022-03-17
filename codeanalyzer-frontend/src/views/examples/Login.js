@@ -37,44 +37,37 @@ import React, {
 } from 'react';
 
 import LoginForm from './LoginForm';
+import { useToken } from "auth/useToken";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 
 const Login = () => {
 
+  const [token, setToken] = useToken();
   const [user, setUser] = useState({email:""});
   const [error, setError] = useState("");
-  const [isAuthenticated, setAuthenticated] = useState(false);
+  const history = useHistory();
 
-  const OnSignIn = details => {
-    // TODO: JWT handling
-
+  const OnSignIn = async (details) => {
     // Check if email/password are entered
     if(details.email.length===0 || details.password.length===0){
       setError("Incomplete details");
       return;
     }
 
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        identifier: details.email,
-        password: details.password
-      })
-    };
+    await axios.post('http://localhost:1337/api/auth/local', {
+                      identifier: details.email,
+                      password: details.password,
+    }).then((response) => {
+      console.log(response.data);
+      setToken(response.data.jwt);
+      console.log(response.data.jwt);
+      history.push("/admin/index");
+    }, (error) => 
+      setError("Invalid credentials")
+    );
 
-    // Change this URL when going to PROD
-    const login_request = fetch('http://localhost:1337/api/auth/local', requestOptions)
-    .then(response => response.json())
-    .then(data => {
-        if(data.data === null){
-          // Credentials not valid
-          setError("Invalid email or password");
-        }else {
-          console.log(data['jwt']);
-          setAuthenticated(true);
-        }
-    })
 
   }
 
@@ -128,7 +121,7 @@ const Login = () => {
             <div className="text-center text-muted mb-4">
               <small>Or sign in with credentials</small>
             </div>
-            <LoginForm OnSignIn={OnSignIn} error={error} isAuthenticated={isAuthenticated}></LoginForm>
+            <LoginForm OnSignIn={OnSignIn} error={error}></LoginForm>
           </CardBody>
         </Card>
         <Row className="mt-3">
