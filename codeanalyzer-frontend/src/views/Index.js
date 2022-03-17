@@ -60,8 +60,23 @@ const Index = (props) => {
   useEffect(() => {
     ;(async () => {
     const accessToken = query.get('access_token');
+    const refreshToken = query.get('refresh_token');
+    const expiresIn = query.get('raw[expires_in]');
     const userRegistration = await api.authGithubUser(accessToken);
-    console.log('User Registration Successful ->', userRegistration);
+    if(userRegistration && userRegistration.user){
+      const createGithubAuths = await api.createGithubAuths({
+        data: {
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          expiresIn: expiresIn,
+          user: userRegistration.user,
+        }
+      });
+
+      if(createGithubAuths){
+        console.log('User Registration was Successful!');
+      }
+    }
   })()
   }, []);
 
