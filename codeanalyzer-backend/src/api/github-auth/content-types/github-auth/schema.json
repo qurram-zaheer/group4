@@ -12,9 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "gaid": {
-      "type": "uid"
-    },
     "user": {
       "type": "relation",
       "relation": "oneToOne",
@@ -26,7 +23,7 @@
     "refreshToken": {
       "type": "text"
     },
-    "expiresAt": {
+    "expiresIn": {
       "type": "string"
     }
   }
