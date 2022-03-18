@@ -1,4 +1,4 @@
-image: node:latest
+image: node:16.14.0
 
 default:
   before_script:
@@ -16,6 +16,7 @@ stages:
   - test
   - deploy_uat
   - deploy_prod
+  - sonarqube-check
 
 build:
   stage: build
@@ -23,7 +24,7 @@ build:
     - dalfcs_gitlab_docker_ci
   script:
     - cd codeanalyzer-backend
-    - npm install
+    # - npm install
 
 test:
   stage: test
@@ -79,4 +80,4 @@ deploy_prod:
     - chmod og-rwx ${DEPLOY_PROD_SSH_KEY}
     - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
   only:
-    - main
+    - qurram
