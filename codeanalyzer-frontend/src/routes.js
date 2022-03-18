@@ -24,24 +24,6 @@ import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 
 
-var sideBarNav = [
-  {
-    path: "/index",
-    name: "Dashboard",
-    icon: "ni ni-tv-2 text-primary",
-    component: Index,
-    layout: "/admin",
-  },
-  {
-    path: "/repositories",
-    name: "Repositories",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
-    layout: "/admin",
-  }
-]
-
-
 var routes = [
   {
     path: "/register",
@@ -65,11 +47,18 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/icons",
-    name: "Icons",
-    icon: "ni ni-planet text-blue",
+    path: "/repositories",
+    name: "Repositories",
+    icon: "ni ni-collection text-blue",
     component: Icons,
     layout: "/admin",
+    sub_route: [{
+      path:"/repositories/commits",
+      name: "Commits",
+      icon: "ni ni-bullet-list-67 text-blue",
+      component: Icons,
+      layout: "/admin"
+    }]
   },
   {
     path: "/maps",
