@@ -66,7 +66,7 @@ sonarqube-check:
     - sonar-scanner
   allow_failure: true
   only:
-    - master # or the name of your main branch
+    - qurram # or the name of your main branch
 
 deploy_prod:
   stage: deploy_prod
@@ -80,4 +80,4 @@ deploy_prod:
     - chmod og-rwx ${DEPLOY_PROD_SSH_KEY}
     - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
   only:
-    - qurram
+    - main
