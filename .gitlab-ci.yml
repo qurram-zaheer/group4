@@ -1,11 +1,11 @@
 image: node:16.14.0
 
-default:
-  before_script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - apt-get install -u zip unzip
-    - gem install dpl
+# default:
+#   before_script:
+#     - apt-get update -qy
+#     - apt-get install -y ruby-dev
+#     - apt-get install -u zip unzip
+#     - gem install dpl
 
 cache:
   paths:
