@@ -7,13 +7,22 @@
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "strapi": "strapi"
+    "strapi": "strapi",
+    "start-frontend-dev": "cd ../codeanalyzer-frontend && yarn start",
+    "start-frontend-prod": "cd ../codeanalyzer-frontend && yarn start",
+    "start-backend-dev": "NODE_ENV=development yarn develop",
+    "start-backend-prod": "NODE_ENV=production yarn develop",
+    "full-dev-mode": "concurrently \"yarn run start-backend-dev\" \"yarn run start-frontend-dev\"",
+    "full-prod-mode": "concurrently \"yarn run start-backend-prod\" \"yarn run start-frontend-prod\""
   },
-  "devDependencies": {},
   "dependencies": {
-    "@strapi/strapi": "4.0.7",
-    "@strapi/plugin-users-permissions": "4.0.7",
+    "@strapi/plugin-graphql": "4.0.7",
     "@strapi/plugin-i18n": "4.0.7",
+    "@strapi/plugin-users-permissions": "4.0.7",
+    "@strapi/strapi": "4.0.7",
+    "concurrently": "^7.0.0",
+    "mysql": "^2.18.1",
+    "sharp": "^0.30.2",
     "sqlite3": "5.0.2"
   },
   "author": {
