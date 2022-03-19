@@ -12,8 +12,8 @@
     "start-frontend-prod": "cd ../codeanalyzer-frontend && yarn start",
     "start-backend-dev": "NODE_ENV=development yarn develop",
     "start-backend-prod": "NODE_ENV=production yarn develop",
-    "full-dev-mode": "concurrently \"yarn run start-backend-dev\" \"yarn run start-frontend-dev\"",
-    "full-prod-mode": "concurrently \"yarn run start-backend-prod\" \"yarn run start-frontend-prod\""
+    "full-dev-mode": "concurrently \"npm run start-backend-dev\" \"npm run start-frontend-dev\"",
+    "full-prod-mode": "concurrently \"npm run start-backend-prod\" \"npm run start-frontend-prod\""
   },
   "dependencies": {
     "@strapi/plugin-graphql": "4.0.7",
