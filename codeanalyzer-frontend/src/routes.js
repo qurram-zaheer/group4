@@ -22,7 +22,7 @@ import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
-
+import JiraAuth from "views/JiraAuth";
 
 var routes = [
   {
@@ -50,15 +50,17 @@ var routes = [
     path: "/repositories",
     name: "Repositories",
     icon: "ni ni-collection text-blue",
-    component: Icons,
+    component: JiraAuth,
     layout: "/admin",
-    sub_route: [{
-      path:"/repositories/commits",
-      name: "Commits",
-      icon: "ni ni-bullet-list-67 text-blue",
-      component: Icons,
-      layout: "/admin"
-    }]
+    // sub_route: [
+    //   {
+    //     path: "/repositories/commits",
+    //     name: "Commits",
+    //     icon: "ni ni-bullet-list-67 text-blue",
+    //     component: JiraAuth,
+    //     layout: "/admin",
+    //   },
+    // ],
   },
   {
     path: "/maps",
