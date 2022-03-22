@@ -32,7 +32,47 @@ import {
   Col,
 } from "reactstrap";
 
+import React,{ useState } from "react"
+
+
+
+
 const Register = () => {
+
+  const [username,setUsername] = useState("")
+  const [email,setEmail] = useState("")
+  const [password,setPassword] = useState("")
+
+
+  const formSubmitHandler = async () =>{
+    // const response = fetch("http://localhost:1337/api/users",{
+    //   method:"POST",
+    //   headers:{
+    //     "Content-Type":"application/json"
+    //   },
+    //   body:JSON.stringify({
+    //     name,
+    //     email,
+    //     password
+    //   })
+    // }).then(res=>res.json)
+    // .then(data=>{
+    //   console.log("USER CREATED---------------->>>",data)
+    // })
+
+    const credentials = {
+      username,
+      email,
+      password
+    }
+
+    const response = await post('/users',credentials)
+    console.log(response)
+
+  }
+
+
+
   return (
     <>
       <Col lg="6" md="8">
@@ -89,7 +129,11 @@ const Register = () => {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Name" type="text" />
+                  <Input 
+                    placeholder="Name" 
+                    type="text"
+                    onChange={(e)=>{setUsername(e.target.value)}} 
+                  />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -103,6 +147,7 @@ const Register = () => {
                     placeholder="Email"
                     type="email"
                     autoComplete="new-email"
+                    onChange={(e)=>{setEmail(e.target.value)}}
                   />
                 </InputGroup>
               </FormGroup>
@@ -117,6 +162,7 @@ const Register = () => {
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
+                    onChange={(e)=>{setPassword(e.target.value)}}
                   />
                 </InputGroup>
               </FormGroup>
@@ -149,7 +195,12 @@ const Register = () => {
                 </Col>
               </Row>
               <div className="text-center">
-                <Button className="mt-4" color="primary" type="button">
+                <Button 
+                  className="mt-4" 
+                  color="primary" 
+                  type="button"
+                  onClick={()=>{formSubmitHandler()}}
+                >
                   Create account
                 </Button>
               </div>
