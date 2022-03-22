@@ -10,7 +10,6 @@ import {
   } from "reactstrap";
 
 import React, { useState } from 'react';
-import { Redirect } from "react-router-dom";
 
 function LoginForm( {OnSignIn, error} ){
 

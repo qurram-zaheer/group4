@@ -22,12 +22,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Row,
   Col,
 } from "reactstrap";
@@ -45,7 +39,6 @@ import axios from "axios";
 const Login = () => {
 
   const [token, setToken] = useToken();
-  const [user, setUser] = useState({email:""});
   const [error, setError] = useState("");
   const history = useHistory();
 
