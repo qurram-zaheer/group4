@@ -6,8 +6,6 @@ export const useUser = () => {
 
     const getPayloadFromToken = token => {
         const encodedPayload = token.split('.')[1];
-        console.log('encodedPauload:')
-        console.log(encodedPayload);
         return JSON.parse(atob(encodedPayload));
     }
 
