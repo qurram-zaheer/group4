@@ -64,9 +64,9 @@ sonarqube-check:
 deploy_backend_prod:
   stage: deploy_prod
   script:
-    - apt-get update -qy
-    - apt-get install -y ruby-full
-    - apt-get install -u zip unzip
+    - apt update -qy
+    - apt install -y ruby-full
+    # - apt-get install -u zip unzip
     - gem install dpl
     - cd codeanalyzer-backend
     - echo "DATABASE_HOST=$DATABASE_PROD_HOST" > .env
@@ -83,9 +83,9 @@ deploy_backend_prod:
 deploy_frontend_prod:
   stage: deploy_prod
   script:
-    - apt-get update -qy
-    - apt-get install -y ruby-full
-    - apt-get install -u zip unzip
+    - apt update -qy
+    - apt install -y ruby-full
+    # - apt-get install -u zip unzip
     - gem install dpl
     - cd codeanalyzer-frontend
     - echo "Deploying the frontend release pipeline"
