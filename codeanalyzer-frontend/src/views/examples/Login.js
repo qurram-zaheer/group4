@@ -60,9 +60,7 @@ const Login = () => {
                       identifier: details.email,
                       password: details.password,
     }).then((response) => {
-      console.log(response.data);
       setToken(response.data.jwt);
-      console.log(response.data.jwt);
       history.push("/admin/index");
     }, (error) => 
       setError("Invalid credentials")
