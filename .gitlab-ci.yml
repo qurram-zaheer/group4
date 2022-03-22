@@ -8,8 +8,8 @@ stages:
   - build
   - test
   - deploy_uat
-  - deploy_backend_prod
   - deploy_frontend_prod
+  - deploy_backend_prod
   - sonarqube-check
 
 build:
