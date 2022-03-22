@@ -1,12 +1,5 @@
 image: node:16.14.0
 
-# default:
-#   before_script:
-#     - apt-get update -qy
-#     - apt-get install -y ruby-dev
-#     - apt-get install -u zip unzip
-#     - gem install dpl
-
 cache:
   paths:
     - node_modules/
@@ -68,8 +61,8 @@ sonarqube-check:
   only:
     - qurram # or the name of your main branch
 
-deploy_prod:
-  stage: deploy_prod
+deploy_backend_prod:
+  stage: deploy_backend_prod
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
@@ -81,9 +74,23 @@ deploy_prod:
     - echo "DATABASE_NAME=$DATABASE_PROD_NAME" > .env
     - echo "DATABASE_USERNAME=$DATABASE_PROD_USERNAME" >> .env
     - echo "DATABASE_PASSWORD=$DATABASE_PROD_PASSWORD" >> .env
-#    - echo "dbDriver=$DATABASE_DRIVER" >> .env
+    #    - echo "dbDriver=$DATABASE_DRIVER" >> .env
     - echo "Deploying the release pipeline"
     - chmod og-rwx ${DEPLOY_PROD_SSH_KEY}
     - dpl --provider=heroku --app=$HEROKU_APP_BACKEND --api-key=$HEROKU_API_KEY
   only:
     - main
+
+deploy_frontend_prod:
+  stage: deploy_frontend_prod
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - apt-get install -u zip unzip
+    - gem install dpl
+    - cd codeanalyzer-frontend
+    - echo "Deploying the frontend release pipeline"
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+
+only:
+  - main
