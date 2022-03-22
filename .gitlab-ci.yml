@@ -62,7 +62,7 @@ sonarqube-check:
     - qurram # or the name of your main branch
 
 deploy_backend_prod:
-  stage: deploy_backend_prod
+  stage: deploy_prod
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
@@ -82,7 +82,7 @@ deploy_backend_prod:
     - main
 
 deploy_frontend_prod:
-  stage: deploy_frontend_prod
+  stage: deploy_prod
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
