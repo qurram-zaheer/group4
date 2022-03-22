@@ -1,9 +1,8 @@
 import React from "react";
 
 const JiraContext = React.createContext([
-  { authCode: "", authFlag: "", accessToken: "", cloudId: "" },
+  { authCode: "", authFlag: "", accessToken: "", cloudId: "", refreshToken: "" },
   () => {
-    console.log("in here?");
   },
 ]);
 

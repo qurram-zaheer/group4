@@ -71,13 +71,19 @@ sonarqube-check:
 deploy_prod:
   stage: deploy_prod
   script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - apt-get install -u zip unzip
+    - gem install dpl
     - cd codeanalyzer-backend
-    - echo "dbURL=$DATABASE_PROD_URL" > .env
-    - echo "dbUserName=$DATABASE_PROD_USERNAME" >> .env
-    - echo "dbPassword=$DATABASE_PROD_PASSWORD" >> .env
-    - echo "dbDriver=$DATABASE_DRIVER" >> .env
+    - echo "DATABASE_HOST=$DATABASE_PROD_HOST" > .env
+    - echo "DATABASE_PORT=$DATABASE_PROD_PORT" > .env
+    - echo "DATABASE_NAME=$DATABASE_PROD_NAME" > .env
+    - echo "DATABASE_USERNAME=$DATABASE_PROD_USERNAME" >> .env
+    - echo "DATABASE_PASSWORD=$DATABASE_PROD_PASSWORD" >> .env
+#    - echo "dbDriver=$DATABASE_DRIVER" >> .env
     - echo "Deploying the release pipeline"
     - chmod og-rwx ${DEPLOY_PROD_SSH_KEY}
-    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=$HEROKU_APP_BACKEND --api-key=$HEROKU_API_KEY
   only:
     - main
