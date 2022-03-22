@@ -63,6 +63,7 @@ sonarqube-check:
 
 deploy_backend_prod:
   stage: deploy_prod
+  skip_cleanup: true
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
@@ -83,6 +84,7 @@ deploy_backend_prod:
 
 deploy_frontend_prod:
   stage: deploy_prod
+  skip_cleanup: true
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
