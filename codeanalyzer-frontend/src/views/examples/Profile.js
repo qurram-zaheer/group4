@@ -31,8 +31,12 @@ import {
 } from "reactstrap";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
+import { useContext } from "react";
+import JiraContext from "contexts/JiraContext";
 
 const Profile = () => {
+  const [jiraAuth, setJiraAuth] = useContext(JiraContext);
+  console.log("JIRA AUTH PROFILE", jiraAuth);
   return (
     <>
       <UserHeader />

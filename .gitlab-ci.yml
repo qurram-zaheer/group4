@@ -1,48 +1,99 @@
-# This file is a template, and might need editing before it works on your project.
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
+image: node:16.14.0
 
-# This is a sample GitLab CI/CD configuration file that should run without any modifications.
-# It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
-# it uses echo commands to simulate the pipeline execution.
-#
-# A pipeline is composed of independent jobs that run scripts, grouped into stages.
-# Stages run in sequential order, but jobs within stages run in parallel.
-#
-# For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
+cache:
+  paths:
+    - node_modules/
 
-stages:          # List of stages for jobs, and their order of execution
+stages:
   - build
   - test
-  - deploy
+  - deploy_uat
+  - deploy_frontend_prod
+  - deploy_backend_prod
+  - sonarqube-check
 
-build-job:       # This job runs in the build stage, which runs first.
+build:
   stage: build
+  tags:
+    - dalfcs_gitlab_docker_ci
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+    - cd codeanalyzer-backend
+    # - npm install
 
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+test:
+  stage: test
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
-    - echo "Code coverage is 90%"
+    - echo "Pipeline test started"
+  tags:
+    - dalfcs_gitlab_docker_ci
 
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
+deploy_uat:
+  stage: deploy_uat
+  tags:
+    - dalfcs_gitlab_docker_ci
   script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
-
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - echo "dbURL=$DATABASE_TEST_URL" >> .env
+    - echo "dbUserName=$DATABASE_TEST_USERNAME" >> .env
+    - echo "dbPassword=$DATABASE_TEST_PASSWORD" >> .env
+    - echo "dbDriver=$DATABASE_DRIVER" >> .env
+    - echo "Deploying the develop pipeline"
+    - chmod og-rwx ${DEPLOY_SSH_KEY}
+    - git clone https://git.cs.dal.ca/courses/2022-winter/csci-5308/group4.git
+    - git checkout uat
+    - cd group4
+    - yarn
   only:
-    -  main
+    - uat
 
+sonarqube-check:
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar" # Defines the location of the analysis task cache
+    GIT_DEPTH: "0" # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - sonar-scanner
+  allow_failure: true
+  only:
+    - qurram # or the name of your main branch
+
+deploy_backend_prod:
+  stage: deploy_backend_prod
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - apt-get install -u zip unzip
+    - gem install faraday -v 1.10.0
+    - gem install dpl
+    - npm config set legacy-peer-deps true
+    - cd codeanalyzer-backend
+    - echo "DATABASE_HOST=$DATABASE_PROD_HOST" > .env
+    - echo "DATABASE_PORT=$DATABASE_PROD_PORT" > .env
+    - echo "DATABASE_NAME=$DATABASE_PROD_NAME" > .env
+    - echo "DATABASE_USERNAME=$DATABASE_PROD_USERNAME" >> .env
+    - echo "DATABASE_PASSWORD=$DATABASE_PROD_PASSWORD" >> .env
+    #    - echo "dbDriver=$DATABASE_DRIVER" >> .env
+    - echo "Deploying the release pipeline"
+    - dpl --provider=heroku --app=$HEROKU_APP_BACKEND --api-key=$HEROKU_API_KEY
+  only:
+    - main
+
+deploy_frontend_prod:
+  stage: deploy_frontend_prod
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - apt-get install -u zip unzip
+    - gem install faraday -v 1.10.0
+    - gem install dpl
+    - npm config set legacy-peer-deps true
+    - cd codeanalyzer-frontend
+    - echo "Deploying the frontend release pipeline"
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY --skip-cleanup
+  only:
+    - main
