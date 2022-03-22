@@ -64,7 +64,7 @@ sonarqube-check:
 deploy_backend_prod:
   stage: deploy_prod
   script:
-    - apt update -qy && apt upgrade
+    - apt update -qy && apt upgrade -y
     - apt install -y ruby-full
     # - apt-get install -u zip unzip
     - gem install dpl
@@ -83,7 +83,7 @@ deploy_backend_prod:
 deploy_frontend_prod:
   stage: deploy_prod
   script:
-    - apt update -qy && apt upgrade
+    - apt update -qy && apt upgrade -y
     - apt install -y ruby-full
     # - apt-get install -u zip unzip
     - gem install dpl
