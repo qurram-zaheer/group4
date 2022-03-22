@@ -72,7 +72,6 @@ const Index = (props) => {
           user: userRegistration.user,
         }
       });
-
       if(createGithubAuths){
         console.log('User Registration was Successful!');
       }
