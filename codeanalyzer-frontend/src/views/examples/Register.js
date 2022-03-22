@@ -32,19 +32,15 @@ import {
   Col,
 } from "reactstrap";
 
-import React,{ useState } from "react"
-
-
-
+import React, { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [username,setUsername] = useState("")
-  const [email,setEmail] = useState("")
-  const [password,setPassword] = useState("")
-
-
-  const formSubmitHandler = async () =>{
+  const formSubmitHandler = async () => {
     // const response = fetch("http://localhost:1337/api/users",{
     //   method:"POST",
     //   headers:{
@@ -63,15 +59,12 @@ const Register = () => {
     const credentials = {
       username,
       email,
-      password
-    }
+      password,
+    };
 
-    const response = await post('/users',credentials)
-    console.log(response)
-
-  }
-
-
+    const response = await axios.post("/users", credentials);
+    console.log(response);
+  };
 
   return (
     <>
@@ -129,10 +122,12 @@ const Register = () => {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input 
-                    placeholder="Name" 
+                  <Input
+                    placeholder="Name"
                     type="text"
-                    onChange={(e)=>{setUsername(e.target.value)}} 
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
                   />
                 </InputGroup>
               </FormGroup>
@@ -147,7 +142,9 @@ const Register = () => {
                     placeholder="Email"
                     type="email"
                     autoComplete="new-email"
-                    onChange={(e)=>{setEmail(e.target.value)}}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
                   />
                 </InputGroup>
               </FormGroup>
@@ -162,7 +159,9 @@ const Register = () => {
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
-                    onChange={(e)=>{setPassword(e.target.value)}}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
                   />
                 </InputGroup>
               </FormGroup>
@@ -195,11 +194,13 @@ const Register = () => {
                 </Col>
               </Row>
               <div className="text-center">
-                <Button 
-                  className="mt-4" 
-                  color="primary" 
+                <Button
+                  className="mt-4"
+                  color="primary"
                   type="button"
-                  onClick={()=>{formSubmitHandler()}}
+                  onClick={() => {
+                    formSubmitHandler();
+                  }}
                 >
                   Create account
                 </Button>
