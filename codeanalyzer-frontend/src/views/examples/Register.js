@@ -33,7 +33,7 @@ import {
 } from "reactstrap";
 
 import React, { useState } from "react";
-import {post} from '../../config'
+import { post } from "../../config";
 
 const Register = () => {
   const [username, setUsername] = useState("");

@@ -8,7 +8,8 @@ stages:
   - build
   - test
   - deploy_uat
-  - deploy_prod
+  - deploy_frontend_prod
+  - deploy_backend_prod
   - sonarqube-check
 
 build:
@@ -62,12 +63,14 @@ sonarqube-check:
     - qurram # or the name of your main branch
 
 deploy_backend_prod:
-  stage: deploy_prod
+  stage: deploy_backend_prod
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - apt-get install -u zip unzip
+    - gem install faraday -v 1.10.0
     - gem install dpl
+    - npm config set legacy-peer-deps true
     - cd codeanalyzer-backend
     - echo "DATABASE_HOST=$DATABASE_PROD_HOST" > .env
     - echo "DATABASE_PORT=$DATABASE_PROD_PORT" > .env
@@ -81,14 +84,16 @@ deploy_backend_prod:
     - main
 
 deploy_frontend_prod:
-  stage: deploy_prod
+  stage: deploy_frontend_prod
   script:
     - apt-get update -qy
-    - apt-get install -y ruby-full
+    - apt-get install -y ruby-dev
     - apt-get install -u zip unzip
+    - gem install faraday -v 1.10.0
     - gem install dpl
+    - npm config set legacy-peer-deps true
     - cd codeanalyzer-frontend
     - echo "Deploying the frontend release pipeline"
-    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY --skip-cleanup
   only:
     - main
