@@ -91,6 +91,5 @@ deploy_frontend_prod:
     - cd codeanalyzer-frontend
     - echo "Deploying the frontend release pipeline"
     - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
-
-only:
-  - main
+  only:
+    - main
