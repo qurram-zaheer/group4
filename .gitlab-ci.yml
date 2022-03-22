@@ -64,16 +64,10 @@ sonarqube-check:
 deploy_backend_prod:
   stage: deploy_prod
   script:
-    - apt-get update -qy && apt-get upgrade -y
-    - apt-get install software-properties-common -y
-    - gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-    - apt-add-repository -y ppa:rael-gc/rvm
-    - apt-get update
-    - apt-get install rvm -y
-    - usermod -a -G rvm $USER
-    - echo 'source "/etc/profile.d/rvm.sh"' >> ~/.bashrc
-    - rvm install ruby
-    # - apt-get install -u zip unzip
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - apt-get install -u zip unzip
+    - gem install faraday -v 1.10.0
     - gem install dpl
     - cd codeanalyzer-backend
     - echo "DATABASE_HOST=$DATABASE_PROD_HOST" > .env
@@ -90,16 +84,10 @@ deploy_backend_prod:
 deploy_frontend_prod:
   stage: deploy_prod
   script:
-    - apt-get update -qy && apt-get upgrade -y
-    - apt-get install software-properties-common -y
-    - gpg --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-    - apt-add-repository -y ppa:rael-gc/rvm
-    - apt-get update
-    - apt-get install rvm -y
-    - usermod -a -G rvm $USER
-    - echo 'source "/etc/profile.d/rvm.sh"' >> ~/.bashrc
-    - rvm install ruby
-    # - apt-get install -u zip unzip
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - apt-get install -u zip unzip
+    - gem install faraday -v 1.10.0
     - gem install dpl
     - cd codeanalyzer-frontend
     - echo "Deploying the frontend release pipeline"
