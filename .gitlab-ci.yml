@@ -84,7 +84,7 @@ deploy_frontend_prod:
   stage: deploy_prod
   script:
     - apt-get update -qy
-    - apt-get install -y ruby-dev
+    - apt-get install -y ruby-full
     - apt-get install -u zip unzip
     - gem install dpl
     - cd codeanalyzer-frontend
