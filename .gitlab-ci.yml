@@ -64,8 +64,15 @@ sonarqube-check:
 deploy_backend_prod:
   stage: deploy_prod
   script:
-    - apt update -qy && apt upgrade -y
-    - apt install -y ruby-full
+    - apt-get update -qy && apt-get upgrade -y
+    - sudo apt-get install software-properties-common
+    - gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+    - sudo apt-add-repository -y ppa:rael-gc/rvm
+    - sudo apt-get update
+    - sudo apt-get install rvm
+    - sudo usermod -a -G rvm $USER
+    - echo 'source "/etc/profile.d/rvm.sh"' >> ~/.bashrc
+    - rvm install ruby
     # - apt-get install -u zip unzip
     - gem install dpl
     - cd codeanalyzer-backend
@@ -83,8 +90,15 @@ deploy_backend_prod:
 deploy_frontend_prod:
   stage: deploy_prod
   script:
-    - apt update -qy && apt upgrade -y
-    - apt install -y ruby-full
+    - apt-get update -qy && apt-get upgrade -y
+    - sudo apt-get install software-properties-common
+    - gpg2 --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+    - sudo apt-add-repository -y ppa:rael-gc/rvm
+    - sudo apt-get update
+    - sudo apt-get install rvm
+    - sudo usermod -a -G rvm $USER
+    - echo 'source "/etc/profile.d/rvm.sh"' >> ~/.bashrc
+    - rvm install ruby
     # - apt-get install -u zip unzip
     - gem install dpl
     - cd codeanalyzer-frontend
