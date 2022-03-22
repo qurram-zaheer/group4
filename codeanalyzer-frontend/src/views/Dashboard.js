@@ -53,7 +53,7 @@ import { api } from "../lib/api"
 
 import Header from "components/Headers/Header.js";
 
-const Index = (props) => {
+const Dashboard = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const query = useQuery();
   const [chartExample1Data, setChartExample1Data] = useState("data1");
@@ -80,7 +80,7 @@ const Index = (props) => {
     }
 
     //for fetching data from api 
-    api.fetchGithubRepo(userRegistration.data.user.username)
+    // api.fetchGithubRepo(userRegistration.data.user.username)
     
   })()
   }, []);
@@ -368,4 +368,4 @@ const Index = (props) => {
   );
 };
 
-export default Index;
+export default Dashboard;

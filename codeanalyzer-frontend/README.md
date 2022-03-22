@@ -173,7 +173,7 @@ Argon Dashboard React
     ├── variables
     │   └── charts.jsx
     └── views
-        ├── Index.jsx
+        ├── Dashboard.jsx
         └── examples
             ├── Icons.jsx
             ├── Login.jsx
