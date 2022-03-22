@@ -9,7 +9,7 @@ stages:
   - test
   - deploy_uat
   - deploy_backend_prod
-  - deploy_frontend-prod
+  - deploy_frontend_prod
   - sonarqube-check
 
 build:
@@ -94,6 +94,6 @@ deploy_frontend_prod:
     - npm config set legacy-peer-deps true
     - cd codeanalyzer-frontend
     - echo "Deploying the frontend release pipeline"
-    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY --skip-cleanup
   only:
     - main
