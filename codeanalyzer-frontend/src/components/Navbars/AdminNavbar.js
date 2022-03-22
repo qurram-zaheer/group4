@@ -15,7 +15,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { Link } from "react-router-dom";
+import { LogOut } from "auth/LogOut";
+import { NavLink as NavLinkRRD, Link, Redirect } from "react-router-dom";
 // reactstrap components
 import {
   DropdownMenu,
@@ -98,10 +99,12 @@ const AdminNavbar = (props) => {
                   <span>Support</span>
                 </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
-                  <i className="ni ni-user-run" />
-                  <span>Logout</span>
-                </DropdownItem>
+                <NavLinkRRD to="/auth/login">
+                  <DropdownItem onClick={(e) => LogOut()}>
+                    <i className="ni ni-user-run" />
+                    <span>Logout</span>
+                  </DropdownItem>
+                </NavLinkRRD>
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>

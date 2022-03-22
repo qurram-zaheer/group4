@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react/cjs/react.production.min";
+import { useState, useEffect } from "react";
 import { useToken } from "./useToken";
 
 export const useUser = () => {
@@ -6,13 +6,15 @@ export const useUser = () => {
 
     const getPayloadFromToken = token => {
         const encodedPayload = token.split('.')[1];
-        return JSON.parse(Buffer.from(encodedPayload, 'base64'));
+        console.log('encodedPauload:')
+        console.log(encodedPayload);
+        return JSON.parse(atob(encodedPayload));
     }
 
     const [ user, setUser ] = useState(() => {
         if(!token)  return null;
         return getPayloadFromToken(token);
-    })
+    });
 
     useEffect(() => {
         if(!token){
