@@ -50,15 +50,23 @@ deploy_uat:
   only:
     - uat
 
-deploy_prod:
-  stage: deploy_prod
+deploy_backend_prod:
+  stage: deploy_backend_prod
   script:
     - cd codeanalyzer-backend
     - echo "dbURL=$DATABASE_PROD_URL" > .env
     - echo "dbUserName=$DATABASE_PROD_USERNAME" >> .env
     - echo "dbPassword=$DATABASE_PROD_PASSWORD" >> .env
     - echo "dbDriver=$DATABASE_DRIVER" >> .env
-    - echo "Deploying the release pipeline"
+    - echo "Deploying the backend release pipeline"
+    - dpl --provider=heroku --app=$HEROKU_BACKEND_APP --api-key=$HEROKU_BACKEND_API_KEY
+
+deploy_frontend_prod:
+  stage: deploy_frontend_prod
+  script:
+    - cd codeanalyzer-frontend
+    - echo "Deploying the frontend release pipeline"
     - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
-  only:
-    - main
+
+only:
+  - main
