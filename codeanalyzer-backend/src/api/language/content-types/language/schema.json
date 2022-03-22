@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "languages",
+  "info": {
+    "singularName": "language",
+    "pluralName": "languages",
+    "displayName": "language",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "language": {
+      "type": "string"
+    },
+    "uid": {
+      "type": "uid",
+      "targetField": "language"
+    },
+    "loc": {
+      "type": "biginteger"
+    }
+  }
+}
