@@ -31,6 +31,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { webUrl } from "../../config";
 
 import { Link, useHistory, useLocation } from 'react-router-dom'
 
@@ -48,7 +49,7 @@ const Login = () => {
               <Button
                 className="btn-neutral btn-icon"
                 color="default"
-                href="http://localhost:1337/api/connect/github"
+                href={`${webUrl}/api/connect/github`}
               >
                 <span className="btn-inner--icon">
                   <img
