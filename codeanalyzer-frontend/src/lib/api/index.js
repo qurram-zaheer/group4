@@ -10,9 +10,9 @@ const authGithubUser = (accessToken) => {
   return get("/auth/github/callback?access_token=" + accessToken);
 };
 
-const createGithubAuths = (info) => {
-  return post("/github-auths", info);
-};
+const createAuths = (info, headers) => {
+    return post('/github-auths', info, headers);
+}
 
 // const fetchGithubRepo = async (username)=>{
 //     const url = "https://api.github.com/users/tushartushar/repos";
@@ -28,7 +28,7 @@ const lengthOfFetchedData = async (url) => {
 
 export const api = {
   authGithubUser,
-  createGithubAuths,
+  createAuths,
   getJiraAuthCode,
   getJiraAccessToken,
   getJiraCloudId,

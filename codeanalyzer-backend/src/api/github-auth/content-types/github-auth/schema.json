@@ -4,7 +4,7 @@
   "info": {
     "singularName": "github-auth",
     "pluralName": "github-auths",
-    "displayName": "GithubAuth",
+    "displayName": "Auth",
     "description": ""
   },
   "options": {
@@ -24,6 +24,12 @@
       "type": "text"
     },
     "expiresIn": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "cloudId": {
       "type": "string"
     }
   }

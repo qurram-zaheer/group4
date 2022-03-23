@@ -22,8 +22,8 @@
     "@strapi/strapi": "4.0.7",
     "concurrently": "^7.0.0",
     "mysql": "^2.18.1",
-    "sharp": "^0.30.2",
-    "sqlite3": "5.0.2"
+    "mysql2": "^2.3.3",
+    "sharp": "^0.30.2"
   },
   "author": {
     "name": "A Strapi developer"
