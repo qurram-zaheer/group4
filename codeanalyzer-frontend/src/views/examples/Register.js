@@ -33,7 +33,7 @@ import {
 } from "reactstrap";
 
 import React, { useState } from "react";
-import axios from "axios";
+import { post } from "../../config";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -62,7 +62,7 @@ const Register = () => {
       password,
     };
 
-    const response = await axios.post("/users", credentials);
+    const response = post("/users", credentials);
     console.log(response);
   };
 

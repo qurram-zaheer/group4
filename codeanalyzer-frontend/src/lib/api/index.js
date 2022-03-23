@@ -1,5 +1,10 @@
-import axios from "axios";
-import { get, post, put, destroy } from "../../config";
+import { get, post } from "../../config";
+import {
+  getJiraAccessToken,
+  getJiraAuthCode,
+  getJiraCloudId,
+  jiraOAuthFlow,
+} from "./jira";
 
 const authGithubUser = (accessToken) => {
   return get("/auth/github/callback?access_token=" + accessToken);
@@ -24,5 +29,9 @@ const lengthOfFetchedData = async (url) => {
 export const api = {
   authGithubUser,
   createGithubAuths,
+  getJiraAuthCode,
+  getJiraAccessToken,
+  getJiraCloudId,
+  jiraOAuthFlow,
   // fetchGithubRepo
 };
