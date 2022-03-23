@@ -63,11 +63,11 @@ const Dashboard = (props) => {
     const accessToken = query.get('access_token');
     const refreshToken = query.get('refresh_token');
     const expiresIn = query.get('raw[expires_in]');
-    console.log('AT->', accessToken, refreshToken, expiresIn);
+    // console.log('AT->', accessToken, refreshToken, expiresIn);
     const userRegistration = await api.authGithubUser(accessToken);
-    console.log('UR->', userRegistration);
-    if(userRegistration && userRegistration.data.user){
-      console.log('CGA', userRegistration.data.user, userRegistration.data.user, accessToken, refreshToken, expiresIn);
+    // console.log('UR->', userRegistration);
+    if(userRegistration && userRegistration.data.user) {
+      // console.log('CGA', userRegistration.data.user, userRegistration.data.user, accessToken, refreshToken, expiresIn);
       const createGithubAuth = await createGithubAuths(userRegistration.data.user, accessToken, refreshToken, expiresIn, { headers: {
         'Authorization' : 'Bearer ' + userRegistration.data.jwt
       }});
@@ -107,7 +107,7 @@ const Dashboard = (props) => {
   };
   return (
     <>
-      <Header />
+      <Header showCards={true} />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
