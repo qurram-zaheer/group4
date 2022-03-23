@@ -31,6 +31,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { webUrl } from "../../config";
 
 import React, { useState } from "react";
 import { post } from "../../config";
@@ -78,7 +79,7 @@ const Register = () => {
               <Button
                 className="btn-neutral btn-icon mr-4"
                 color="default"
-                href="http://localhost:1337/api/connect/github"
+                href={`${webUrl}/api/connect/github`}
               >
                 <span className="btn-inner--icon">
                   <img
