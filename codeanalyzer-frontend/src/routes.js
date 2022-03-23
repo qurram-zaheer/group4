@@ -23,6 +23,7 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import JiraAuth from "views/JiraAuth";
+import Commits from "views/examples/Commits";
 
 var routes = [
   {
@@ -31,6 +32,7 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     component: Register,
     layout: "/auth",
+    sidebar: false
   },
   {
     path: "/login",
@@ -38,12 +40,20 @@ var routes = [
     icon: "ni ni-key-25 text-info",
     component: Login,
     layout: "/auth",
+    sidebar: false
   },
   {
     path: "/index",
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Dashboard,
+    layout: "/admin",
+  },
+  {
+    path: "/repositories/commits",
+    name: "Commits",
+    icon: "ni ni-collection text-blue",
+    component: Commits,
     layout: "/admin",
   },
   {
