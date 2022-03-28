@@ -18,18 +18,17 @@
 
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Form,
-  FormGroup,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Row,
+    Button,
+    Card,
+    CardBody,
+    CardHeader,
+    Col,
+    Form,
+    FormGroup,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText,
 } from "reactstrap";
 
 import React, {useState} from "react";
@@ -62,8 +61,8 @@ const Register = () => {
             password,
         };
 
-        const response = post("/users", credentials);
-        console.log(response);
+        const response = await post("/auth/local/register", credentials);
+        localStorage.setItem("jwt", response.data.jwt)
     };
 
     return (
@@ -123,7 +122,7 @@ const Register = () => {
                                         </InputGroupText>
                                     </InputGroupAddon>
                                     <Input
-                                        placeholder="Name"
+                                        placeholder="Username"
                                         type="text"
                                         onChange={(e) => {
                                             setUsername(e.target.value);
@@ -171,28 +170,22 @@ const Register = () => {
                                     <span className="text-success font-weight-700">strong</span>
                                 </small>
                             </div>
-                            <Row className="my-4">
-                                <Col xs="12">
-                                    <div className="custom-control custom-control-alternative custom-checkbox">
-                                        <input
-                                            className="custom-control-input"
-                                            id="customCheckRegister"
-                                            type="checkbox"
-                                        />
-                                        <label
-                                            className="custom-control-label"
-                                            htmlFor="customCheckRegister"
-                                        >
-                      <span className="text-muted">
-                        I agree with the{" "}
-                          <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                          Privacy Policy
-                        </a>
-                      </span>
-                                        </label>
-                                    </div>
-                                </Col>
-                            </Row>
+                            {/*<Row className="my-4">*/}
+                            {/*    <Col xs="12">*/}
+                            {/*        <div className="custom-control custom-control-alternative custom-checkbox">*/}
+                            {/*            <input*/}
+                            {/*                className="custom-control-input"*/}
+                            {/*                id="customCheckRegister"*/}
+                            {/*                type="checkbox"*/}
+                            {/*            />*/}
+                            {/*            <label*/}
+                            {/*                className="custom-control-label"*/}
+                            {/*                htmlFor="customCheckRegister"*/}
+                            {/*            >*/}
+                            {/*            </label>*/}
+                            {/*        </div>*/}
+                            {/*    </Col>*/}
+                            {/*</Row>*/}
                             <div className="text-center">
                                 <Button
                                     className="mt-4"

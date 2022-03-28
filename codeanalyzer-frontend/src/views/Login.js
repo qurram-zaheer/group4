@@ -18,21 +18,33 @@
 
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Col,
-  Form,
-  FormGroup,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Row,
+    Button,
+    Card,
+    CardBody,
+    CardHeader,
+    Col,
+    Form,
+    FormGroup,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText,
+    Row,
 } from "reactstrap";
+import {Link, useHistory} from "react-router-dom";
+import {useState} from "react";
+import {post} from "../config";
 
 const Login = () => {
+    const [email, setEmail] = useState("")
+    const history = useHistory();
+    const [pw, setPw] = useState("")
+    const submitLogin = () => {
+        const response = post("/auth/local", {
+            identifier: email,
+            password: pw
+        }).then(response => localStorage.setItem("jwt", response.data.jwt)).then(_ => history.push("/index"))
+    }
 
     return (
         <>
@@ -96,6 +108,9 @@ const Login = () => {
                                         placeholder="Email"
                                         type="email"
                                         autoComplete="new-email"
+                                        onChange={(e) => {
+                                            setEmail(e.target.value)
+                                        }}
                                     />
                                 </InputGroup>
                             </FormGroup>
@@ -110,6 +125,9 @@ const Login = () => {
                                         placeholder="Password"
                                         type="password"
                                         autoComplete="new-password"
+                                        onChange={(e) => {
+                                            setPw(e.target.value)
+                                        }}
                                     />
                                 </InputGroup>
                             </FormGroup>
@@ -127,7 +145,7 @@ const Login = () => {
                                 </label>
                             </div>
                             <div className="text-center">
-                                <Button className="my-4" color="primary" type="button">
+                                <Button className="my-4" color="primary" type="button" onClick={submitLogin}>
                                     Sign in
                                 </Button>
                             </div>
@@ -145,13 +163,9 @@ const Login = () => {
                         </a>
                     </Col>
                     <Col className="text-right" xs="6">
-                        <a
-                            className="text-light"
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                        >
+                        <Link to="/auth/register">
                             <small>Create new account</small>
-                        </a>
+                        </Link>
                     </Col>
                 </Row>
             </Col>
