@@ -17,160 +17,115 @@
 */
 
 // reactstrap components
-import {
-    Button,
-    Card,
-    CardBody,
-    CardHeader,
-    Col,
-    Form,
-    FormGroup,
-    Input,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupText,
-    Row,
-} from "reactstrap";
-import {Link, useHistory} from "react-router-dom";
-import {useState} from "react";
-import {post} from "../config";
+import { Button, Card, CardHeader, CardBody, Row, Col } from "reactstrap";
+
+import React, { useState } from "react";
+
+import LoginForm from "../LoginForm";
+import { useToken } from "auth/useToken";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
-    const [email, setEmail] = useState("")
-    const history = useHistory();
-    const [pw, setPw] = useState("")
-    const submitLogin = () => {
-        const response = post("/auth/local", {
-            identifier: email,
-            password: pw
-        }).then(response => localStorage.setItem("jwt", response.data.jwt)).then(_ => history.push("/index"))
+  const [token, setToken] = useToken();
+  const [error, setError] = useState("");
+  const history = useHistory();
+
+  const OnSignIn = async (details) => {
+    // Check if email/password are entered
+    if (details.email.length === 0 || details.password.length === 0) {
+      setError("Incomplete details");
+      return;
     }
 
-    return (
-        <>
-            <Col lg="5" md="7">
-                <Card className="bg-secondary shadow border-0">
-                    <CardHeader className="bg-transparent pb-5">
-                        <div className="text-muted text-center mt-2 mb-3">
-                            <small>Sign in with</small>
-                        </div>
-                        <div className="btn-wrapper text-center">
-                            <Button
-                                className="btn-neutral btn-icon"
-                                color="default"
-                                href="http://localhost:1337/api/connect/github"
-                            >
+    await axios
+      .post("http://localhost:1337/api/auth/local", {
+        identifier: details.email,
+        password: details.password,
+      })
+      .then(
+        (response) => {
+          setToken(response.data.jwt);
+          history.push("/admin/index");
+        },
+        (error) => setError("Invalid credentials")
+      );
+  };
+
+  return (
+    <>
+      <Col lg="5" md="7">
+        <Card className="bg-secondary shadow border-0">
+          <CardHeader className="bg-transparent pb-5">
+            <div className="text-muted text-center mt-2 mb-3">
+              <small>Sign in with</small>
+            </div>
+            <div className="btn-wrapper text-center">
+              <Button
+                className="btn-neutral btn-icon"
+                color="default"
+                href="http://localhost:1337/api/connect/github"
+              >
                 <span className="btn-inner--icon">
                   <img
-                      alt="..."
-                      src={
-                          require("../assets/img/icons/common/github.svg")
-                              .default
-                      }
+                    alt="..."
+                    src={
+                      require("../../assets/img/icons/common/github.svg")
+                        .default
+                    }
                   />
                 </span>
-                                <span className="btn-inner--text">
-                  Github
-                  </span>
-                            </Button>
-                            <Button
-                                className="btn-neutral btn-icon"
-                                color="default"
-                                href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                            >
+                <span className="btn-inner--text">Github</span>
+              </Button>
+              <Button
+                className="btn-neutral btn-icon"
+                color="default"
+                href="#pablo"
+                onClick={(e) => e.preventDefault()}
+              >
                 <span className="btn-inner--icon">
                   <img
-                      alt="..."
-                      src={
-                          require("../assets/img/icons/common/google.svg")
-                              .default
-                      }
+                    alt="..."
+                    src={
+                      require("../../assets/img/icons/common/google.svg")
+                        .default
+                    }
                   />
                 </span>
-                                <span className="btn-inner--text">Google</span>
-                            </Button>
-                        </div>
-                    </CardHeader>
-                    <CardBody className="px-lg-5 py-lg-5">
-                        <div className="text-center text-muted mb-4">
-                            <small>Or sign in with credentials</small>
-                        </div>
-                        <Form role="form">
-                            <FormGroup className="mb-3">
-                                <InputGroup className="input-group-alternative">
-                                    <InputGroupAddon addonType="prepend">
-                                        <InputGroupText>
-                                            <i className="ni ni-email-83"/>
-                                        </InputGroupText>
-                                    </InputGroupAddon>
-                                    <Input
-                                        placeholder="Email"
-                                        type="email"
-                                        autoComplete="new-email"
-                                        onChange={(e) => {
-                                            setEmail(e.target.value)
-                                        }}
-                                    />
-                                </InputGroup>
-                            </FormGroup>
-                            <FormGroup>
-                                <InputGroup className="input-group-alternative">
-                                    <InputGroupAddon addonType="prepend">
-                                        <InputGroupText>
-                                            <i className="ni ni-lock-circle-open"/>
-                                        </InputGroupText>
-                                    </InputGroupAddon>
-                                    <Input
-                                        placeholder="Password"
-                                        type="password"
-                                        autoComplete="new-password"
-                                        onChange={(e) => {
-                                            setPw(e.target.value)
-                                        }}
-                                    />
-                                </InputGroup>
-                            </FormGroup>
-                            <div className="custom-control custom-control-alternative custom-checkbox">
-                                <input
-                                    className="custom-control-input"
-                                    id=" customCheckLogin"
-                                    type="checkbox"
-                                />
-                                <label
-                                    className="custom-control-label"
-                                    htmlFor=" customCheckLogin"
-                                >
-                                    <span className="text-muted">Remember me</span>
-                                </label>
-                            </div>
-                            <div className="text-center">
-                                <Button className="my-4" color="primary" type="button" onClick={submitLogin}>
-                                    Sign in
-                                </Button>
-                            </div>
-                        </Form>
-                    </CardBody>
-                </Card>
-                <Row className="mt-3">
-                    <Col xs="6">
-                        <a
-                            className="text-light"
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                        >
-                            <small>Forgot password?</small>
-                        </a>
-                    </Col>
-                    <Col className="text-right" xs="6">
-                        <Link to="/auth/register">
-                            <small>Create new account</small>
-                        </Link>
-                    </Col>
-                </Row>
-            </Col>
-        </>
-    );
+                <span className="btn-inner--text">Google</span>
+              </Button>
+            </div>
+          </CardHeader>
+          <CardBody className="px-lg-5 py-lg-5">
+            <div className="text-center text-muted mb-4">
+              <small>Or sign in with credentials</small>
+            </div>
+            <LoginForm OnSignIn={OnSignIn} error={error}></LoginForm>
+          </CardBody>
+        </Card>
+        <Row className="mt-3">
+          <Col xs="6">
+            <a
+              className="text-light"
+              href="#pablo"
+              onClick={(e) => e.preventDefault()}
+            >
+              <small>Forgot password?</small>
+            </a>
+          </Col>
+          <Col className="text-right" xs="6">
+            <a
+              className="text-light"
+              href="#pablo"
+              onClick={(e) => e.preventDefault()}
+            >
+              <small>Create new account</small>
+            </a>
+          </Col>
+        </Row>
+      </Col>
+    </>
+  );
 };
 
 export default Login;
