@@ -63,26 +63,38 @@ const Dashboard = (props) => {
     const accessToken = query.get('access_token');
     const refreshToken = query.get('refresh_token');
     const expiresIn = query.get('raw[expires_in]');
+    // console.log('AT->', accessToken, refreshToken, expiresIn);
     const userRegistration = await api.authGithubUser(accessToken);
-    if(userRegistration && userRegistration.user){
-      const createGithubAuths = await api.createGithubAuths({
+    // console.log('UR->', userRegistration);
+    if(userRegistration && userRegistration.data.user) {
+      // console.log('CGA', userRegistration.data.user, userRegistration.data.user, accessToken, refreshToken, expiresIn);
+      const createGithubAuth = await createGithubAuths(userRegistration.data.user, accessToken, refreshToken, expiresIn, { headers: {
+        'Authorization' : 'Bearer ' + userRegistration.data.jwt
+      }});
+      if(createGithubAuth){
+        console.log('User Registration was Successful!');
+      }
+    }
+  })()
+  }, []);
+
+  const createGithubAuths = async (user, accessToken, refreshToken, expiresIn, headers) => {
+    try{
+      console.log('Headers', headers);
+      return await api.createAuths({
         data: {
           accessToken: accessToken,
           refreshToken: refreshToken,
           expiresIn: expiresIn,
-          user: userRegistration.user,
+          user: user,
+          kind: 'Github',
+          cloudId: null
         }
-      });
-      if(createGithubAuths){
-        console.log('User Registration was Successful!');
-      }
+      }, headers);
+    } catch (err) {
+      console.error('Unable to add Github Auths -> ' , err)
     }
-
-    //for fetching data from api 
-    // api.fetchGithubRepo(userRegistration.data.user.username)
-    
-  })()
-  }, []);
+  }
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -95,7 +107,7 @@ const Dashboard = (props) => {
   };
   return (
     <>
-      <Header />
+      <Header showCards={true} />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>

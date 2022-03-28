@@ -1,19 +1,17 @@
 import axios from 'axios'
 
-const dev = true
-// const dev = process.env.NODE_ENV === 'development'
+const dev = process.env.NODE_ENV === 'development'
 const prod = process.env.NODE_ENV === 'production'
 const staging =
-  window.location.href.includes('staging.meetotis.com') ||
+  window.location.href.includes('codeanalyzer.herokuapp.com') ||
   window.location.href.includes('localhost:1337') ||
   process.env.NODE_ENV === 'staging'
 
-export const fbApiVersion = 'v12.0'
 
 export const webUrl = (() => {
   if (staging) {
     // TODO: Yet to be updated
-    return 'https://'
+    return 'https://codeanalyzer.herokuapp.com/'
   }
 
   if (dev) {
@@ -22,7 +20,7 @@ export const webUrl = (() => {
 
   if (prod) {
     // TODO: Yet to be updated
-    return 'https://'
+    return 'https://codeanalyzer.herokuapp.com/'
   }
 })()
 
