@@ -54,6 +54,7 @@ export const jiraOAuthFlow = async () => {
         kind: "Jira"
     };
 
+    // await api.createAuths(newJiraAuth, {'Authorization': `Bearer ${localStorage.getItem('token')}`})
 
 };
 

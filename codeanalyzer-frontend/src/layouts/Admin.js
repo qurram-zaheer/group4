@@ -16,7 +16,7 @@
 
 */
 import React from "react";
-import {Route, Switch, useLocation} from "react-router-dom";
+import {Redirect, Switch, useLocation} from "react-router-dom";
 // reactstrap components
 import {Container} from "reactstrap";
 // core components
@@ -26,7 +26,7 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
 
-import { PrivateRoute } from "auth/PrivateRoute";
+import {PrivateRoute} from "auth/PrivateRoute";
 
 const Admin = (props) => {
     const mainContent = React.useRef(null);
@@ -38,12 +38,11 @@ const Admin = (props) => {
         mainContent.current.scrollTop = 0;
     }, [location]);
 
-<<<<<<< HEAD
     const getRoutes = (routes) => {
         return routes.map((prop, key) => {
             if (prop.layout === "/admin") {
                 return (
-                    <Route
+                    <PrivateRoute
                         path={prop.layout + prop.path}
                         component={prop.component}
                         key={key}
@@ -54,23 +53,6 @@ const Admin = (props) => {
             }
         });
     };
-=======
-  const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
-        return (
-          <PrivateRoute
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      } else {
-        return null;
-      }
-    });
-  };
->>>>>>> 173698a7b423f00242a3142bd98f9485b5cc4922
 
     const getBrandText = (path) => {
         for (let i = 0; i < routes.length; i++) {
@@ -102,7 +84,7 @@ const Admin = (props) => {
                 />
                 <Switch>
                     {getRoutes(routes)}
-                    {/*<Redirect from="*" to="/auth/login" />*/}
+                    <Redirect from="*" to="/auth/login"/>
                 </Switch>
                 <Container fluid>
                     <AdminFooter/>

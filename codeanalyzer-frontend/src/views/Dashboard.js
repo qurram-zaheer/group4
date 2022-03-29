@@ -52,6 +52,10 @@ const Dashboard = (props) => {
     const query = useQuery();
     const [chartExample1Data, setChartExample1Data] = useState("data1");
 
+    const getData = () => {
+
+    }
+
     useEffect(() => {
         ;(async () => {
             const accessToken = query.get('access_token');
@@ -72,7 +76,9 @@ const Dashboard = (props) => {
                     console.log('User Registration was Successful!');
                 }
             }
-            localStorage.setItem("token", userRegistration.data.jwt)
+            await localStorage.setItem("token", userRegistration.data.jwt)
+            await localStorage.setItem("githubToken", userRegistration.data.jwt)
+            console.log("token set", userRegistration.data)
         })()
     }, []);
 
@@ -84,9 +90,8 @@ const Dashboard = (props) => {
                     accessToken: accessToken,
                     refreshToken: refreshToken,
                     expiresIn: expiresIn,
-                    user: user,
+                    'user': user.id,
                     kind: 'Github',
-                    cloudId: null
                 }
             }, headers);
         } catch (err) {
