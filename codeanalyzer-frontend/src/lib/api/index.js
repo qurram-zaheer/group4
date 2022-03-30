@@ -6,7 +6,7 @@ const authGithubUser = (accessToken) => {
 };
 
 const createAuths = (info, headers) => {
-    return post('/github-auths', info, headers);
+    return post('/github-auths?populate=%2A', info, headers);
 }
 
 // const fetchGithubRepo = async (username)=>{

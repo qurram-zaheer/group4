@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "jira_apps",
+  "info": {
+    "singularName": "jira-app",
+    "pluralName": "jira-apps",
+    "displayName": "JiraApp",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "cloudId": {
+      "type": "string",
+      "required": true
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "jira_apps"
+    },
+    "name": {
+      "type": "string"
+    }
+  }
+}

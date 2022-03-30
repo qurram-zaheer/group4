@@ -64,6 +64,7 @@ const Dashboard = (props) => {
             const expiresIn = query.get('raw[expires_in]');
             // console.log('AT->', accessToken, refreshToken, expiresIn);
             const userRegistration = await api.authGithubUser(accessToken);
+            console.log(userRegistration)
             // console.log('UR->', userRegistration);
             if (userRegistration && userRegistration.data.user) {
                 // console.log('CGA', userRegistration.data.user, userRegistration.data.user, accessToken, refreshToken, expiresIn);
