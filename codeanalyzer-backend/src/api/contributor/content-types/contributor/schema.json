@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contributors",
+  "info": {
+    "singularName": "contributor",
+    "pluralName": "contributors",
+    "displayName": "Contributor"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "github_id": {
+      "type": "string"
+    }
+  }
+}

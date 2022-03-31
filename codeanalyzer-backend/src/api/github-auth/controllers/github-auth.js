@@ -5,7 +5,6 @@
  */
 
 const {createCoreController} = require('@strapi/strapi').factories;
-const {parseMultipartData, sanitizeEntity} = require('strapi-utils')
 const {Octokit} = require("@octokit/core");
 
 
