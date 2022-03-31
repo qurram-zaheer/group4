@@ -11,6 +11,10 @@ const JiraAuth = () => {
 
     useEffect(() => {
 
+        const firstStepCode = new URLSearchParams(window.location.search).get("code")
+        if (!firstStepCode) {
+            return
+        }
         const OAuthResponse = jiraOAuthFlow()
         if (!OAuthResponse.status) {
             console.log("Authorization not complete yet")

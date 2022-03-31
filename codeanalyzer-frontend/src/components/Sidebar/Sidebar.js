@@ -17,7 +17,7 @@
 */
 /*eslint-disable*/
 import { useState } from "react";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+import { NavLink as NavLinkRRD, Link, Redirect } from "react-router-dom";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
 
@@ -51,6 +51,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { LogOut } from "auth/LogOut";
 
 var ps;
 
@@ -181,10 +182,12 @@ const Sidebar = (props) => {
                 <span>Support</span>
               </DropdownItem>
               <DropdownItem divider />
-              <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
-                <i className="ni ni-user-run" />
-                <span>Logout</span>
-              </DropdownItem>
+                <NavLinkRRD to="/auth/login">
+                  <DropdownItem onClick={(e) => LogOut()}>
+                    <i className="ni ni-user-run" />
+                    <span>Logout</span>
+                  </DropdownItem>
+                </NavLinkRRD>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>

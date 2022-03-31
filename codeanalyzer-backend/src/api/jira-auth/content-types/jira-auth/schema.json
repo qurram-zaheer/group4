@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "jira_auths",
+  "info": {
+    "singularName": "jira-auth",
+    "pluralName": "jira-auths",
+    "displayName": "JiraAuth",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "authCode": {
+      "type": "string"
+    },
+    "accessToken": {
+      "type": "string"
+    },
+    "refreshToken": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

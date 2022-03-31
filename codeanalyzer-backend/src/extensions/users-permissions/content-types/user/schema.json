@@ -65,6 +65,18 @@
     },
     "name": {
       "type": "text"
+    },
+    "jira_apps": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::jira-app.jira-app",
+      "mappedBy": "users_permissions_user"
+    },
+    "repositories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::repository.repository",
+      "mappedBy": "users"
     }
   }
 }

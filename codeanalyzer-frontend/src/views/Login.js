@@ -17,25 +17,40 @@
 */
 
 // reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  Row,
-  Col,
-} from "reactstrap";
-import { webUrl } from "../../config";
+import { Button, Card, CardBody, CardHeader, Col, Row } from "reactstrap";
 
-import { Link, useHistory, useLocation } from 'react-router-dom'
+import React, { useState } from "react";
+
+import LoginForm from "./LoginForm";
+import { useToken } from "auth/useToken";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
+  const [token, setToken] = useToken();
+  const [error, setError] = useState("");
+  const history = useHistory();
+
+  const OnSignIn = async (details) => {
+    // Check if email/password are entered
+    if (details.email.length === 0 || details.password.length === 0) {
+      setError("Incomplete details");
+      return;
+    }
+
+    await axios
+      .post("http://localhost:1337/api/auth/local", {
+        identifier: details.email,
+        password: details.password,
+      })
+      .then(
+        (response) => {
+          setToken(response.data.jwt);
+          history.push("/admin/index");
+        },
+        (error) => setError("Invalid credentials")
+      );
+  };
 
   return (
     <>
@@ -49,20 +64,17 @@ const Login = () => {
               <Button
                 className="btn-neutral btn-icon"
                 color="default"
-                href={`${webUrl}/api/connect/github`}
+                href="http://localhost:1337/api/connect/github"
               >
                 <span className="btn-inner--icon">
                   <img
                     alt="..."
                     src={
-                      require("../../assets/img/icons/common/github.svg")
-                        .default
+                      require("../assets/img/icons/common/github.svg").default
                     }
                   />
                 </span>
-                  <span className="btn-inner--text">
-                  Github
-                  </span>
+                <span className="btn-inner--text">Github</span>
               </Button>
               <Button
                 className="btn-neutral btn-icon"
@@ -74,8 +86,7 @@ const Login = () => {
                   <img
                     alt="..."
                     src={
-                      require("../../assets/img/icons/common/google.svg")
-                        .default
+                      require("../assets/img/icons/common/google.svg").default
                     }
                   />
                 </span>
@@ -87,54 +98,7 @@ const Login = () => {
             <div className="text-center text-muted mb-4">
               <small>Or sign in with credentials</small>
             </div>
-            <Form role="form">
-              <FormGroup className="mb-3">
-                <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-email-83" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Email"
-                    type="email"
-                    autoComplete="new-email"
-                  />
-                </InputGroup>
-              </FormGroup>
-              <FormGroup>
-                <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-lock-circle-open" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Password"
-                    type="password"
-                    autoComplete="new-password"
-                  />
-                </InputGroup>
-              </FormGroup>
-              <div className="custom-control custom-control-alternative custom-checkbox">
-                <input
-                  className="custom-control-input"
-                  id=" customCheckLogin"
-                  type="checkbox"
-                />
-                <label
-                  className="custom-control-label"
-                  htmlFor=" customCheckLogin"
-                >
-                  <span className="text-muted">Remember me</span>
-                </label>
-              </div>
-              <div className="text-center">
-                <Button className="my-4" color="primary" type="button">
-                  Sign in
-                </Button>
-              </div>
-            </Form>
+            <LoginForm OnSignIn={OnSignIn} error={error}></LoginForm>
           </CardBody>
         </Card>
         <Row className="mt-3">

@@ -15,37 +15,23 @@
     "name": {
       "type": "string"
     },
-    "uid": {
-      "type": "uid"
-    },
-    "languages": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::language.language"
-    },
     "url": {
       "type": "string"
-    },
-    "description": {
-      "type": "string"
-    },
-    "has_issues": {
-      "type": "boolean"
-    },
-    "has_projects": {
-      "type": "boolean"
     },
     "size": {
       "type": "biginteger"
     },
-    "repoCreatedAt": {
-      "type": "datetime"
+    "users": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "repositories"
     },
-    "repoUpdatedAt": {
-      "type": "datetime"
+    "owner": {
+      "type": "string"
     },
-    "repoPushedAt": {
-      "type": "datetime"
+    "languages": {
+      "type": "json"
     }
   }
 }

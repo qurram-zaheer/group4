@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- *  language controller
+ *  jira-auth controller
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController('api::language.language');
+module.exports = createCoreController('api::jira-auth.jira-auth');
