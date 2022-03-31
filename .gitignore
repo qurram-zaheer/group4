@@ -3,5 +3,5 @@ HELP.md
 ### VS Code ###
 .vscode/
 
-codeanalyzer-frontend/node_modules
-codeanalyzer-backend/node_modules
+/codeanalyzer-frontend/node_modules
+/codeanalyzer-backend/node_modules/
