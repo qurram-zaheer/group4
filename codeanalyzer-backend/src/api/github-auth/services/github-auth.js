@@ -4,6 +4,8 @@
  * github-auth service.
  */
 
-const { createCoreService } = require('@strapi/strapi').factories;
+const {Octokit} = require("@octokit/core");
 
-module.exports = createCoreService('api::github-auth.github-auth');
+const {createCoreService} = require('@strapi/strapi').factories;
+
+module.exports = createCoreService('api::github-auth.github-auth', ({strapi}) => ({}));
