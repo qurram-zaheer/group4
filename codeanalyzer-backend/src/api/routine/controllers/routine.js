@@ -74,7 +74,6 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
             const uploadPRDataModel = await strapi.db.query('api::pull-request.pull-request').create({
               data: pullRequestDataModel
             });
-            console.log("UPDM", uploadPRDataModel);
             results.push(uploadPRDataModel);
           }));
           ctx.body = results;
