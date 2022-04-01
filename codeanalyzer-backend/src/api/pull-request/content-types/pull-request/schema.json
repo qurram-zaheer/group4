@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pull_requests",
+  "info": {
+    "singularName": "pull-request",
+    "pluralName": "pull-requests",
+    "displayName": "PullRequest",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "createdOn": {
+      "type": "datetime"
+    },
+    "prID": {
+      "type": "string"
+    },
+    "stateOpen": {
+      "type": "boolean"
+    },
+    "closedOn": {
+      "type": "datetime"
+    },
+    "repository": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::repository.repository",
+      "inversedBy": "pull_requests"
+    }
+  }
+}

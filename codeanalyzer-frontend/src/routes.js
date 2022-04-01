@@ -60,16 +60,7 @@ var routes = [
     name: "Repositories",
     icon: "ni ni-collection text-blue",
     component: JiraAuth,
-    layout: "/admin",
-    // sub_route: [
-    //   {
-    //     path: "/repositories/commits",
-    //     name: "Commits",
-    //     icon: "ni ni-bullet-list-67 text-blue",
-    //     component: JiraAuth,
-    //     layout: "/admin",
-    //   },
-    // ],
+    layout: "/admin"
   },
   {
     path: "/maps",

@@ -72,14 +72,14 @@
       "target": "api::jira-app.jira-app",
       "mappedBy": "users_permissions_user"
     },
+    "githubUsername": {
+      "type": "string"
+    },
     "repositories": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::repository.repository",
-      "mappedBy": "users"
-    },
-    "githubUsername": {
-      "type": "string"
+      "mappedBy": "user"
     }
   }
 }
