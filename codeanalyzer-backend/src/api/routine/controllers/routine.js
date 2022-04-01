@@ -41,4 +41,27 @@ module.exports = createCoreController('api::routine.routine', ({ strapi }) =>  (
         }
     },
 
+    //To Fetch and store Contributors data from Github into our database
+    async getAllContributors(ctx,next) {
+      let results =[];
+      try{
+        const contributors = await Github.getContributors({
+          accessToken: 'ghu_VuJfKpr4FqGrHBTWldAtzuG2qKCUaP1Xypzo',
+          login: 'bharatwaaj',
+          repositoryName: 'ASDCDemoRepository'
+        });
+        console.log('Contributors Data ->', contributors);
+        Promise.all(contributors.map(async contributors =>{
+          const contributorsDataModel = {
+            username: contributors.user.login,
+            contributors: contributors.contributors,
+          }
+          const uploadContributorsDataModel = await strapi.db.query()
+        } ))
+      }  catch (err) {
+          console.log(err);
+          ctx,body = err;
+      }
+    },
+
   }));
