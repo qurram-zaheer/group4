@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pull_requests",
+  "info": {
+    "singularName": "pull-request",
+    "pluralName": "pull-requests",
+    "displayName": "PullRequest"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "createdOn": {
+      "type": "datetime"
+    },
+    "prID": {
+      "type": "string"
+    },
+    "stateOpen": {
+      "type": "boolean"
+    },
+    "closedOn": {
+      "type": "datetime"
+    }
+  }
+}
