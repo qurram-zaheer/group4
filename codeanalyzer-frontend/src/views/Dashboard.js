@@ -212,6 +212,7 @@ const Dashboard = (props) => {
                                     </div>
                                 </Row>
                             </CardHeader>
+                            <></>
                             <Table className="align-items-center table-flush" responsive>
                                 <thead className="thead-light">
                                 <tr>
