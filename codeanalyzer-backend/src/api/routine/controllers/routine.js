@@ -56,7 +56,11 @@ module.exports = createCoreController('api::routine.routine', ({ strapi }) =>  (
             username: contributors.user.login,
             contributors: contributors.contributors,
           }
-          const uploadContributorsDataModel = await strapi.db.query()
+          const uploadContributorsDataModel = await strapi.db.query('api::contributor.contributor').create({
+            data:contributorsDataModel
+          })
+          console.log("CONTRIBUTORS--->", uploadContributorsDataModel);
+          results.push(uploadContributorsDataModel);
         } ))
       }  catch (err) {
           console.log(err);
