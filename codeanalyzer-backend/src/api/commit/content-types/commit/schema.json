@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "commits",
+  "info": {
+    "singularName": "commit",
+    "pluralName": "commits",
+    "displayName": "Commit"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "commit_id": {
+      "type": "string"
+    },
+    "message": {
+      "type": "text"
+    },
+    "sha": {
+      "type": "string"
+    },
+    "user": {
+      "type": "string"
+    }
+  }
+}
