@@ -1,14 +1,16 @@
 const Config = require('../config/config');
-const {Octokit} = require("@octokit/core");
+const { Octokit } = require("@octokit/core");
+const { paginateRest, composePaginateRest } = require("@octokit/plugin-paginate-rest");
 
 /**
  * @author Bharatwaaj Shankar
  * @param {user, repository, accessToken} info 
- * @returns Branch
+ * @returns Branches
  */
 exports.getBranches = async (info) => {
-    const octokit = new Octokit({auth: info.accessToken});
-    return await octokit.request('GET /repos/{owner}/{repo}/branches', {
+    const MyOctokit = Octokit.plugin(paginateRest);
+    const octokit = new MyOctokit({auth: info.accessToken});
+    return await octokit.paginate('GET /repos/{owner}/{repo}/branches', {
         owner: info.owner,
         repo: info.repositoryName
     });
@@ -17,11 +19,42 @@ exports.getBranches = async (info) => {
 /**
  * @author Bharatwaaj Shankar
  * @param {user, repository, accessToken} info 
- * @returns Branch
+ * @returns Repositories
  */
 exports.getRepositories = async (info) => {
-    const octokit = new Octokit({auth: info.accessToken});
-    return await octokit.request('GET /users/{owner}/repos', {
+    const MyOctokit = Octokit.plugin(paginateRest);
+    const octokit = new MyOctokit({auth: info.accessToken});
+    return await octokit.paginate('GET /users/{owner}/repos', {
         owner: info.owner
     });
 };
+
+/**
+ * @author Bharatwaaj Shankar
+ * @param {user, repository, accessToken} info 
+ * @returns PullRequests
+ */
+ exports.getPullRequests = async (info) => {
+    const MyOctokit = Octokit.plugin(paginateRest);
+    const octokit = new MyOctokit({auth: info.accessToken});
+    const ans = await octokit.paginate('GET /repos/{owner}/{repo}/pulls?state={state}', {
+        owner: info.owner,
+        repo: info.repositoryName,
+        state: info.state || 'all'
+    });
+    return ans;
+};
+
+/**
+ * @author Bharatwaaj Shankar
+ * @param {query} info 
+ * @returns SearchResults
+ */
+ exports.searchUsingQuery = async (info) => {
+    const MyOctokit = Octokit.plugin(paginateRest);
+    const octokit = new MyOctokit({auth: info.accessToken});
+    return await octokit.paginate('GET /search/issues?q={query}', {
+        query: info.query
+    });
+};
+
