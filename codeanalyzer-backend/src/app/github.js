@@ -60,7 +60,7 @@ exports.getRepositories = async (info) => {
 
 /** 
 * @author Kishan Savaliya
-* @param {user, repository, accessToken} info
+* @param {login, contributions, accessToken} info
 * @returns contributors 
 */
 exports.getContributors = async (info) => {
