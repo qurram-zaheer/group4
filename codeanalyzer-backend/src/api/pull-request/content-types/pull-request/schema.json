@@ -4,7 +4,8 @@
   "info": {
     "singularName": "pull-request",
     "pluralName": "pull-requests",
-    "displayName": "PullRequest"
+    "displayName": "PullRequest",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -28,6 +29,12 @@
     },
     "closedOn": {
       "type": "datetime"
+    },
+    "repository": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::repository.repository",
+      "inversedBy": "pull_requests"
     }
   }
 }

@@ -37,12 +37,12 @@ exports.getRepositories = async (info) => {
  exports.getPullRequests = async (info) => {
     const MyOctokit = Octokit.plugin(paginateRest);
     const octokit = new MyOctokit({auth: info.accessToken});
-    const ans = await octokit.paginate('GET /repos/{owner}/{repo}/pulls?state={state}', {
+    const pullRequests = await octokit.paginate('GET /repos/{owner}/{repo}/pulls?state={state}', {
         owner: info.owner,
         repo: info.repositoryName,
         state: info.state || 'all'
     });
-    return ans;
+    return pullRequests;
 };
 
 /**

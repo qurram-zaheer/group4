@@ -9,6 +9,10 @@ module.exports = {
         method: 'GET',
         path: '/routine/repository/contributors',
         handler: ''
+      { 
+        method: 'GET',
+        path: '/routine/repositories',
+        handler: 'routine.getRepositories',
       }
     ]
 }

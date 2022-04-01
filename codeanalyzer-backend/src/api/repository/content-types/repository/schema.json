@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -21,7 +21,7 @@
     "size": {
       "type": "biginteger"
     },
-    "users": {
+    "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
@@ -30,8 +30,17 @@
     "owner": {
       "type": "string"
     },
+    "pull_requests": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::pull-request.pull-request",
+      "mappedBy": "repository"
+    },
     "languages": {
-      "type": "json"
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::language.language",
+      "mappedBy": "repository"
     }
   }
 }
