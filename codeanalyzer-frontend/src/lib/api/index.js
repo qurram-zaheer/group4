@@ -21,6 +21,10 @@ const lengthOfFetchedData = async (url) => {
     return await get(url).length;
 };
 
+const postRepos = (info, headers) => {
+    return post("/repositories", info, headers);
+}
+
 export const api = {
     authGithubUser,
     createAuths,
@@ -28,5 +32,6 @@ export const api = {
     getJiraAccessToken,
     getJiraCloudId,
     jiraOAuthFlow,
+    postRepos
     // fetchGithubRepo
 };

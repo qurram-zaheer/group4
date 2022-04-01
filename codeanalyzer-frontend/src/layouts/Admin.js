@@ -77,7 +77,7 @@ const Admin = (props) => {
                     imgAlt: "...",
                 }}
             />
-            <div className="main-content" ref={mainContent}>
+            <div className="main-content" style={{height: '100%'}} ref={mainContent}>
                 <AdminNavbar
                     {...props}
                     brandText={getBrandText(props.location.pathname)}

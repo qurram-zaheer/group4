@@ -4,10 +4,13 @@ import useQuery from "../hooks/useQuery";
 
 export const PrivateRoute = props => {
     const query = useQuery();
-
     const user = useUser();
+    console.log('USER HERE', user)
 
-    if (!user && !query.get("access_token")) return <Redirect to="/login"/>
+    if (!user && !query.get("access_token")) {
+        console.log('oh no shit fuck oh no shit fuck')
+        return <Redirect to="/login"/>
+    }
 
     return <Route {...props}/>
 }
