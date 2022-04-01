@@ -87,11 +87,11 @@ const PullRequests = () => {
                 </Row>
               </CardHeader>
               <CardBody>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <div class="input-group mb-4">
-                        <input class="form-control" placeholder="Enter a developer name" type="text"/>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      <div className="input-group mb-4">
+                        <input className="form-control" placeholder="Enter a developer name" type="text"/>
                       </div>
                     </div>
                   </div>
