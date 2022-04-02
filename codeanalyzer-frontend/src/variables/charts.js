@@ -335,7 +335,7 @@ let chartExample1 = {
             content += label;
           }
 
-          content += "$" + yLabel + "k";
+          content += yLabel + " days";
           return content;
         },
       },
