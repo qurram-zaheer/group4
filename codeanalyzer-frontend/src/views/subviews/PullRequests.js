@@ -42,6 +42,7 @@ import {
   NavLink,
   Button,
   Col,
+  Alert,
   UncontrolledTooltip,
 } from "reactstrap";
 // core components
@@ -67,6 +68,7 @@ const PullRequests = () => {
   const [createdOn, setCreatedOn] = useState([]);
   const [contributor, setContributor] = useState('');
   const [chartExample1Data, setChartExample1Data] = useState("data1");
+  const [userNotFound, setUserNotFound] = useState(false);
 
   const generatePullRequestsFrequencyPerUser = async (e) => {
     const accessToken = await localStorage.getItem("githubToken");
@@ -79,6 +81,11 @@ const PullRequests = () => {
         'Authorization': 'Bearer ' + strapiToken
       }
     });
+    if((data.data.createdOn.length <= 0) || (data.data.difference.length <= 0)){
+      setUserNotFound(true);
+    } else {
+      setUserNotFound(false);  
+    }
     setCreatedOn(data.data.createdOn);
     setDifference(data.data.difference);
     e.preventDefault();
@@ -115,6 +122,13 @@ const PullRequests = () => {
                   <div className="row">
                     <div className="col-md-12">
                       <div className="form-group">
+                        { 
+                          userNotFound? (
+                            <Alert color="danger">
+                              User not found or User doesn't have raised any pull requests!
+                            </Alert>
+                          ) : <></>
+                          }
                         <div className="input-group mb-4">
                           <input className="form-control" placeholder="Enter a developer name" type="text" onChange={e => setContributor(e.target.value)} value={contributor} />
                         </div>
