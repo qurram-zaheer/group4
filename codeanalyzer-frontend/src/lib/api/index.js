@@ -21,6 +21,10 @@ const lengthOfFetchedData = async (url) => {
     return await get(url).length;
 };
 
+const getPullRequestFrequencyPerUser = (info, headers) => {
+    return get(`/pull-request/avgtimediff?accessToken=${info.accessToken}&contributor=${info.contributor}`, null, headers);
+}
+
 export const api = {
     authGithubUser,
     createAuths,
@@ -28,5 +32,6 @@ export const api = {
     getJiraAccessToken,
     getJiraCloudId,
     jiraOAuthFlow,
+    getPullRequestFrequencyPerUser
     // fetchGithubRepo
 };
