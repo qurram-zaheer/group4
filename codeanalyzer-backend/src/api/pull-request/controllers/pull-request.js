@@ -37,4 +37,28 @@ module.exports = createCoreController('api::pull-request.pull-request', ({ strap
         });
     },
 
+    // Get Users
+    async getUsers(ctx, next) {
+        const accessToken = ctx.request.query['accessToken'];
+        const repository = ctx.request.query['repository'];
+        const contributorsSet = [];
+        console.log('accessToken', accessToken, 'repository', repository);
+        const contributors = await strapi.db.query('api::pull-request.pull-request').findMany({
+            select:['username'],
+            where: {
+                repository: repository
+            },
+            orderBy: { createdOn: 'desc' }
+        });
+        for(let i = 0; i < contributors.length; i++){
+            contributorsSet.push(contributors[i].username);
+        }
+        ctx.body = {
+            "contributors": [...new Set(contributorsSet)]
+        };
+        console.log('data', {
+            "contributors": [...new Set(contributorsSet)]
+        });
+    },
+
 }));

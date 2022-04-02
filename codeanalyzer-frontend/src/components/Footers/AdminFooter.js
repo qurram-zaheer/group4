@@ -33,7 +33,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               target="_blank"
             >
-              Creative Tim
+              CodeAnalyzer
             </a>
           </div>
         </Col>
@@ -46,7 +46,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Creative Tim
+                Code Analyzer
               </NavLink>
             </NavItem>
 
