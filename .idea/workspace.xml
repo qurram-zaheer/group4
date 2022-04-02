@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f294b772-7091-44a7-82a9-906cea1ec6d8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/github-auth/controllers/github-auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/api/github-auth/controllers/github-auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/github-auth/services/github-auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/api/github-auth/services/github-auth.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/repository/content-types/repository/schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/api/repository/content-types/repository/schema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/repository/controllers/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/api/repository/controllers/repository.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/extensions/users-permissions/content-types/user/schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/extensions/users-permissions/content-types/user/schema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/auth/PrivateRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/auth/PrivateRoute.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/layouts/Admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/layouts/Admin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/lib/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/lib/api/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/lib/api/jira.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/lib/api/jira.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/views/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/views/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +10,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="48806" />
+    <option name="totalTimeSeconds" value="49522" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -95,7 +84,7 @@
       <workItem from="1648415875428" duration="1449000" />
       <workItem from="1648490717167" duration="30761000" />
       <workItem from="1648742790364" duration="3897000" />
-      <workItem from="1648753944973" duration="18137000" />
+      <workItem from="1648753944973" duration="19297000" />
     </task>
     <servers />
   </component>
