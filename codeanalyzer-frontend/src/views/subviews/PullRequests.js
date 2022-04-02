@@ -63,34 +63,72 @@ import { createEmitAndSemanticDiagnosticsBuilderProgram } from "typescript";
 const PullRequests = () => {
 
 
-  const [activeNav, setActiveNav] = useState(1);
   const [difference, setDifference] = useState([]);
   const [createdOn, setCreatedOn] = useState([]);
   const [contributor, setContributor] = useState('');
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
+  const [repositories, setRepositories] = useState([]);
+  const [chosenRepo, setChosenRepo] = useState('');
+  const [chosenPR, setChosenPR] = useState('');
   const [userNotFound, setUserNotFound] = useState(false);
+  const [loadedRepos, setLoadedRepos] = useState(false);
+  const [prs, setPRS] = useState([]);
+
+  useEffect(() => {
+    ; (async () => {
+      const strapiToken = await localStorage.getItem("token");
+      const repos = await api.getRepositories({
+        headers: {
+          'Authorization': 'Bearer ' + strapiToken
+        }
+      });
+      if (repos.data) {
+        setRepositories(repos.data.data);
+        setChosenRepo(repos.data.data[0].attributes.name);
+        setLoadedRepos(true);
+        loadPullRequestUsers();
+      }
+    })()
+  }, []);
+
+  const loadPullRequestUsers = async (repo) => {
+      const accessToken = await localStorage.getItem("githubToken");
+      const strapiToken = await localStorage.getItem("token");
+      const pullRequests = await api.getPullRequestsUniqueUsers({
+        repository: repo,
+        accessToken: accessToken,
+      } ,{
+        headers: {
+          'Authorization': 'Bearer ' + strapiToken
+        }
+      });
+      console.log(pullRequests);
+      if(pullRequests){
+        setPRS(pullRequests.data.contributors);
+      }
+  }
 
   const generatePullRequestsFrequencyPerUser = async (e) => {
     const accessToken = await localStorage.getItem("githubToken");
     const strapiToken = await localStorage.getItem("token");
     const data = await api.getPullRequestFrequencyPerUser({
-      contributor: contributor,
-      accessToken: accessToken
+      contributor: chosenPR,
+      accessToken: accessToken,
+      repository: repositories
     }, {
       headers: {
         'Authorization': 'Bearer ' + strapiToken
       }
     });
-    if((data.data.createdOn.length <= 0) || (data.data.difference.length <= 0)){
+    if ((data.data.createdOn.length <= 0) || (data.data.difference.length <= 0)) {
       setUserNotFound(true);
     } else {
-      setUserNotFound(false);  
+      setUserNotFound(false);
     }
     setCreatedOn(data.data.createdOn);
     setDifference(data.data.difference);
     e.preventDefault();
   }
-  
+
   var data = {
     labels: createdOn,
     datasets: [{
@@ -119,25 +157,51 @@ const PullRequests = () => {
                 </Row>
               </CardHeader>
               <CardBody>
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="form-group">
-                        { 
-                          userNotFound? (
-                            <Alert color="danger">
-                              User not found or User doesn't have raised any pull requests!
-                            </Alert>
-                          ) : <></>
-                          }
-                        <div className="input-group mb-4">
-                          <input className="form-control" placeholder="Enter a developer name" type="text" onChange={e => setContributor(e.target.value)} value={contributor} />
-                        </div>
-                        <Button color="primary" type="submit" onClick={e => { generatePullRequestsFrequencyPerUser(e) }}>
-                          Submit
-                        </Button>
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="form-group">
+                      {
+                        userNotFound ? (
+                          <Alert color="danger">
+                            User not found or User doesn't have raised any pull requests!
+                          </Alert>
+                        ) : <></>
+                      }
+                      <h6 className="text-uppercase text-light ls-1 mb-1">
+                        Repository
+                      </h6>
+                      <div className="input-group mb-4">
+                        <select class="form-control" data-toggle="select" title="Choose a repository" onChange={async e => {
+                          await setChosenRepo(e.target.value);
+                          loadPullRequestUsers(e.target.value);
+                          }}>
+                          {Object.entries(repositories).map((repo) => {
+                            return <option value={repo[1].id} >{repo[1].attributes.name}</option>
+                          })}
+                        </select>
                       </div>
+                      {
+                        loadedRepos ? (
+                          <>
+                            <h6 className="text-uppercase text-light ls-1 mb-1">
+                              Contributor
+                            </h6>
+                            <div className="input-group mb-4">
+                              <select class="form-control" data-toggle="select" title="Choose a repository" value={chosenPR} onChange={e => setChosenPR(e.target.value)}>
+                                {Object.entries(prs).map((pr) => {
+                                  return <option value={pr[1]} >{pr[1]}</option>
+                                })}
+                              </select>
+                            </div>
+                          </>
+                        ) : <></>
+                      }
+                      <Button color="primary" type="submit" onClick={e => { generatePullRequestsFrequencyPerUser(e) }}>
+                        Submit
+                      </Button>
                     </div>
                   </div>
+                </div>
               </CardBody>
             </Card>
           </Col>

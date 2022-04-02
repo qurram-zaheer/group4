@@ -25,6 +25,18 @@ const getPullRequestFrequencyPerUser = (info, headers) => {
     return get(`/pull-request/avgtimediff?accessToken=${info.accessToken}&contributor=${info.contributor}`, null, headers);
 }
 
+const getRepositories = (headers) => {
+    return get(`/repositories`, null, headers);
+}
+
+const getPullRequests = (headers) => {
+    return get(`/pull-request`, null, headers);
+}
+
+const getPullRequestsUniqueUsers = (info, headers) => {
+    return get(`/pull-request/getUsers?repository=${info.repository}`, null, headers);
+}
+
 export const api = {
     authGithubUser,
     createAuths,
@@ -32,6 +44,9 @@ export const api = {
     getJiraAccessToken,
     getJiraCloudId,
     jiraOAuthFlow,
-    getPullRequestFrequencyPerUser
+    getPullRequestFrequencyPerUser,
+    getRepositories,
+    getPullRequests,
+    getPullRequestsUniqueUsers
     // fetchGithubRepo
 };
