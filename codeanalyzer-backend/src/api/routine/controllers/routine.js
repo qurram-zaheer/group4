@@ -58,7 +58,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
         try {
           const pullRequests = await Github.getPullRequests({
             accessToken: 'ghu_VuJfKpr4FqGrHBTWldAtzuG2qKCUaP1Xypzo',
-            owner: 'htmlunit',
+            owner: 'htmlunit',  
             repositoryName: 'htmlunit'
           });
           Promise.all(pullRequests.map(async pullRequest => {
@@ -86,20 +86,21 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
       let results =[];
       try{
         const contributors = await Github.getContributors({
-          accessToken: 'ghu_VuJfKpr4FqGrHBTWldAtzuG2qKCUaP1Xypzo',
+          accessToken: 'ghu_FovUoeyHujht6zue6nT37OwoUonedu4LRopr',
           login: 'bharatwaaj',
           repositoryName: 'ASDCDemoRepository'
         });
         console.log('Contributors Data ->', contributors);
         Promise.all(contributors.map(async contributors =>{
           const contributorsDataModel = {
-            username: contributors.user.login,
-            contributors: contributors.contributors,
+            name: contributors.login,
+            github_id:contributors.login,  // HAVE TO DISCUSS WITH BHARAT
+            contributions: contributors.contributions,
           }
         } ))
       }  catch (err) {
           console.log(err);
-          ctx,body = err;
+          ctx.body = err;
       }
     },
 

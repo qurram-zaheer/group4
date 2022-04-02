@@ -58,3 +58,33 @@ exports.getRepositories = async (info) => {
     });
 };
 
+/** 
+* @author Kishan Savaliya
+* @param {login, contributions, accessToken} info
+* @returns contributors 
+*/
+exports.getContributors = async (info) => {
+   const MyOctokit = Octokit.plugin(paginateRest);
+   const octokit = new MyOctokit({auth:info.accessToken});
+   return await octokit.paginate('GET /repos/{owner}/{repo}/contributors',{
+       login : info.login,
+       contributions: info.contributions
+   })
+}
+
+
+/**
+ * @author Kavya Raval
+ * @param { accessToken } info
+ * @returns messages
+ */
+ exports.getCommitMessages = async (info) => {
+    const MyOctokit = Octokit.plugin(paginateRest);
+    const octokit = new MyOctokit({auth:info.accessToken});
+
+    return await octokit.paginate('GET /repos/{owner}/{repo}/commits',{
+        owner : 'bharatwaaj',
+        repo: 'ASDCDemoRepository'
+    });
+}
+
