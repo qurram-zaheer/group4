@@ -8,7 +8,7 @@ const Github = require("../../../app/github");
 const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
-	
+
 	// To Fetch and store Pull Requests from Github into our Database
 	async getRepositories(ctx, next) {
 		let results = [];
@@ -18,7 +18,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
 				owner: "htmlunit",
 				repositoryName: "htmlunit",
 			});
-			console.log("repositories", repositories);
+
 			Promise.all(
 				repositories.map(async (repository) => {
 					const repositoryDataModel = {
@@ -31,7 +31,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
 						size: repository.size,
 					};
 					try{
-						console.log('Repo', repositoryDataModel);
+
 						const uploadRepository = await strapi.db
 						.query("api::repository.repository")
 						.create({
@@ -61,9 +61,9 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
             owner: 'htmlunit',
             repositoryName: 'htmlunit'
           });
-          console.log('PR DATA -> ', pullRequests);
+          // console.log('PR DATA -> ', pullRequests);
           Promise.all(pullRequests.map(async pullRequest => {
-            const pullRequestDataModel = { 
+            const pullRequestDataModel = {
               username: pullRequest.user.login,
               name: pullRequest.title,
               prID: pullRequest.id,
@@ -92,7 +92,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
           login: 'bharatwaaj',
           repositoryName: 'ASDCDemoRepository'
         });
-        console.log('Contributors Data ->', contributors);
+        // console.log('Contributors Data ->', contributors);
         Promise.all(contributors.map(async contributors =>{
           const contributorsDataModel = {
             username: contributors.user.login,

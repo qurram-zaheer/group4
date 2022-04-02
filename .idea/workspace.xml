@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f294b772-7091-44a7-82a9-906cea1ec6d8" name="Changes" comment="" />
+    <list default="true" id="f294b772-7091-44a7-82a9-906cea1ec6d8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/.strapi-updater.json" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/.strapi-updater.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/github-auth/controllers/github-auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/api/github-auth/controllers/github-auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/language/content-types/language/schema.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/language/controllers/language.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/language/routes/language.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/language/services/language.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/pull-request/content-types/pull-request/schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/api/pull-request/content-types/pull-request/schema.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/repository/content-types/repository/schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/api/repository/content-types/repository/schema.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/repository/controllers/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/api/repository/controllers/repository.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/routine/controllers/routine.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/api/routine/controllers/routine.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/app/github.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/app/github.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/auth/PrivateRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/auth/PrivateRoute.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/components/Sidebar/Sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/components/Sidebar/Sidebar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/contexts/GithubContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/contexts/GithubContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/lib/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/lib/api/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/views/AddRepos.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/views/AddRepos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/views/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/views/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/views/subviews/Icons.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/views/subviews/Icons.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/views/subviews/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/views/subviews/Profile.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DarkyenusTimeTracker">
-    <option name="totalTimeSeconds" value="49522" />
+    <option name="totalTimeSeconds" value="66183" />
     <option name="gitIntegration" value="true" />
     <option name="naggedAbout" value="1" />
   </component>
@@ -85,6 +107,8 @@
       <workItem from="1648742790364" duration="3897000" />
       <workItem from="1648753944973" duration="19297000" />
       <workItem from="1648919891233" duration="117000" />
+      <workItem from="1648920011689" duration="17037000" />
+      <workItem from="1648938347400" duration="1889000" />
     </task>
     <servers />
   </component>

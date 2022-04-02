@@ -23,7 +23,7 @@ const AddRepos = () => {
                 'Authorization': 'Bearer ' + token
             }
         })
-        return history.push("/index")
+        return history.push("/admin/index")
     }
 
     const increaseCount = () => {
@@ -36,7 +36,6 @@ const AddRepos = () => {
     }
 
     const renderInputs = () => {
-        console.log('COUNT HERE', count)
         return Array(count).fill(0).map((item, idx) => <div key={idx} style={{display: 'flex', paddingBottom: '10px'}}>
             <Input onChange={(e) => {
                 handleChange(e)

@@ -1,10 +1,25 @@
 const Config = require('../config/config');
 const { Octokit } = require("@octokit/core");
 const { paginateRest, composePaginateRest } = require("@octokit/plugin-paginate-rest");
+const axios = require('axios');
+
+const githubRequestHeader = (accessToken) => {
+  return {
+    headers: {
+      'Authorization': `token ${accessToken}`
+    }
+  }
+}
+
+const githubApi = axios.create({
+  baseURL: 'https://api.github.com'
+})
+
+const {get} = githubApi
 
 /**
  * @author Bharatwaaj Shankar
- * @param {user, repository, accessToken} info 
+ * @param {user, repository, accessToken} info
  * @returns Branches
  */
 exports.getBranches = async (info) => {
@@ -18,7 +33,7 @@ exports.getBranches = async (info) => {
 
 /**
  * @author Bharatwaaj Shankar
- * @param {user, repository, accessToken} info 
+ * @param {user, repository, accessToken} info
  * @returns Repositories
  */
 exports.getRepositories = async (info) => {
@@ -31,7 +46,7 @@ exports.getRepositories = async (info) => {
 
 /**
  * @author Bharatwaaj Shankar
- * @param {user, repository, accessToken} info 
+ * @param {user, repository, accessToken} info
  * @returns PullRequests
  */
  exports.getPullRequests = async (info) => {
@@ -47,7 +62,7 @@ exports.getRepositories = async (info) => {
 
 /**
  * @author Bharatwaaj Shankar
- * @param {query} info 
+ * @param {query} info
  * @returns SearchResults
  */
  exports.searchUsingQuery = async (info) => {
@@ -58,10 +73,10 @@ exports.getRepositories = async (info) => {
     });
 };
 
-/** 
+/**
 * @author Kishan Savaliya
 * @param {login, contributions, accessToken} info
-* @returns contributors 
+* @returns contributors
 */
 exports.getContributors = async (info) => {
    const MyOctokit = Octokit.plugin(paginateRest);
@@ -71,4 +86,39 @@ exports.getContributors = async (info) => {
        contributions: info.contributions
    })
 }
+
+/**
+ * @author Qurram Zaheer Syed
+ * @param {[repoSlugs] , accessToken} info
+ * @returns [repoData]
+ */
+exports.getRepoDetailsBySlug = async (info) => {
+  const repoData = await Promise.all(
+    info.repoSlugs.map(async slug => {
+      const repoRes = await get(`repos/${slug}`, githubRequestHeader(info.accessToken)).then(res=>res.data)
+      const repoLang = await exports.getLangDataFromLangUrl({accessToken: info.accessToken, owner: repoRes.owner.login, repo: repoRes.name})
+      return {
+        name: repoRes.name,
+        url: repoRes.url,
+        owner: repoRes.owner.login,
+        size: repoRes.size,
+        languages: repoLang
+      }
+  }))
+
+  return repoData
+}
+
+/**
+ * @author Qurram Zaheer Syed
+ * @param {owner, repo, accessToken} info
+ * @returns languages
+ */
+exports.getLangDataFromLangUrl = async (info) => {
+  const MyOctokit = Octokit.plugin(paginateRest)
+  const octokit = new MyOctokit({auth: info.accessToken})
+  const {owner, repo} = info
+  return await get(`/repos/${owner}/${repo}/languages`).then(res=>res.data)
+}
+
 

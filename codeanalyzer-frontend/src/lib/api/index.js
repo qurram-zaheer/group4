@@ -1,6 +1,8 @@
 import {get, post} from "../../config";
 import {getJiraAccessToken, getJiraAuthCode, getJiraCloudId, jiraOAuthFlow,} from "./jira";
 
+const bearerToken = localStorage.getItem("token")
+
 const authGithubUser = (accessToken) => {
     return get("/auth/github/callback?access_token=" + accessToken);
 };
@@ -25,6 +27,10 @@ const postRepos = (info, headers) => {
     return post("/repositories", info, headers);
 }
 
+const getUserRepos = (info) => {
+    return get(`/repositories?populate=%2A&filters[user][id][$eq]=${info}`, {headers: { Authorization: `Bearer ${bearerToken}`}})
+}
+
 export const api = {
     authGithubUser,
     createAuths,
@@ -32,6 +38,7 @@ export const api = {
     getJiraAccessToken,
     getJiraCloudId,
     jiraOAuthFlow,
-    postRepos
+    postRepos,
+    getUserRepos,
     // fetchGithubRepo
 };

@@ -16,10 +16,12 @@
 
 */
 /*eslint-disable*/
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { NavLink as NavLinkRRD, Link, Redirect } from "react-router-dom";
+import RepositoriesContext from '../../contexts/RepositoriesContext'
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
+import {api} from '../../lib/api'
 
 // reactstrap components
 import {
@@ -49,6 +51,7 @@ import {
   Table,
   Container,
   Row,
+    Dropdown,
   Col,
 } from "reactstrap";
 import { LogOut } from "auth/LogOut";
@@ -57,6 +60,22 @@ var ps;
 
 const Sidebar = (props) => {
   const [collapseOpen, setCollapseOpen] = useState();
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [repos, setRepos] = useContext(RepositoriesContext)
+  const [repoNames, setRepoNames] = useState('')
+
+  useEffect(()=> {
+    const loadRepos = async () => {
+      const userId = localStorage.getItem("strapiUserId")
+      const repoData = await api.getUserRepos(userId).then(res=>res.data).then(res=>res.data)
+      setRepoNames(repoData.map(entry=>`${entry.attributes.owner}/${entry.attributes.name}`))
+      await setRepos({repos: repoData, selectedRepo: repoData[0]})
+      // console.log(repoData)
+      // console.log('REPOOOOOS', repos)
+    }
+    loadRepos()
+  }, [])
+
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
     return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
@@ -241,6 +260,16 @@ const Sidebar = (props) => {
           <Nav navbar>{createLinks(routes)}</Nav>
           {/* Divider */}
           <hr className="my-3" />
+          <div style={{flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end'}}>
+            <Dropdown isOpen={dropdownOpen} toggle={()=>setDropdownOpen(!dropdownOpen)} style={{width: '100%'}}>
+              <DropdownToggle caret style={{width: '100%'}}>
+                {repos.selectedRepo.attributes ? `${repos.selectedRepo.attributes.owner}/${repos.selectedRepo.attributes.name}`: 'Loading ...'}
+              </DropdownToggle>
+              {repos.repos.length > 0 ? (<DropdownMenu style={{width: '100%'}}>
+                {repoNames.map(name => <DropdownItem key={name}>{name}</DropdownItem>)}
+              </DropdownMenu>): 'Loading ...'}
+            </Dropdown>
+          </div>
           {/* Heading */}
         </Collapse>
       </Container>

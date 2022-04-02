@@ -1,7 +1,7 @@
 import React from 'react'
 
 const GithubContext = React.createContext({
-    user: null, setUser: () => {
+    user: '', setUser: () => {
     }
 })
 

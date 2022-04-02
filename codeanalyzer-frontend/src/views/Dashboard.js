@@ -65,10 +65,7 @@ const Dashboard = (props) => {
             console.log(accessToken)
             const refreshToken = query.get('refresh_token');
             const expiresIn = query.get('raw[expires_in]');
-            // console.log('AT->', accessToken, refreshToken, expiresIn);
             const userRegistration = await api.authGithubUser(accessToken);
-            console.log(userRegistration)
-            // console.log('UR->', userRegistration);
             if (userRegistration && userRegistration.data.user) {
                 // console.log('CGA', userRegistration.data.user, userRegistration.data.user, accessToken, refreshToken, expiresIn);
                 const createGithubAuth = await createGithubAuths(userRegistration.data.user, accessToken, refreshToken, expiresIn, {
@@ -78,22 +75,23 @@ const Dashboard = (props) => {
                 });
                 if (createGithubAuth) {
                     console.log('User Registration was Successful!');
-                    console.log(createGithubAuth)
-                    setUser({...createGithubAuth.data.data.attributes.user.data, accessToken})
+
+                    await setUser({...createGithubAuth.data.data.attributes.user.data, accessToken})
+                    await localStorage.setItem("token", userRegistration.data.jwt)
+                    await localStorage.setItem("githubToken", userRegistration.data.jwt)
+                    await localStorage.setItem("strapiUserId", createGithubAuth.data.data.attributes.user.data.id)
                     if (createGithubAuth.data.data.noRepos) {
                         history.push("/add-repos")
                     }
+                    // console.log('UPDATED USER', updatedUser)
+                    // setUser({...updatedUser, accessToken})
                 }
             }
-            await localStorage.setItem("token", userRegistration.data.jwt)
-            await localStorage.setItem("githubToken", userRegistration.data.jwt)
-            console.log("token set", userRegistration.data)
         })()
     }, []);
 
     const createGithubAuths = async (user, accessToken, refreshToken, expiresIn, headers) => {
         try {
-            console.log('Headers', headers);
             return await api.createAuths({
                 data: {
                     accessToken: accessToken,

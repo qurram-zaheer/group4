@@ -37,10 +37,7 @@
       "mappedBy": "repository"
     },
     "languages": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::language.language",
-      "mappedBy": "repository"
+      "type": "json"
     }
   }
 }

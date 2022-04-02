@@ -20,7 +20,6 @@ module.exports = createCoreController('api::github-auth.github-auth', ({strapi})
     })
     console.log(existingRepos.repositories)
     if (existingRepos.repositories.length == 0) {
-      console.log('in here')
       data.noRepos = true
     }
     // const ghAuthId = data.id
