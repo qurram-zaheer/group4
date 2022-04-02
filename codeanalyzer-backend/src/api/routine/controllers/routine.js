@@ -54,11 +54,12 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
 
     // To Fetch and store Pull Requests from Github into our Database
     async getAllPullRequests(ctx, next) {
+      
         let results = [];
         try {
           const pullRequests = await Github.getPullRequests({
             accessToken: 'ghu_VuJfKpr4FqGrHBTWldAtzuG2qKCUaP1Xypzo',
-            owner: 'htmlunit',
+            owner: 'htmlunit',  
             repositoryName: 'htmlunit'
           });
           console.log('PR DATA -> ', pullRequests);
@@ -88,21 +89,27 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
       let results =[];
       try{
         const contributors = await Github.getContributors({
-          accessToken: 'ghu_VuJfKpr4FqGrHBTWldAtzuG2qKCUaP1Xypzo',
+          accessToken: 'ghu_FovUoeyHujht6zue6nT37OwoUonedu4LRopr',
           login: 'bharatwaaj',
           repositoryName: 'ASDCDemoRepository'
         });
         console.log('Contributors Data ->', contributors);
         Promise.all(contributors.map(async contributors =>{
           const contributorsDataModel = {
-            username: contributors.user.login,
-            contributors: contributors.contributors,
+            name: contributors.login,
+            github_id:contributors.login,  // HAVE TO DISCUSS WITH BHARAT
+            contributions: contributors.contributions,
           }
-          const uploadContributorsDataModel = await strapi.db.query()
-        } ))
+          const uploadContributorsDataModel = await strapi.db.query('api::contributor.contributor').create({
+            data:contributorsDataModel
+          })
+          console.log("CONTRIBUTORS--->", uploadContributorsDataModel);
+          results.push(uploadContributorsDataModel);
+        } ));
+        ctx.body = results;
       }  catch (err) {
           console.log(err);
-          ctx,body = err;
+          ctx.body = err;
       }
     },
 
