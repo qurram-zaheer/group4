@@ -19,7 +19,8 @@
       "type": "text"
     },
     "sha": {
-      "type": "string"
+      "type": "string",
+      "unique": true
     },
     "authorid": {
       "type": "integer"
@@ -32,6 +33,12 @@
     },
     "totaldeletions": {
       "type": "integer"
+    },
+    "committedfiles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::committedfile.committedfile",
+      "mappedBy": "commit"
     }
   }
 }

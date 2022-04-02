@@ -4,7 +4,8 @@
   "info": {
     "singularName": "committedfile",
     "pluralName": "committedfiles",
-    "displayName": "committedfile"
+    "displayName": "committedfile",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -12,7 +13,8 @@
   "pluginOptions": {},
   "attributes": {
     "sha": {
-      "type": "string"
+      "type": "string",
+      "unique": true
     },
     "filename": {
       "type": "string"
@@ -28,6 +30,12 @@
     },
     "totalchanges": {
       "type": "integer"
+    },
+    "commit": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::commit.commit",
+      "inversedBy": "committedfiles"
     }
   }
 }
