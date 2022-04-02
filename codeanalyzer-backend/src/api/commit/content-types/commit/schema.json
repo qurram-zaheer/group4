@@ -4,7 +4,8 @@
   "info": {
     "singularName": "commit",
     "pluralName": "commits",
-    "displayName": "Commit"
+    "displayName": "Commit",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -20,8 +21,17 @@
     "sha": {
       "type": "string"
     },
-    "user": {
-      "type": "string"
+    "authorid": {
+      "type": "integer"
+    },
+    "totalchanges": {
+      "type": "integer"
+    },
+    "totaladditions": {
+      "type": "integer"
+    },
+    "totaldeletions": {
+      "type": "integer"
     }
   }
 }

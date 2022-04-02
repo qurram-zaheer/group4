@@ -112,7 +112,6 @@ exports.getRepositories = async (info) => {
                                         });
     const allCommitsSha = await getAllCommitsSha(allBranches);
     const allCommitsDetails = await getAllCommitsDetails(allCommitsSha);
-    console.log(allCommitsDetails.length);
     return allCommitsDetails;
 };
 
