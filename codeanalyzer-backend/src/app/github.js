@@ -73,4 +73,18 @@ exports.getContributors = async (info) => {
 }
 
 
+/**
+ * @author Kavya Raval
+ * @param { accessToken } info
+ * @returns messages
+ */
+ exports.getCommitMessages = async (info) => {
+    const MyOctokit = Octokit.plugin(paginateRest);
+    const octokit = new MyOctokit({auth:info.accessToken});
+
+    return await octokit.paginate('GET /repos/{owner}/{repo}/commits',{
+        owner : 'bharatwaaj',
+        repo: 'ASDCDemoRepository'
+    });
+}
 
