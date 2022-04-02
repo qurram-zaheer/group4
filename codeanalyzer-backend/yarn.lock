@@ -1348,7 +1348,7 @@
   dependencies:
     "@octokit/types" "^6.0.3"
 
-"@octokit/core@^3.6.0":
+"@octokit/core@^3.6.0", "@octokit/core@>=2":
   "integrity" "sha512-7RKRKuA4xTjMhY+eG3jthb3hlZCsOwg3rztWh75Xc+ShDWOfDDATWbeZpAHBNRpm4Tv9WgBMOy1zEJYXG6NJ7Q=="
   "resolved" "https://registry.npmjs.org/@octokit/core/-/core-3.6.0.tgz"
   "version" "3.6.0"
@@ -1384,6 +1384,13 @@
   "resolved" "https://registry.npmjs.org/@octokit/openapi-types/-/openapi-types-11.2.0.tgz"
   "version" "11.2.0"
 
+"@octokit/plugin-paginate-rest@^2.17.0":
+  "integrity" "sha512-tzMbrbnam2Mt4AhuyCHvpRkS0oZ5MvwwcQPYGtMv4tUa5kkzG58SVB0fcsLulOZQeRnOgdkZWkRUiyBlh0Bkyw=="
+  "resolved" "https://registry.npmjs.org/@octokit/plugin-paginate-rest/-/plugin-paginate-rest-2.17.0.tgz"
+  "version" "2.17.0"
+  dependencies:
+    "@octokit/types" "^6.34.0"
+
 "@octokit/request-error@^2.0.5", "@octokit/request-error@^2.1.0":
   "integrity" "sha512-1VIvgXxs9WHSjicsRwq8PlR2LR2x6DwsJAaFgzdi0JfJoGSO8mYI/cHJQ+9FbN21aa+DrgNLnwObmyeSC8Rmpg=="
   "resolved" "https://registry.npmjs.org/@octokit/request-error/-/request-error-2.1.0.tgz"
@@ -1405,7 +1412,7 @@
     "node-fetch" "^2.6.7"
     "universal-user-agent" "^6.0.0"
 
-"@octokit/types@^6.0.3", "@octokit/types@^6.16.1":
+"@octokit/types@^6.0.3", "@octokit/types@^6.16.1", "@octokit/types@^6.34.0":
   "integrity" "sha512-s1zLBjWhdEI2zwaoSgyOFoKSl109CUcVBCc7biPJ3aAf6LGLU6szDvi31JPU7bxfla2lqfhjbbg/5DdFNxOwHw=="
   "resolved" "https://registry.npmjs.org/@octokit/types/-/types-6.34.0.tgz"
   "version" "6.34.0"
@@ -5336,6 +5343,11 @@
   "integrity" "sha1-FQStJSMVjKpA20onh8sBQRmU6k8="
   "resolved" "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
+
+"fsevents@~2.3.2":
+  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
+  "resolved" "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
+  "version" "2.3.2"
 
 "fstream@^1.0.0", "fstream@^1.0.12":
   "integrity" "sha512-WvJ193OHa0GHPEL+AycEJgxvBEwyfRkN1vhjca23OaPVMCaLCXTd5qAu82AjTcgP1UJmytkOKb63Ypde7raDIg=="

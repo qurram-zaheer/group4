@@ -58,3 +58,42 @@ exports.getRepositories = async (info) => {
     });
 };
 
+/**
+ * @author Arshdeep Singh
+ * @param {user, repository, accessToken} info 
+ * @returns Commits
+ */
+ exports.getCommits = async (info) => {
+    const MyOctokit = Octokit.plugin(paginateRest);
+    const octokit = new MyOctokit({auth: info.accessToken});
+
+
+    const getAllCommits = async (allBranches) => {
+        const allCommits = [];
+        for(const branch of allBranches){
+            const data = await octokit.paginate('GET /repos/{owner}/{repo}/commits?sha={branch_name}', {
+                owner: info.owner,
+                repo: info.repositoryName,
+                branch_name: branch
+            });
+
+            for(const commit of data){
+                allCommits.push(commit);
+            }
+            
+        }
+        return allCommits;
+    }
+
+    const allBranches = await this.getBranches(info)
+                                        .then(branches => {
+                                            const allBranches = [];
+                                            for(const branch of branches){
+                                                allBranches.push(branch.name);
+                                            }
+                                            return allBranches;
+                                        });
+    const allCommits = await getAllCommits(allBranches);
+    return allCommits;
+};
+
