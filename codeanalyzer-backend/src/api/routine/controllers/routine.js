@@ -43,7 +43,6 @@ module.exports = createCoreController('api::routine.routine', ({ strapi }) =>  (
 
     async getAllCommits (ctx, next) {
       let results = [];
-      console.log(ctx.request.query);
       try {
         const allCommits = await Github.getCommits({
           accessToken: ctx.request.query.accessToken,

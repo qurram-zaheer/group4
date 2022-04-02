@@ -68,8 +68,8 @@ exports.getRepositories = async (info) => {
     const octokit = new MyOctokit({auth: info.accessToken});
 
 
-    const getAllCommits = async (allBranches) => {
-        const allCommits = [];
+    const getAllCommitsSha = async (allBranches) => {
+        const allCommitsSha = [];
         for(const branch of allBranches){
             const data = await octokit.paginate('GET /repos/{owner}/{repo}/commits?sha={branch_name}', {
                 owner: info.owner,
@@ -78,11 +78,28 @@ exports.getRepositories = async (info) => {
             });
 
             for(const commit of data){
-                allCommits.push(commit);
+                allCommitsSha.push(commit.sha);
             }
             
         }
-        return allCommits;
+        return allCommitsSha;
+    }
+
+    const getAllCommitsDetails = async (allCommitsSha) => {
+        const allCommitsDetails = [];
+        for(const sha of allCommitsSha){
+            const data = await octokit.paginate('GET /repos/{owner}/{repo}/commits/{commit_sha}', {
+                owner: info.owner,
+                repo: info.repositoryName,
+                commit_sha: sha
+            });
+
+            for(const commitDetails of data){
+                allCommitsDetails.push(commitDetails);
+            }
+            
+        }
+        return allCommitsDetails;
     }
 
     const allBranches = await this.getBranches(info)
@@ -93,7 +110,9 @@ exports.getRepositories = async (info) => {
                                             }
                                             return allBranches;
                                         });
-    const allCommits = await getAllCommits(allBranches);
-    return allCommits;
+    const allCommitsSha = await getAllCommitsSha(allBranches);
+    const allCommitsDetails = await getAllCommitsDetails(allCommitsSha);
+    console.log(allCommitsDetails.length);
+    return allCommitsDetails;
 };
 
