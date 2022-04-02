@@ -89,6 +89,7 @@ const PullRequests = () => {
     datasets: [{
       label: "Difference in number of days between PRs",
       data: difference,
+      borderColor: 'rgb(255, 255, 255)',
     }]
   };
 
