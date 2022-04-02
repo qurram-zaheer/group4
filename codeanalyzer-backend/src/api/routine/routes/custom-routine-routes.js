@@ -8,12 +8,7 @@ module.exports = {
       {
         method: 'GET',
         path: '/routine/repository/contributors',
-        handler: 'routine.getAllContributors'
-      },
-      { 
-        method: 'GET',
-        path: '/routine/repositories',
-        handler: 'routine.getRepositories',
+        handler: 'routine.getAllContributors',
       }
     ]
 }

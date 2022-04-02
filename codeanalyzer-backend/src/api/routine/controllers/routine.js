@@ -53,14 +53,15 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
 	},
 
     // To Fetch and store Pull Requests from Github into our Database
-    async getAllPullRequests(ctx, next) {
+    async getAllPullRequests2(ctx, next) {
         let results = [];
         try {
           const pullRequests = await Github.getPullRequests({
             accessToken: 'ghu_VuJfKpr4FqGrHBTWldAtzuG2qKCUaP1Xypzo',
-            owner: 'htmlunit',
+            owner: 'htmlunit',  
             repositoryName: 'htmlunit'
           });
+<<<<<<< HEAD
           // console.log('PR DATA -> ', pullRequests);
           Promise.all(pullRequests.map(async pullRequest => {
             const pullRequestDataModel = {
@@ -70,10 +71,19 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
               createdOn: new Date(pullRequest.created_at).toISOString(),
               stateOpen: pullRequest.state == 'closed'?false:true,
               closedOn: new Date(pullRequest.closed_at).toISOString()
+=======
+          Promise.all(pullRequests.map(async pullRequest => {
+            const pullRequestDataModel = { 
+			  "username": pullRequest.user.login,
+              "name": pullRequest.title,
+              "prID": pullRequest.id,
+              "createdOn": new Date(pullRequest.created_at).toISOString(),
+              "stateOpen": pullRequest.state == 'closed'?false:true,
+              "closedOn": new Date(pullRequest.closed_at).toISOString()
+>>>>>>> e5d51065d01d5f452fd741f6281070c4617976bb
             }
-            const uploadPRDataModel = await strapi.db.query('api::pull-request.pull-request').create({
-              data: pullRequestDataModel
-            });
+			console.log('prDM', pullRequestDataModel);
+            const uploadPRDataModel = await strapi.entityService.create('api::pull-request.pull-request', {data: pullRequestDataModel});
             results.push(uploadPRDataModel);
           }));
           ctx.body = results;
@@ -88,21 +98,21 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
       let results =[];
       try{
         const contributors = await Github.getContributors({
-          accessToken: 'ghu_VuJfKpr4FqGrHBTWldAtzuG2qKCUaP1Xypzo',
+          accessToken: 'ghu_FovUoeyHujht6zue6nT37OwoUonedu4LRopr',
           login: 'bharatwaaj',
           repositoryName: 'ASDCDemoRepository'
         });
         // console.log('Contributors Data ->', contributors);
         Promise.all(contributors.map(async contributors =>{
           const contributorsDataModel = {
-            username: contributors.user.login,
-            contributors: contributors.contributors,
+            name: contributors.login,
+            github_id:contributors.login,  // HAVE TO DISCUSS WITH BHARAT
+            contributions: contributors.contributions,
           }
-          const uploadContributorsDataModel = await strapi.db.query()
         } ))
       }  catch (err) {
           console.log(err);
-          ctx,body = err;
+          ctx.body = err;
       }
     },
 
@@ -118,7 +128,8 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
 			Promise.all(
 				pullRequests.map(async (pullRequest) => {
 					const pullRequestDataModel = {
-						username: pullRequest.user.login,
+						repository: 105,
+              			username: pullRequest.user.login,
 						name: pullRequest.title,
 						prID: pullRequest.id,
 						createdOn: new Date(pullRequest.created_at).toISOString(),
