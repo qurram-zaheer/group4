@@ -58,34 +58,30 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
         owner: ctx.request.query.owner,
         repositoryName: ctx.request.query.repositoryName,
       });
-	  console.log("Fetched allCommits")
       Promise.all(
-        allCommits.map(async (commit) => {
-          const commitDataModel = {
-            commit_id: commit.sha.substring(0,6),
-            message: commit.commit.message,
-            sha: commit.sha,
-            authorid: commit.author.id,
-            totalchanges: commit.stats.total,
-			totaladditions: commit.stats.additions,
-			totaldeletions: commit.stats.deletions,
-			branch: commit.branch,
-			commitdate: new Date(commit.commit.author.date).toISOString(),
-			committedfiles: [1]
+        repositories.map(async (allCommits) => {
+          const repositoryDataModel = {
+            name: commit.sha,
+            user: {
+              id: 23,
+            },
+            url: repository.url,
+            owner: repository.owner.login,
+            size: repository.size,
           };
-          // const repository = await strapi.db.query('api::pull-request.pull-request');
-          // console.log('repository', repository);
-          const uploadCommitDataModel = await strapi.db
-            .query("api::commit.commit")
-            .create({
-              data: commitDataModel,
-            });
-          results.push(commitDataModel);
+          try {
+            const uploadRepository = await strapi.db
+              .query("api::repository.repository")
+              .create({
+                data: repositoryDataModel,
+              });
+            results.push(uploadRepository);
+          } catch (err) {
+            console.log(err);
+          }
         })
       );
-      ctx.body = {
-        success: true,
-      };
+      ctx.body = allCommits;
     } catch (err) {
       console.log(err);
       ctx.body = err;
