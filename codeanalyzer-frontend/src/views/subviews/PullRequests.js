@@ -85,7 +85,7 @@ const PullRequests = () => {
         setRepositories(repos.data.data);
         setChosenRepo(repos.data.data[0].attributes.name);
         setLoadedRepos(true);
-        loadPullRequestUsers();
+        loadPullRequestUsers(repos.data.data[0].attributes.name);
       }
     })()
   }, []);
@@ -104,12 +104,14 @@ const PullRequests = () => {
       console.log(pullRequests);
       if(pullRequests){
         setPRS(pullRequests.data.contributors);
+        setChosenPR(pullRequests.data.contributors[0])
       }
   }
 
   const generatePullRequestsFrequencyPerUser = async (e) => {
     const accessToken = await localStorage.getItem("githubToken");
     const strapiToken = await localStorage.getItem("token");
+    console.log('chosenPR', chosenPR);
     const data = await api.getPullRequestFrequencyPerUser({
       contributor: chosenPR,
       accessToken: accessToken,
@@ -190,7 +192,7 @@ const PullRequests = () => {
                               Contributor
                             </h6>
                             <div className="input-group mb-4">
-                              <select class="form-control" data-toggle="select" title="Choose a repository" value={chosenPR} onChange={e => setChosenPR(e.target.value)}>
+                              <select class="form-control" data-toggle="select" title="Choose a contributor" value={chosenPR} onChange={e => setChosenPR(e.target.value)}>
                                 {Object.entries(prs).map((pr) => {
                                   return <option value={pr[1]} >{pr[1]}</option>
                                 })}

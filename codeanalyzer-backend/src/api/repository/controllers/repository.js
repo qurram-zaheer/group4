@@ -25,6 +25,10 @@ module.exports = createCoreController('api::repository.repository', ({strapi}) =
       const entry = await strapi.entityService.create('api::repository.repository', {data: repoEntry})
     }))
     return {msg: 'Success'}
+  },
+
+  async getCounts(ctx) {
+    return strapi.query('api::repository.repository').count();
   }
 }));
 

@@ -11,6 +11,14 @@ const createAuths = (info, headers) => {
     return post('/github-auths?populate=%2A', info, headers);
 }
 
+const getAllRepositories = (info, headers) => {
+    return get('/repositories', info, headers);
+}
+
+const getRepositoriesCount = (info, headers) => {
+    return get('/repository/count', info, headers);
+}
+
 // const fetchGithubRepo = async (username)=>{
 //     const url = "https://api.github.com/users/tushartushar/repos";
 
@@ -46,6 +54,10 @@ const getPullRequestsUniqueUsers = (info, headers) => {
     return get(`/pull-request/getUsers?repository=${info.repository}`, null, headers);
 }
 
+const getContributorsCount = (info, headers) => {
+    return get('/contributor/count', info, headers);
+}
+
 export const api = {
     authGithubUser,
     createAuths,
@@ -58,6 +70,8 @@ export const api = {
     getPullRequestFrequencyPerUser,
     getRepositories,
     getPullRequests,
-    getPullRequestsUniqueUsers
+    getPullRequestsUniqueUsers,
+    getRepositoriesCount,
+    getContributorsCount
     // fetchGithubRepo
 }

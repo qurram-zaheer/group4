@@ -45,6 +45,12 @@
     },
     "branch": {
       "type": "string"
+    },
+    "repository": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::repository.repository",
+      "inversedBy": "commits"
     }
   }
 }
