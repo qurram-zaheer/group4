@@ -16,7 +16,6 @@ module.exports = createCoreController(
       const repoUrls = data.urls;
       const githubUser = data.user;
       const strapiUserId = githubUser.id;
-      console.log("request data", repoUrls, githubUser.accessToken);
       const repoData = await Github.getRepoDetailsBySlug({
         repoSlugs: repoUrls,
         accessToken: githubUser.accessToken,
