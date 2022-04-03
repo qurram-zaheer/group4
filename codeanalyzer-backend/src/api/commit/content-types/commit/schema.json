@@ -4,7 +4,8 @@
   "info": {
     "singularName": "commit",
     "pluralName": "commits",
-    "displayName": "Commit"
+    "displayName": "Commit",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -18,10 +19,26 @@
       "type": "text"
     },
     "sha": {
-      "type": "string"
+      "type": "string",
+      "unique": true
     },
-    "user": {
-      "type": "string"
+    "authorid": {
+      "type": "integer"
+    },
+    "totalchanges": {
+      "type": "integer"
+    },
+    "totaladditions": {
+      "type": "integer"
+    },
+    "totaldeletions": {
+      "type": "integer"
+    },
+    "committedfiles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::committedfile.committedfile",
+      "mappedBy": "commit"
     }
   }
 }
