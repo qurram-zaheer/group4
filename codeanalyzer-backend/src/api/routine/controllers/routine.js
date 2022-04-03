@@ -69,6 +69,8 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
             totalchanges: commit.stats.total,
 			totaladditions: commit.stats.additions,
 			totaldeletions: commit.stats.deletions,
+			branch: commit.branch,
+			commitdate: new Date(commit.commit.author.date).toISOString()
           };
           // const repository = await strapi.db.query('api::pull-request.pull-request');
           // console.log('repository', repository);
