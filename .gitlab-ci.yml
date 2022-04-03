@@ -4,9 +4,6 @@ cache:
   paths:
     - node_modules/
 
-before_script:
-  - docker system prune
-
 stages:
   - build
   - test
