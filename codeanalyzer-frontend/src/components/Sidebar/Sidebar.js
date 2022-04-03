@@ -267,11 +267,12 @@ const Sidebar = (props) => {
               </InputGroupAddon>
             </InputGroup>
           </Form>
-          {/* {props.location.pathname.startsWith("/admin/repositories") ? (
+          {props.location.pathname.startsWith("/admin/repositories") ||
+          props.location.pathname === "/admin/repoHome" ? (
             <Button onClick={() => history.push("/admin/index")}>
               Back to Dashboard
             </Button>
-          ) : null} */}
+          ) : null}
           {/* Navigation */}
           <Nav navbar>{createLinks(routes)}</Nav>
           {/* Divider */}
@@ -284,7 +285,8 @@ const Sidebar = (props) => {
               justifyContent: "flex-end",
             }}
           >
-            {props.location.pathname.startsWith("/admin/repositories") ? (
+            {props.location.pathname.startsWith("/admin/repositories") ||
+            props.location.pathname === "/admin/repoHome" ? (
               <Dropdown
                 isOpen={dropdownOpen}
                 toggle={() => setDropdownOpen(!dropdownOpen)}

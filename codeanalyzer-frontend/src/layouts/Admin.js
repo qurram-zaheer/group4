@@ -44,6 +44,7 @@ const Admin = (props) => {
       if (prop.layout === "/admin") {
         return (
           <PrivateRoute
+            exact
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
@@ -73,7 +74,8 @@ const Admin = (props) => {
       <Sidebar
         {...props}
         routes={
-          props.location.pathname.startsWith("/admin/repositories")
+          props.location.pathname.startsWith("/admin/repositories") ||
+          props.location.pathname === "/admin/repoHome"
             ? repoRoutes
             : routes
         }
@@ -94,11 +96,12 @@ const Admin = (props) => {
         />
         <Switch>
           {getRoutes(
-            props.location.pathname.startsWith("/admin/repositories")
+            props.location.pathname.startsWith("/admin/repositories") ||
+              props.location.pathname === "/admin/repoHome"
               ? repoRoutes
               : routes
           )}
-          {/* <Redirect from="*" to="/auth/login" /> */}
+          <Redirect from="*" to="/auth/login" />
         </Switch>
         <Container fluid>
           <AdminFooter />
