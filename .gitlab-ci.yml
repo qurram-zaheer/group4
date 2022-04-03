@@ -54,7 +54,11 @@ sonarqube-check:
     GIT_DEPTH: "0" # Tells git to fetch all the branches of the project, required by the analysis task
   script:
     - cd codeanalyzer-backend
-    - sonar-scanner -Dsonar.organization=csci5308g4 -Dsonar.projectKey=code_at -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io
+    - sonar-scanner \
+  -Dsonar.organization=csci5308g4 \
+  -Dsonar.projectKey=code_at \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=https://sonarcloud.io
   allow_failure: true
   only:
     - qurram # or the name of your main branch
