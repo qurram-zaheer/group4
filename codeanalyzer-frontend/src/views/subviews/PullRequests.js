@@ -104,6 +104,7 @@ const PullRequests = () => {
       console.log(pullRequests);
       if(pullRequests){
         setPRS(pullRequests.data.contributors);
+        setChosenPR(pullRequests.data.contributors[0])
       }
   }
 
