@@ -13,9 +13,9 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
     let results = [];
     try {
       const repositories = await Github.getRepositories({
-        accessToken: "ghu_3xTSizvE3n26aMPnno9IcrbTpSWzv63j9GDi",
-        owner: "htmlunit",
-        repositoryName: "htmlunit",
+        accessToken: ctx.request.query.accessToken,
+        owner: ctx.request.query.owner,
+        repositoryName: ctx.request.query.repositoryName,
       });
 
       Promise.all(
@@ -97,9 +97,9 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
     let results = [];
     try {
       const contributors = await Github.getContributors({
-        accessToken: "ghu_FovUoeyHujht6zue6nT37OwoUonedu4LRopr",
-        login: "bharatwaaj",
-        repositoryName: "ASDCDemoRepository",
+        accessToken: ctx.request.query.accessToken,
+        login: ctx.request.query.login,
+        repositoryName: ctx.request.query.repositoryName,
       });
       console.log("Contributors Data ->", contributors);
       Promise.all(
@@ -122,9 +122,9 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
     let results = [];
     try {
       const pullRequests = await Github.getPullRequests({
-        accessToken: "ghu_3xTSizvE3n26aMPnno9IcrbTpSWzv63j9GDi",
-        owner: "htmlunit",
-        repositoryName: "htmlunit",
+        accessToken: ctx.request.query.accessToken,
+        owner: ctx.request.query.owner,
+        repositoryName: ctx.request.query.repositoryName,
       });
       Promise.all(
         pullRequests.map(async (pullRequest) => {
