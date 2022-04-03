@@ -78,7 +78,7 @@ const Dashboard = (props) => {
                 }
             }
             await localStorage.setItem("token", userRegistration.data.jwt)
-            await localStorage.setItem("githubToken", userRegistration.data.jwt)
+            await localStorage.setItem("githubToken", accessToken)
             console.log("token set", userRegistration.data)
         })()
     }, []);
@@ -212,6 +212,7 @@ const Dashboard = (props) => {
                                     </div>
                                 </Row>
                             </CardHeader>
+                            <></>
                             <Table className="align-items-center table-flush" responsive>
                                 <thead className="thead-light">
                                 <tr>

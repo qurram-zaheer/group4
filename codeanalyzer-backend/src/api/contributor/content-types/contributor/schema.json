@@ -4,7 +4,8 @@
   "info": {
     "singularName": "contributor",
     "pluralName": "contributors",
-    "displayName": "Contributor"
+    "displayName": "Contributor",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,6 +17,9 @@
     },
     "github_id": {
       "type": "string"
+    },
+    "contributions": {
+      "type": "integer"
     }
   }
 }

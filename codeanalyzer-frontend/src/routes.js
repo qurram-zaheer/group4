@@ -16,13 +16,14 @@
 
 */
 import Dashboard from "views/Dashboard.js";
-import Profile from "views/examples/Profile.js";
-import Maps from "views/examples/Maps.js";
+import Profile from "views/subviews/Profile.js";
+import Maps from "views/subviews/Maps.js";
 import Register from "views/Register.js";
 import Login from "views/Login.js";
-import Tables from "views/examples/Tables.js";
+import PullRequests from "views/subviews/PullRequests.js";
 import JiraAuth from "views/JiraAuth";
-import Commits from "views/examples/Commits";
+import Commits from "views/subviews/Commits";
+import Tables from "views/subviews/Tables";
 
 var routes = [
   {
@@ -74,6 +75,13 @@ var routes = [
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
+    layout: "/admin",
+  },
+  {
+    path: "/pull-requests",
+    name: "Pull Requests",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: PullRequests,
     layout: "/admin",
   },
   {
