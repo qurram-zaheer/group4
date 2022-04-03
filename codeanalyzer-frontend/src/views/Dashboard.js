@@ -51,6 +51,8 @@ const Dashboard = (props) => {
     const [activeNav, setActiveNav] = useState(1);
     const query = useQuery();
     const [chartExample1Data, setChartExample1Data] = useState("data1");
+    const [repositoryCounts, setRepositoryCounts] = useState(0);
+    const [contributorCounts, setContributorCounts] = useState(0);
 
     const getData = () => {
 
@@ -79,8 +81,33 @@ const Dashboard = (props) => {
             }
             await localStorage.setItem("token", userRegistration.data.jwt)
             await localStorage.setItem("githubToken", accessToken)
+
+            fetchDashboardData();
         })()
     }, []);
+
+    const fetchDashboardData = async () => {
+        console.log('inside!!!');
+        const accessToken = await localStorage.getItem("token");
+        const repoCount = await api.getRepositoriesCount(null, {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        if(repoCount){
+            console.log("RC", repoCount);
+            setRepositoryCounts(repoCount.data);
+        }
+        const contCount = await api.getContributorsCount(null, {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        if(contCount){
+            console.log("CC", contCount);
+            setContributorCounts(contCount.data);
+        }
+    }
 
     const createGithubAuths = async (user, accessToken, refreshToken, expiresIn, headers) => {
         try {
@@ -110,7 +137,7 @@ const Dashboard = (props) => {
     };
     return (
         <>
-            <Header showCards={true}/>
+            <Header showCards={true} repositoryCounts={repositoryCounts} contributorCounts={contributorCounts}/>
             {/* Page content */}
             <Container className="mt--7" fluid>
                 <Row>
