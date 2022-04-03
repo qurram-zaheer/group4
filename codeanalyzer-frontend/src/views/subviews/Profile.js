@@ -36,7 +36,6 @@ import JiraContext from "contexts/JiraContext";
 
 const Profile = () => {
   const [jiraAuth, setJiraAuth] = useContext(JiraContext);
-  console.log("JIRA AUTH PROFILE", jiraAuth);
   return (
     <>
       <UserHeader />

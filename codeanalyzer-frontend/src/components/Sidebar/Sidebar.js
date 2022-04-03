@@ -16,10 +16,12 @@
 
 */
 /*eslint-disable*/
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { NavLink as NavLinkRRD, Link, Redirect } from "react-router-dom";
+import RepositoriesContext from "../../contexts/RepositoriesContext";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
+import { api } from "../../lib/api";
 
 // reactstrap components
 import {
@@ -49,14 +51,40 @@ import {
   Table,
   Container,
   Row,
+  Dropdown,
   Col,
 } from "reactstrap";
 import { LogOut } from "auth/LogOut";
+import { useHistory } from "react-router-dom";
 
 var ps;
 
 const Sidebar = (props) => {
   const [collapseOpen, setCollapseOpen] = useState();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [repos, setRepos] = useContext(RepositoriesContext);
+  const [repoNames, setRepoNames] = useState("");
+  const history = useHistory();
+
+  useEffect(() => {
+    const loadRepos = async () => {
+      const userId = localStorage.getItem("strapiUserId");
+      const repoData = await api
+        .getUserRepos(userId)
+        .then((res) => res.data)
+        .then((res) => res.data);
+      setRepoNames(
+        repoData.map(
+          (entry) => `${entry.attributes.owner}/${entry.attributes.name}`
+        )
+      );
+      await setRepos({ repos: repoData, selectedRepo: repoData[0] });
+      console.log(repoData);
+      // console.log('REPOOOOOS', repos)
+    };
+    loadRepos();
+  }, []);
+
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
     return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
@@ -69,24 +97,25 @@ const Sidebar = (props) => {
   const closeCollapse = () => {
     setCollapseOpen(false);
   };
-  
+
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
-      if(prop.sidebar != false){
-      return (
-        <NavItem key={key}>
-          <NavLink
-            to={prop.layout + prop.path}
-            tag={NavLinkRRD}
-            onClick={closeCollapse}
-            activeClassName="active"
-          >
-            <i className={prop.icon} />
-            {prop.name}
-          </NavLink>
-        </NavItem>
-      );
+      if (prop.sidebar != false) {
+        console.log(prop.layout + prop.path);
+        return (
+          <NavItem key={key}>
+            <NavLink
+              to={prop.layout + prop.path}
+              tag={NavLinkRRD}
+              onClick={closeCollapse}
+              activeClassName="active"
+            >
+              <i className={prop.icon} />
+              {prop.name}
+            </NavLink>
+          </NavItem>
+        );
       }
     });
   };
@@ -111,6 +140,7 @@ const Sidebar = (props) => {
       expand="md"
       id="sidenav-main"
     >
+      {console.log("SIDEBAR PROPS", props)}
       <Container fluid>
         {/* Toggler */}
         <button
@@ -182,12 +212,12 @@ const Sidebar = (props) => {
                 <span>Support</span>
               </DropdownItem>
               <DropdownItem divider />
-                <NavLinkRRD to="/auth/login">
-                  <DropdownItem onClick={(e) => LogOut()}>
-                    <i className="ni ni-user-run" />
-                    <span>Logout</span>
-                  </DropdownItem>
-                </NavLinkRRD>
+              <NavLinkRRD to="/auth/login">
+                <DropdownItem onClick={(e) => LogOut()}>
+                  <i className="ni ni-user-run" />
+                  <span>Logout</span>
+                </DropdownItem>
+              </NavLinkRRD>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
@@ -237,10 +267,46 @@ const Sidebar = (props) => {
               </InputGroupAddon>
             </InputGroup>
           </Form>
+          {/* {props.location.pathname.startsWith("/admin/repositories") ? (
+            <Button onClick={() => history.push("/admin/index")}>
+              Back to Dashboard
+            </Button>
+          ) : null} */}
           {/* Navigation */}
           <Nav navbar>{createLinks(routes)}</Nav>
           {/* Divider */}
           <hr className="my-3" />
+          <div
+            style={{
+              flexGrow: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+            }}
+          >
+            {props.location.pathname.startsWith("/admin/repositories") ? (
+              <Dropdown
+                isOpen={dropdownOpen}
+                toggle={() => setDropdownOpen(!dropdownOpen)}
+                style={{ width: "100%" }}
+              >
+                <DropdownToggle caret style={{ width: "100%" }}>
+                  {repos.selectedRepo.attributes
+                    ? `${repos.selectedRepo.attributes.owner}/${repos.selectedRepo.attributes.name}`
+                    : "Loading ..."}
+                </DropdownToggle>
+                {repos.repos.length > 0 ? (
+                  <DropdownMenu style={{ width: "100%" }}>
+                    {repoNames.map((name) => (
+                      <DropdownItem key={name}>{name}</DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                ) : (
+                  "Loading ..."
+                )}
+              </Dropdown>
+            ) : null}
+          </div>
           {/* Heading */}
         </Collapse>
       </Container>

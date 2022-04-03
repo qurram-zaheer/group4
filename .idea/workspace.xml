@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f294b772-7091-44a7-82a9-906cea1ec6d8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/.strapi-updater.json" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/.strapi-updater.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-backend/src/api/routine/controllers/routine.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-backend/src/api/routine/controllers/routine.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/lib/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/lib/api/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codeanalyzer-frontend/src/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/codeanalyzer-frontend/src/routes.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DarkyenusTimeTracker">
+    <option name="totalTimeSeconds" value="67760" />
+    <option name="gitIntegration" value="true" />
+    <option name="naggedAbout" value="1" />
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="ProjectId" id="26l6WqXZN8VUeG9V8I3CnWiUCJ2" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.general" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\qurra\Workstation\MACS\ASDC\group4\codeanalyzer-frontend\src\views" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="full-dev-mode" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/codeanalyzer-backend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="full-dev-mode" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f294b772-7091-44a7-82a9-906cea1ec6d8" name="Changes" comment="" />
+      <created>1647985864454</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1647985864454</updated>
+      <workItem from="1647985864457" duration="11341000" />
+      <workItem from="1647999636333" duration="435000" />
+      <workItem from="1648000171448" duration="1838000" />
+      <workItem from="1648311374978" duration="4280000" />
+      <workItem from="1648415875428" duration="1449000" />
+      <workItem from="1648490717167" duration="30761000" />
+      <workItem from="1648742790364" duration="3897000" />
+      <workItem from="1648753944973" duration="19297000" />
+      <workItem from="1648919891233" duration="117000" />
+      <workItem from="1648920011689" duration="17037000" />
+      <workItem from="1648938347400" duration="3445000" />
+      <workItem from="1648943317445" duration="159000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

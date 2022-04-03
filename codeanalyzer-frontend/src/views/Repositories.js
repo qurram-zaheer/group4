@@ -53,20 +53,18 @@ import { api } from "../lib/api";
 import Header from "components/Headers/Header.js";
 import { useHistory } from "react-router-dom";
 import GithubContext from "../contexts/GithubContext";
-import RepositoriesContext from "../contexts/RepositoriesContext";
 
-const Dashboard = (props) => {
+const Repositories = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const query = useQuery();
   let history = useHistory();
   const [chartExample1Data, setChartExample1Data] = useState("data1");
   const { user, setUser } = useContext(GithubContext);
-  const [repos, setRepos] = useContext(RepositoriesContext);
-
   const getData = () => {};
 
   useEffect(() => {
     (async () => {
+      console.log("IAOSDJ:KAJSlcjhqwkdlclsdjbfkjwleduqljdmnnbskjfjweuidanm,cb");
       const accessToken = query.get("access_token");
       console.log(accessToken);
       const refreshToken = query.get("refresh_token");
@@ -85,7 +83,6 @@ const Dashboard = (props) => {
             },
           }
         );
-
         if (createGithubAuth) {
           console.log("User Registration was Successful!");
 
@@ -93,6 +90,7 @@ const Dashboard = (props) => {
             ...createGithubAuth.data.data.attributes.user.data,
             accessToken,
           });
+          await localStorage.setItem("token", userRegistration.data.jwt);
           await localStorage.setItem("githubToken", userRegistration.data.jwt);
           await localStorage.setItem(
             "strapiUserId",
@@ -101,12 +99,10 @@ const Dashboard = (props) => {
           if (createGithubAuth.data.data.noRepos) {
             history.push("/add-repos");
           }
-
           // console.log('UPDATED USER', updatedUser)
           // setUser({...updatedUser, accessToken})
         }
       }
-
       await localStorage.setItem("token", userRegistration.data.jwt);
     })();
   }, []);
@@ -149,6 +145,7 @@ const Dashboard = (props) => {
     <>
       <Header showCards={true} />
       {/* Page content */}
+      HERE IS REPO PAGE LOL
       <Container className="mt--7" fluid>
         <Row>
           <Col className="mb-5 mb-xl-0" xl="8">
@@ -420,4 +417,4 @@ const Dashboard = (props) => {
   );
 };
 
-export default Dashboard;
+export default Repositories;

@@ -50,7 +50,7 @@ const Icons = () => {
         code: new URLSearchParams(window.location.search).get("code"),
         redirect_uri: "http://localhost:3000/admin/repositories",
       });
-      console.log(res);
+
       setJiraAccessToken(res.data.access_token);
       const res2 = await axios.get(
         "https://api.atlassian.com/oauth/token/accessible-resources",
@@ -61,7 +61,7 @@ const Icons = () => {
           },
         }
       );
-      console.log(res2);
+
       setJiraCloudId(res2.data[0].id);
     };
     const jiraCode = new URLSearchParams(window.location.search).get("code");

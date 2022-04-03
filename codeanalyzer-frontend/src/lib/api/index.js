@@ -1,6 +1,8 @@
 import {get, post} from "../../config";
 import {getJiraAccessToken, getJiraAuthCode, getJiraCloudId, jiraOAuthFlow,} from "./jira";
 
+const bearerToken = localStorage.getItem("token")
+
 const authGithubUser = (accessToken) => {
     return get("/auth/github/callback?access_token=" + accessToken);
 };
@@ -21,6 +23,13 @@ const lengthOfFetchedData = async (url) => {
     return await get(url).length;
 };
 
+const postRepos = (info, headers) => {
+    return post("/repositories", info, headers);
+}
+
+const getUserRepos = (info) => {
+    return get(`/repositories?populate=%2A&filters[user][id][$eq]=${info}`, {headers: { Authorization: `Bearer ${bearerToken}`}})
+}
 const getPullRequestFrequencyPerUser = (info, headers) => {
     return get(`/pull-request/avgtimediff?accessToken=${info.accessToken}&contributor=${info.contributor}`, null, headers);
 }
@@ -44,9 +53,11 @@ export const api = {
     getJiraAccessToken,
     getJiraCloudId,
     jiraOAuthFlow,
+    postRepos,
+    getUserRepos,
     getPullRequestFrequencyPerUser,
     getRepositories,
     getPullRequests,
     getPullRequestsUniqueUsers
     // fetchGithubRepo
-};
+}
