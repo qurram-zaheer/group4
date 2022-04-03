@@ -11,6 +11,10 @@ const createAuths = (info, headers) => {
     return post('/github-auths?populate=%2A', info, headers);
 }
 
+const getAllRepositories = (info, headers) => {
+    return get('/repositories', info, headers);
+}
+
 // const fetchGithubRepo = async (username)=>{
 //     const url = "https://api.github.com/users/tushartushar/repos";
 

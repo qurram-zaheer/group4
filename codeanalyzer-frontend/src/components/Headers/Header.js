@@ -37,7 +37,7 @@ const Header = (props) => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Traffic
+                          Repositories Linked
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
                           350,897
