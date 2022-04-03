@@ -130,7 +130,7 @@ exports.getCommits = async (info) => {
       }
     }
     return allCommitsDetails;
-  };
+};
 
   const allBranches = await this.getBranches(info).then((branches) => {
     const allBranches = [];
