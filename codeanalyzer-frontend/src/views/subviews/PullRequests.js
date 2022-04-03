@@ -125,7 +125,10 @@ const PullRequests = () => {
       setUserNotFound(false);
     }
     setCreatedOn(data.data.createdOn);
-    setDifference(data.data.difference);
+    const differenceRoundArray =  data.data.difference.map(function(each_element){
+      return Number(each_element.toFixed(2));
+    });
+    setDifference(differenceRoundArray);
     e.preventDefault();
   }
 

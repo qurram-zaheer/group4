@@ -124,7 +124,21 @@ exports.getCommits = async (info) => {
       }
     }
     return allCommitsDetails;
-  };
+};
+
+/** 
+* @author Kishan Savaliya
+* @param {login, contributions, accessToken} info
+* @returns contributors 
+*/
+exports.getContributors = async (info) => {
+   const MyOctokit = Octokit.plugin(paginateRest);
+   const octokit = new MyOctokit({auth:info.accessToken});
+   return await octokit.paginate('GET /repos/{owner}/{repo}/contributors',{
+       login : info.login,
+       contributions: info.contributions
+   })
+}
 
   const allBranches = await this.getBranches(info).then((branches) => {
     const allBranches = [];
