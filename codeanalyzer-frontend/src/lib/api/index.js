@@ -29,6 +29,7 @@ const postRepos = (info, headers) => {
 
 const getUserRepos = (info) => {
     return get(`/repositories?populate=%2A&filters[user][id][$eq]=${info}`, {headers: { Authorization: `Bearer ${bearerToken}`}})
+}
 const getPullRequestFrequencyPerUser = (info, headers) => {
     return get(`/pull-request/avgtimediff?accessToken=${info.accessToken}&contributor=${info.contributor}`, null, headers);
 }
