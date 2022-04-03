@@ -39,6 +39,12 @@
       "relation": "oneToMany",
       "target": "api::committedfile.committedfile",
       "mappedBy": "commit"
+    },
+    "commitdate": {
+      "type": "datetime"
+    },
+    "branch": {
+      "type": "string"
     }
   }
 }
