@@ -24,7 +24,7 @@ import PullRequests from "views/subviews/PullRequests.js";
 import JiraAuth from "views/JiraAuth";
 import Commits from "views/subviews/Commits";
 import Tables from "views/subviews/Tables";
-import Repositories from "views/Repositories";
+import Repositories from "./views/Repositories";
 
 var routes = [
   {
@@ -54,7 +54,7 @@ var routes = [
     path: "/repositories",
     name: "Repositories",
     icon: "ni ni-collection text-blue",
-    component: Dashboard,
+    component: Repositories,
     layout: "/admin",
   },
   {
