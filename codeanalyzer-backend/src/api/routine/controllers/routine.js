@@ -62,7 +62,12 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
         owner: ctx.request.query.owner,
         repositoryName: ctx.request.query.repositoryName,
       });
-	    console.log("Fetched allCommits")
+
+      ctx.body = {
+        allCommits: allCommits
+      };
+      
+	    console.log("Fetched allCommits", repositoryId, allCommits);
       Promise.all(
         allCommits.map(async (commit) => {
           const commitDataModel = {
@@ -86,9 +91,6 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
           results.push(commitDataModel);
         })
       );
-      ctx.body = {
-        success: true,
-      };
     } catch (err) {
       console.log(err);
       ctx.body = err;
