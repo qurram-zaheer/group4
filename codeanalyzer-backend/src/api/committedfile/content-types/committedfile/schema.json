@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "committedfiles",
+  "info": {
+    "singularName": "committedfile",
+    "pluralName": "committedfiles",
+    "displayName": "committedfile",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "sha": {
+      "type": "string",
+      "unique": true
+    },
+    "filename": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "additions": {
+      "type": "integer"
+    },
+    "deletions": {
+      "type": "integer"
+    },
+    "totalchanges": {
+      "type": "integer"
+    },
+    "commit": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::commit.commit",
+      "inversedBy": "committedfiles"
+    }
+  }
+}

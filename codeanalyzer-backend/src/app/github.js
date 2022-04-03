@@ -58,6 +58,62 @@ exports.getRepositories = async (info) => {
     });
 };
 
+/**
+ * @author Arshdeep Singh
+ * @param {user, repository, accessToken} info 
+ * @returns Commits
+ */
+ exports.getCommits = async (info) => {
+    const MyOctokit = Octokit.plugin(paginateRest);
+    const octokit = new MyOctokit({auth: info.accessToken});
+
+
+    const getAllCommitsSha = async (allBranches) => {
+        const allCommitsSha = [];
+        for(const branch of allBranches){
+            const data = await octokit.paginate('GET /repos/{owner}/{repo}/commits?sha={branch_name}', {
+                owner: info.owner,
+                repo: info.repositoryName,
+                branch_name: branch
+            });
+
+            for(const commit of data){
+                allCommitsSha.push(commit.sha);
+            }
+            
+        }
+        return allCommitsSha;
+    }
+
+    const getAllCommitsDetails = async (allCommitsSha) => {
+        const allCommitsDetails = [];
+        for(const sha of allCommitsSha){
+            const data = await octokit.paginate('GET /repos/{owner}/{repo}/commits/{commit_sha}', {
+                owner: info.owner,
+                repo: info.repositoryName,
+                commit_sha: sha
+            });
+
+            for(const commitDetails of data){
+                allCommitsDetails.push(commitDetails);
+            }
+            
+        }
+        return allCommitsDetails;
+    }
+
+    const allBranches = await this.getBranches(info)
+                                        .then(branches => {
+                                            const allBranches = [];
+                                            for(const branch of branches){
+                                                allBranches.push(branch.name);
+                                            }
+                                            return allBranches;
+                                        });
+    const allCommitsSha = await getAllCommitsSha(allBranches);
+    const allCommitsDetails = await getAllCommitsDetails(allCommitsSha);
+    return allCommitsDetails;
+};
 /** 
 * @author Kishan Savaliya
 * @param {login, contributions, accessToken} info
