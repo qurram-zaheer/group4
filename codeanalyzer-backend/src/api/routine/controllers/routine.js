@@ -143,6 +143,8 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
             username: pullRequest.user.login,
             name: pullRequest.title,
             prID: pullRequest.id,
+            sourceBranch: pullRequest.head.ref,
+            targetBranch: pullRequest.base.ref,
             createdOn: new Date(pullRequest.created_at).toISOString(),
             stateOpen: pullRequest.state == "closed" ? false : true,
             closedOn: new Date(pullRequest.closed_at).toISOString(),

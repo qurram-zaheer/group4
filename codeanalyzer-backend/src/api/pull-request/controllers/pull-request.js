@@ -72,7 +72,7 @@ module.exports = createCoreController('api::pull-request.pull-request', ({ strap
         try {
             let result = [];
             const branches = await strapi.db.query('api::pull-request.pull-request').findMany({
-                select: ['branch'],
+                select: ['targetBranch'],
                 where: {
                     repository: repository
                 },
@@ -81,7 +81,7 @@ module.exports = createCoreController('api::pull-request.pull-request', ({ strap
             for (var i = 0; i < uniqBranches.length; i++) {
                 const branch = uniqBranches[i].branch;
                 const count = await strapi.query('api::pull-request.pull-request').count({
-                    select: ['branch'],
+                    select: ['targetBranch'],
                     where: {
                         branch: branch
                     }
