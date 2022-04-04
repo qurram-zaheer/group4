@@ -17,7 +17,6 @@
 */
 import Dashboard from "views/Dashboard.js";
 import Profile from "views/subviews/Profile.js";
-import Maps from "views/subviews/Maps.js";
 import Register from "views/Register.js";
 import Login from "views/Login.js";
 import PullRequests from "views/subviews/PullRequests.js";
@@ -55,13 +54,6 @@ var routes = [
     name: "Repositories",
     icon: "ni ni-collection text-blue",
     component: Repositories,
-    layout: "/admin",
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: "ni ni-pin-3 text-orange",
-    component: Maps,
     layout: "/admin",
   },
   {

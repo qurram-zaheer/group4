@@ -101,7 +101,10 @@ exports.getCommits = async (info) => {
       );
 
       for (const commit of data) {
-        allCommitsSha.push(commit.sha);
+        allCommitsSha.push({
+            branch: branch,
+            sha: commit.sha
+        });
       }
     }
     return allCommitsSha;
@@ -109,7 +112,9 @@ exports.getCommits = async (info) => {
 
   const getAllCommitsDetails = async (allCommitsSha) => {
     const allCommitsDetails = [];
-    for (const sha of allCommitsSha) {
+    for (var i=0;i<allCommitsSha.length; i++) {
+      const sha = allCommitsSha[i].sha;
+      const branch = allCommitsSha[i].branch;
       const data = await octokit.paginate(
         "GET /repos/{owner}/{repo}/commits/{commit_sha}",
         {
@@ -120,11 +125,12 @@ exports.getCommits = async (info) => {
       );
 
       for (const commitDetails of data) {
+        commitDetails.branch = branch;
         allCommitsDetails.push(commitDetails);
       }
     }
     return allCommitsDetails;
-  };
+};
 
   const allBranches = await this.getBranches(info).then((branches) => {
     const allBranches = [];
@@ -137,6 +143,7 @@ exports.getCommits = async (info) => {
   const allCommitsDetails = await getAllCommitsDetails(allCommitsSha);
   return allCommitsDetails;
 };
+
 /**
  * @author Kishan Savaliya
  * @param {login, contributions, accessToken} info
