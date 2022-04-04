@@ -102,8 +102,8 @@ exports.getCommits = async (info) => {
 
       for (const commit of data) {
         allCommitsSha.push({
-            branch: branch,
-            sha: commit.sha
+          branch: branch,
+          sha: commit.sha,
         });
       }
     }
@@ -112,7 +112,7 @@ exports.getCommits = async (info) => {
 
   const getAllCommitsDetails = async (allCommitsSha) => {
     const allCommitsDetails = [];
-    for (var i=0;i<allCommitsSha.length; i++) {
+    for (var i = 0; i < allCommitsSha.length; i++) {
       const sha = allCommitsSha[i].sha;
       const branch = allCommitsSha[i].branch;
       const data = await octokit.paginate(
@@ -130,7 +130,7 @@ exports.getCommits = async (info) => {
       }
     }
     return allCommitsDetails;
-};
+  };
 
   const allBranches = await this.getBranches(info).then((branches) => {
     const allBranches = [];

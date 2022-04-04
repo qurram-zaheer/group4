@@ -8,9 +8,8 @@ const Github = require("../../../app/github");
 const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
-  
   async getBranches(ctx) {
-    let results = []
+    let results = [];
   },
 
   // To Fetch and store Pull Requests from Github into our Database
@@ -22,7 +21,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
         owner: ctx.request.query.owner,
         repositoryName: ctx.request.query.repositoryName,
       });
-      console.log('repos', repositories);
+      console.log("repos", repositories);
       Promise.all(
         repositories.map(async (repository) => {
           const repositoryDataModel = {
@@ -56,8 +55,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
   },
 
   async getAllCommits(ctx, next) {
-
-    console.log("Entered")
+    console.log("Entered");
     let results = [];
     try {
       const repositoryId = ctx.request.query.repositoryId;
@@ -68,24 +66,24 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
       });
 
       ctx.body = {
-        allCommits: allCommits
+        allCommits: allCommits,
       };
 
-	    console.log("Fetched allCommits", repositoryId, allCommits);
+      console.log("Fetched allCommits", repositoryId, allCommits);
       Promise.all(
         allCommits.map(async (commit) => {
           const commitDataModel = {
-            commit_id: commit.sha.substring(0,6),
+            commit_id: commit.sha.substring(0, 6),
             message: commit.commit.message,
             sha: commit.sha,
             authorid: commit.author.id,
             totalchanges: commit.stats.total,
-			      totaladditions: commit.stats.additions,
-			      totaldeletions: commit.stats.deletions,
-			      branch: commit.branch,
-			      commitdate: new Date(commit.commit.author.date).toISOString(),
-			      committedfiles: [1],
-            repository: repositoryId
+            totaladditions: commit.stats.additions,
+            totaldeletions: commit.stats.deletions,
+            branch: commit.branch,
+            commitdate: new Date(commit.commit.author.date).toISOString(),
+            committedfiles: [1],
+            repository: repositoryId,
           };
           const uploadCommitDataModel = await strapi.db
             .query("api::commit.commit")
@@ -103,27 +101,43 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
 
   //To Fetch and store Contributors data from Github into our database
   async getAllContributors(ctx, next) {
-    let results = [];
-    try {
-      const contributors = await Github.getContributors({
-        accessToken: ctx.request.query.accessToken,
-        login: ctx.request.query.login,
-        repositoryName: ctx.request.query.repositoryName,
-      });
-      console.log("Contributors Data ->", contributors);
-      Promise.all(
-        contributors.map(async (contributors) => {
-          const contributorsDataModel = {
-            name: contributors.login,
-            github_id: contributors.login, // HAVE TO DISCUSS WITH BHARAT
-            contributions: contributors.contributions,
-          };
-        })
-      );
-    } catch (err) {
-      console.log(err);
-      ctx.body = err;
-    }
+    // let results = [];
+    // try {
+    //   const contributors = await Github.getContributors({
+    //     accessToken: ctx.request.query.accessToken,
+    //     login: ctx.request.query.login,
+    //     repositoryName: ctx.request.query.repositoryName,
+    //   });
+    //   console.log("Contributors Data ->", contributors);
+    //   Promise.all(
+    //     contributors.map(async (contributors) => {
+    //       const contributorsDataModel = {
+    //         name: contributors.login,
+    //         github_id: contributors.login, // HAVE TO DISCUSS WITH BHARAT
+    //         contributions: contributors.contributions,
+    //       };
+    //     })
+    //   );
+    // } catch (err) {
+    //   console.log(err);
+    //   ctx.body = err;
+    // }
+    const repoId = ctx.request.query.repoId;
+    console.log("asldjalskdlajkajsd");
+    const allCommitsForRepo = await strapi.entityService.findMany(
+      "api::commit.commit",
+      {
+        populate: { repository: true },
+        fields: [
+          "totalchanges",
+          "totaladditions",
+          "totaldeletions",
+          "authorid",
+        ],
+        filters: { repository: { id: { $eq: repoId } } },
+      }
+    );
+    console.log("ALL COMMITS FOR REPOOO", allCommitsForRepo);
   },
 
   // To Fetch and store Pull Requests from Github into our Database
