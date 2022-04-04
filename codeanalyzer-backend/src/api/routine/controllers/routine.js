@@ -58,45 +58,27 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
     console.log("Entered");
     let results = [];
     try {
+      console.log("herehehrehehrehrhehr");
       const repositoryId = ctx.request.query.repositoryId;
       const allCommits = await Github.getCommits({
         accessToken: ctx.request.query.accessToken,
         owner: ctx.request.query.owner,
         repositoryName: ctx.request.query.repositoryName,
+        repositoryId: ctx.request.query.repositoryId,
       });
 
-      ctx.body = {
-        allCommits: allCommits,
-      };
-
       console.log("Fetched allCommits", repositoryId, allCommits);
-      Promise.all(
-        allCommits.map(async (commit) => {
-          const commitDataModel = {
-            commit_id: commit.sha.substring(0, 6),
-            message: commit.commit.message,
-            sha: commit.sha,
-            authorid: commit.author.id,
-            totalchanges: commit.stats.total,
-            totaladditions: commit.stats.additions,
-            totaldeletions: commit.stats.deletions,
-            branch: commit.branch,
-            commitdate: new Date(commit.commit.author.date).toISOString(),
-            committedfiles: [1],
-            repository: repositoryId,
-            authorname: commit.author.login,
-          };
-          const uploadCommitDataModel = await strapi.db
-            .query("api::commit.commit")
-            .create({
-              data: commitDataModel,
-            });
-          results.push(commitDataModel);
+
+      const commitEntries = await Promise.all(
+        allCommits.map(async (commitObj) => {
+          await strapi.entityService.create("api::commit.commit", {
+            data: commitObj,
+          });
         })
       );
+      return commitEntries;
     } catch (err) {
       console.log(err);
-      ctx.body = err;
     }
   },
 
@@ -147,7 +129,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
             sumdeletions: contribObj.sumdeletions,
             sumchanges: contribObj.sumchanges,
             // publishedAt: new Date().toISOString,
-            repositories: [repoId],
+            repository: repoId,
           };
           console.log("contribEntry", contribEntry);
           const entry = await strapi.entityService.create(
