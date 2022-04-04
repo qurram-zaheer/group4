@@ -16,7 +16,10 @@ module.exports = createCoreController(
       const repoUrls = data.urls;
       const githubUser = data.user;
       const strapiUserId = githubUser.id;
+<<<<<<< HEAD
       console.log("request data", repoUrls, githubUser.accessToken);
+=======
+>>>>>>> 169a503b (adding count)
       const repoData = await Github.getRepoDetailsBySlug({
         repoSlugs: repoUrls,
         accessToken: githubUser.accessToken,

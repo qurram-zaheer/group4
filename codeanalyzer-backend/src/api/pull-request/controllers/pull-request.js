@@ -78,14 +78,17 @@ module.exports = createCoreController('api::pull-request.pull-request', ({ strap
                 },
             });
             const uniqBranches = [...new Set(branches)];
+            console.log('uniqBranches', uniqBranches);
             for (var i = 0; i < uniqBranches.length; i++) {
-                const branch = uniqBranches[i].branch;
+                const branch = uniqBranches[i].targetBranch;
+                console.log('branch', branch);
                 const count = await strapi.query('api::pull-request.pull-request').count({
                     select: ['targetBranch'],
                     where: {
                         targetBranch: branch
                     }
                 });
+                console.log('count', count);
                 result.push({
                     "branch": branch,
                     "prs": count
