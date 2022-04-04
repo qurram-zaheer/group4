@@ -8,9 +8,8 @@ const Repositories = () => {
   const [repos, setRepos] = useContext(RepositoriesContext);
   const [langPieData, setLangPieData] = useState(null);
 
-  const processLangData = async () => {
+  const processLangData = () => {
     if (repos.selectedRepo.attributes) {
-      console.log("in here33");
       const languageObj = repos.selectedRepo.attributes.languages;
       console.log(languageObj);
       const labels = Object.keys(languageObj);
@@ -27,17 +26,16 @@ const Repositories = () => {
           },
         ],
       };
-      await setLangPieData(data);
+      setLangPieData(data);
     }
   };
 
   useEffect(() => {
     processLangData();
-  }, [repos]);
+  }, []);
 
   return (
     <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
-      {console.log(repos)}
       <Container fluid>
         <div className="header-body">
           <Row>
