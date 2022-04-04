@@ -167,8 +167,8 @@ exports.getRepoDetailsBySlug = async (info) => {
   const repoData = await Promise.all(
     info.repoSlugs.map(async (slug) => {
       const repoRes = await get(
-        `repos/${slug}`,
-        githubRequestHeader(info.accessToken)
+        `repos/${slug}`
+        // githubRequestHeader(info.accessToken)
       ).then((res) => res.data);
       const repoLang = await exports.getLangDataFromLangUrl({
         accessToken: info.accessToken,

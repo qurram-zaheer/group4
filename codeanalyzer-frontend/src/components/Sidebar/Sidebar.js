@@ -66,6 +66,18 @@ const Sidebar = (props) => {
   const [repoNames, setRepoNames] = useState("");
   const history = useHistory();
 
+  const changeSelectedRepo = (name) => {
+    console.log("REPOOOOOOs", repos, name);
+    const foundRepo = repos.repos.find(
+      (repo) => `${repo.attributes.owner}/${repo.attributes.name}` === name
+    );
+    console.log("asdljalksdjaljdiqyherojnsbmxcksjdfkuqeld", {
+      ...repos,
+      selectedRepo: foundRepo,
+    });
+    setRepos({ ...repos, selectedRepo: foundRepo });
+  };
+
   useEffect(() => {
     const loadRepos = async () => {
       const userId = localStorage.getItem("strapiUserId");
@@ -290,18 +302,32 @@ const Sidebar = (props) => {
               <Dropdown
                 isOpen={dropdownOpen}
                 toggle={() => setDropdownOpen(!dropdownOpen)}
-                style={{ width: "100%" }}
+                style={{ width: "100%", textOverflow: "ellipsis" }}
               >
-                <DropdownToggle caret style={{ width: "100%" }}>
+                <DropdownToggle
+                  caret
+                  style={{ width: "100%", overflow: "hidden" }}
+                >
                   {repos.selectedRepo.attributes
                     ? `${repos.selectedRepo.attributes.owner}/${repos.selectedRepo.attributes.name}`
                     : "Loading ..."}
                 </DropdownToggle>
                 {repos.repos.length > 0 ? (
-                  <DropdownMenu style={{ width: "100%" }}>
-                    {repoNames.map((name) => (
-                      <DropdownItem key={name}>{name}</DropdownItem>
-                    ))}
+                  <DropdownMenu style={{ width: "80%", overflow: "hidden" }}>
+                    {console.log("REPONAMESSSS", repoNames)}
+                    {repoNames
+                      ? repoNames.map((name) => (
+                          <DropdownItem
+                            key={name}
+                            onClick={() => changeSelectedRepo(name)}
+                            style={{ textOverflow: "ellipsis" }}
+                          >
+                            <span style={{ width: "80%", overflow: "hidden" }}>
+                              {name}
+                            </span>
+                          </DropdownItem>
+                        ))
+                      : null}
                   </DropdownMenu>
                 ) : (
                   "Loading ..."
