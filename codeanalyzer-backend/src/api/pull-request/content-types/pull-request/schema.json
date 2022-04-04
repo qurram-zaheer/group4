@@ -35,6 +35,12 @@
       "relation": "manyToOne",
       "target": "api::repository.repository",
       "inversedBy": "pull_requests"
+    },
+    "sourceBranch": {
+      "type": "string"
+    },
+    "targetBranch": {
+      "type": "string"
     }
   }
 }

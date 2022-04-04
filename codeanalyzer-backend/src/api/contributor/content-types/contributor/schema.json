@@ -15,7 +15,7 @@
     "name": {
       "type": "string"
     },
-    "github_id": {
+    "author_id": {
       "type": "string"
     },
     "contributions": {
