@@ -44,21 +44,27 @@ import Header from "components/Headers/Header.js";
 import axios from "axios";
 import { api } from "../../lib/api";
 import RepositoriesContext from "../../contexts/RepositoriesContext";
+import { Line } from "react-chartjs-2";
+import { chartExample1, chartExample2, chartOptions, parseOptions, } from "variables/charts.js";
 
 const Commits = () => {
 
   const [commitsByBranch, setCommitsByBranch] = useState([]);
   const [repos, setRepos] = useContext(RepositoriesContext);
+  const [difference, setDifference] = useState([]);
+  const [createdOn, setCreatedOn] = useState([]);
 
   useEffect(() => {
     ; (async () => {
       console.log('repo', repos);
-      await fetchCommitsByBranch();
+
+      const accessToken = await localStorage.getItem("token");
+      await fetchCommitsByBranch(accessToken);
+      await fetchCommitsFrequency(accessToken);
     })()
   }, [repos]);
 
-  const fetchCommitsByBranch = async () => {
-    const accessToken = await localStorage.getItem("token");
+  const fetchCommitsByBranch = async (accessToken) => {
     console.log('selectedRepoId', repos.selectedRepo.id);
     const data = await api.getCommmitCountsByBranch({
       repository: repos?.selectedRepo?.id
@@ -73,6 +79,35 @@ const Commits = () => {
       setCommitsByBranch(data.data);
     }
   }
+  
+  const fetchCommitsFrequency = async(accessToken) => {
+    const data = await api.getCommitsFrequencyByRepository({
+      repository: repos?.selectedRepo?.id
+    }, {
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    });
+    setCreatedOn(data.data.createdOn);
+    const differenceRoundArray =  data.data.difference.map(function(each_element){
+      return Number(each_element.toFixed(2));
+    });
+    setDifference(differenceRoundArray);
+    console.log('data', difference, createdOn);
+  }
+
+  const range = (start, end) => {
+    return Array(end - start + 1).fill().map((_, idx) => start + idx)
+  }
+
+  var data = {
+    labels: range(1, difference.length),
+    datasets: [{
+      label: "Difference in number of days between Commits",
+      data: difference,
+      borderColor: 'rgb(255, 255, 255)',
+    }]
+  };
 
   return (
     <>
@@ -110,6 +145,33 @@ const Commits = () => {
                     })}
                   </tbody>
                 </Table>
+              </CardBody>
+            </Card>
+          </div>
+        </Row>
+        <Row className="mt-5">
+          <div className="col">
+            <Card className="bg-gradient-default shadow">
+              <CardHeader className="bg-transparent">
+                <Row className="align-items-center">
+                  <div className="col">
+                    <h6 className="text-uppercase text-light ls-1 mb-1">
+                      Overview
+                    </h6>
+                    <h2 className="text-white mb-0">Commits Frequency</h2>
+                  </div>
+                </Row>
+              </CardHeader>
+              <CardBody>
+                {/* Chart */}
+                <div className="chart">
+                  <Line
+                    data={data}
+                    options={chartExample1.options}
+                    height={100}
+                    getDatasetAtEvent={(e) => console.log(e)}
+                  />
+                </div>
               </CardBody>
             </Card>
           </div>
