@@ -36,6 +36,12 @@
       "relation": "manyToOne",
       "target": "api::commit.commit",
       "inversedBy": "committedfiles"
+    },
+    "repository": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::repository.repository",
+      "inversedBy": "committedfiles"
     }
   }
 }

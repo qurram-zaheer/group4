@@ -89,8 +89,9 @@ const getCommitsFrequencyByRepository = (info, headers) => {
   );
 };
 
-const getContributors = (info, headers) => {
-  return get("/contributors");
+const getContributorsForRepo = (info, headers) => {
+  console.log("infooooooo", info);
+  return get(`/contributors?filters[repository][id][$eq]=${info.repoId}`);
 };
 
 const getPullRequestsCountsByBranch = (info, headers) => {
@@ -105,7 +106,7 @@ export const api = {
   authGithubUser,
   createAuths,
   getJiraAuthCode,
-  getContributors,
+  getContributorsForRepo,
   getJiraAccessToken,
   getJiraCloudId,
   jiraOAuthFlow,
