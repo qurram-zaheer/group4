@@ -20,19 +20,54 @@ import { useState, useEffect } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 // reactstrap components
 import {
+  Badge,
   Card,
   CardHeader,
-  CardBody,
+  CardFooter,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  Media,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  Progress,
+  Table,
   Container,
   Row,
-  Col,
+  CardBody,
   UncontrolledTooltip,
 } from "reactstrap";
 // core components
 import Header from "components/Headers/Header.js";
 import axios from "axios";
+import { api } from "../../lib/api";
 
 const Commits = () => {
+
+  const [commitsByBranch, setCommitsByBranch] = useState([]);
+
+  useEffect(() => {
+    ; (async () => {
+      await fetchCommitsByBranch();
+    })()
+  }, []);
+
+  const fetchCommitsByBranch = async () => {
+    const accessToken = await localStorage.getItem("token");
+    const data = await api.getCommmitCountsByBranch({
+      repository: 146 // TODO : Fetch from context
+    }, {
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    });
+    if (data) {
+      data.data.sort((a, b) => parseInt(b.commits) - parseInt(a.commits));
+      setCommitsByBranch(data.data);
+    }
+  }
 
   return (
     <>
@@ -44,10 +79,37 @@ const Commits = () => {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="bg-transparent">
-                <h3 className="mb-0">Commits</h3>
+                <h3 className="mb-0">Top commits by Branch</h3>
               </CardHeader>
               <CardBody>
-                
+                <Table className="align-items-center table-flush" responsive>
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">Branch Name</th>
+                      <th scope="col">Commits</th>
+                      <th scope="col" />
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {commitsByBranch.map((commitByBranch, index) => {
+                      return (
+                        // <tr key={index}>
+                        //   <td>{listValue.id}</td>
+                        //   <td>{listValue.title}</td>
+                        //   <td>{listValue.price}</td>
+                        // </tr>
+                        <tr key={index}>
+                        <th scope="row">
+                          <span className="mb-0 text-sm">
+                            {commitByBranch.branch}
+                          </span>
+                        </th>
+                        <td>{commitByBranch.commits}</td>
+                      </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
               </CardBody>
             </Card>
           </div>

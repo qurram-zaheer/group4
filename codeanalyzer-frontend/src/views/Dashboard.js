@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -42,7 +42,7 @@ import {
 
 // core components
 import {chartExample1, chartExample2, chartOptions, parseOptions,} from "variables/charts.js";
-
+import GithubContext from "../contexts/GithubContext"
 import {api} from "../lib/api"
 
 import Header from "components/Headers/Header.js";
@@ -53,10 +53,7 @@ const Dashboard = (props) => {
     const [chartExample1Data, setChartExample1Data] = useState("data1");
     const [repositoryCounts, setRepositoryCounts] = useState(0);
     const [contributorCounts, setContributorCounts] = useState(0);
-
-    const getData = () => {
-
-    }
+    const {user, setUser} = useContext(GithubContext);
 
     useEffect(() => {
         ;(async () => {
@@ -77,8 +74,13 @@ const Dashboard = (props) => {
                 });
                 if (createGithubAuth) {
                     console.log('User Registration was Successful!');
+                    await setUser({
+                        ...createGithubAuth.data.data.attributes.user.data,
+                        accessToken,
+                      });
                 }
             }
+            console.log('user', user);
             await localStorage.setItem("token", userRegistration.data.jwt)
             await localStorage.setItem("githubToken", accessToken)
 

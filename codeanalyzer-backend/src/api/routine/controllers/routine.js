@@ -9,6 +9,10 @@ const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
   
+  async getBranches(ctx) {
+    let results = []
+  },
+
   // To Fetch and store Pull Requests from Github into our Database
   async getRepositories(ctx, next) {
     let results = [];
@@ -66,7 +70,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
       ctx.body = {
         allCommits: allCommits
       };
-      
+
 	    console.log("Fetched allCommits", repositoryId, allCommits);
       Promise.all(
         allCommits.map(async (commit) => {

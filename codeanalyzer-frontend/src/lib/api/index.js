@@ -58,6 +58,10 @@ const getContributorsCount = (info, headers) => {
     return get('/contributor/count', info, headers);
 }
 
+const getCommmitCountsByBranch = (info, headers) => {
+    return get(`/commit/getCommmitCountsByBranch?repositoryId=${info.repository}`, null, headers);
+}
+
 export const api = {
     authGithubUser,
     createAuths,
@@ -72,6 +76,7 @@ export const api = {
     getPullRequests,
     getPullRequestsUniqueUsers,
     getRepositoriesCount,
-    getContributorsCount
+    getContributorsCount,
+    getCommmitCountsByBranch
     // fetchGithubRepo
 }
