@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 // react component that copies the given text inside your clipboard
 import { CopyToClipboard } from "react-copy-to-clipboard";
 // React Components
@@ -52,6 +52,7 @@ import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // core components
+import RepositoriesContext from "../../contexts/RepositoriesContext";
 import { chartExample1, chartExample2, chartOptions, parseOptions, } from "variables/charts.js";
 
 import { api } from "../../lib/api"
@@ -59,6 +60,8 @@ import { api } from "../../lib/api"
 import { Bar, Line } from "react-chartjs-2";
 import axios from "axios";
 import { createEmitAndSemanticDiagnosticsBuilderProgram } from "typescript";
+
+
 
 const PullRequestsRepo = () => {
 
@@ -70,75 +73,45 @@ const PullRequestsRepo = () => {
   const [chosenPR, setChosenPR] = useState('');
   const [userNotFound, setUserNotFound] = useState(false);
   const [loadedRepos, setLoadedRepos] = useState(false);
-  const [prs, setPRS] = useState([]);
+  const [repos, setRepos] = useContext(RepositoriesContext);
+  const [prsByBranch, setPRSByBranch] = useState([]);
 
   useEffect(() => {
     ; (async () => {
-      const strapiToken = await localStorage.getItem("token");
-      const repos = await api.getRepositories({
-        headers: {
-          'Authorization': 'Bearer ' + strapiToken
-        }
-      });
-      if (repos.data) {
-        setRepositories(repos.data.data);
-        setChosenRepo(repos.data.data[0].attributes.name);
-        setLoadedRepos(true);
-        loadPullRequestUsers(repos.data.data[0].attributes.name);
-      }
-    })()
-  }, []);
-
-  const loadPullRequestUsers = async (repo) => {
       const accessToken = await localStorage.getItem("githubToken");
       const strapiToken = await localStorage.getItem("token");
-      const pullRequests = await api.getPullRequestsUniqueUsers({
-        repository: repo,
-        accessToken: accessToken,
-      } ,{
-        headers: {
-          'Authorization': 'Bearer ' + strapiToken
-        }
-      });
-      console.log(pullRequests);
-      if(pullRequests){
-        setPRS(pullRequests.data.contributors);
-        setChosenPR(pullRequests.data.contributors[0])
+      if (repos != null) {
+        console.log('repos', repos)
+        generatePullRequestsFrequencyByBranch(accessToken, strapiToken);
       }
-  }
+    })()
+  }, [repos]);
 
-  const generatePullRequestsFrequencyPerUser = async (e) => {
-    const accessToken = await localStorage.getItem("githubToken");
-    const strapiToken = await localStorage.getItem("token");
-    console.log('chosenPR', chosenPR);
-    const data = await api.getPullRequestFrequencyPerUser({
-      contributor: chosenPR,
+  const generatePullRequestsFrequencyByBranch = async (accessToken, strapiToken) => {
+    const data = await api.getPullRequestsCountsByBranch({
       accessToken: accessToken,
-      repository: repositories
+      repository: repos?.selectedRepo?.id
     }, {
       headers: {
         'Authorization': 'Bearer ' + strapiToken
       }
     });
-    if ((data.data.createdOn.length <= 0) || (data.data.difference.length <= 0)) {
-      setUserNotFound(true);
-    } else {
-      setUserNotFound(false);
+    if (data) {
+      console.log('data', data);
+      data.data.sort((a, b) => parseInt(b.prs) - parseInt(a.prs));
+      await setPRSByBranch(data.data);
     }
-    setCreatedOn(data.data.createdOn);
-    const differenceRoundArray =  data.data.difference.map(function(each_element){
-      return Number(each_element.toFixed(2));
-    });
-    setDifference(differenceRoundArray);
-    e.preventDefault();
   }
 
   var data = {
-    labels: createdOn,
+    labels: prsByBranch.map(function (item) {
+      return item.branch;
+    }),
     datasets: [{
       label: "Difference in number of days between PRs",
-      data: difference,
-      borderColor: 'rgb(255, 255, 255)',
+      data: prsByBranch.map(function (item) {
+        return item.prs;
+      }),
     }]
   };
 
@@ -149,55 +122,29 @@ const PullRequestsRepo = () => {
       <Container className="mt--7" fluid>
         <Row>
           <Col>
-          <Card className="shadow">
-                            <CardHeader className="bg-transparent">
-                                <Row className="align-items-center">
-                                    <div className="col">
-                                        <h6 className="text-uppercase text-muted ls-1 mb-1">
-                                            Performance
-                                        </h6>
-                                        <h2 className="mb-0">Total orders</h2>
-                                    </div>
-                                </Row>
-                            </CardHeader>
-                            <CardBody>
-                                {/* Chart */}
-                                <div className="chart">
-                                    <Bar
-                                        data={chartExample2.data}
-                                        options={chartExample2.options}
-                                    />
-                                </div>
-                            </CardBody>
-                        </Card>
-          </Col>
-        </Row>
-        <Row className="mt-5">
-          <div className="col">
-            <Card className="bg-gradient-default shadow">
+            <Card className="shadow">
               <CardHeader className="bg-transparent">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h6 className="text-uppercase text-light ls-1 mb-1">
-                      Overview
+                    <h6 className="text-uppercase text-muted ls-1 mb-1">
+                      Pull Requests
                     </h6>
-                    <h2 className="text-white mb-0">Pull Requests Frequency</h2>
+                    <h2 className="mb-0">Pull Requests By Branches</h2>
                   </div>
                 </Row>
               </CardHeader>
               <CardBody>
                 {/* Chart */}
                 <div className="chart">
-                  <Line
+                  <Bar
                     data={data}
                     options={chartExample1.options}
-                    height={100}
-                    getDatasetAtEvent={(e) => console.log(e)}
+                    height={"100%"}
                   />
                 </div>
               </CardBody>
             </Card>
-          </div>
+          </Col>
         </Row>
       </Container>
     </>
