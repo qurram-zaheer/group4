@@ -28,3 +28,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "code-analyzer-backend" #Must be unique in Heroku
           heroku_email: "qr620423@dal.ca"
+          appdir: codeanalyzer-backend
