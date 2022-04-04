@@ -30,9 +30,9 @@
     "sumchanges": {
       "type": "biginteger"
     },
-    "repository": {
+    "repositories": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::repository.repository",
       "inversedBy": "contributors"
     }

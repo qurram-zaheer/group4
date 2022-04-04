@@ -69,12 +69,28 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
       });
 
       console.log("Fetched allCommits", repositoryId, allCommits);
-
-      const commitEntries = await Promise.all(
-        allCommits.map(async (commitObj) => {
-          await strapi.entityService.create("api::commit.commit", {
-            data: commitObj,
-          });
+      Promise.all(
+        allCommits.map(async (commit) => {
+          const commitDataModel = {
+            commit_id: commit.sha.substring(0, 6),
+            message: commit.commit.message,
+            sha: commit.sha,
+            authorid: commit.author.id,
+            totalchanges: commit.stats.total,
+            totaladditions: commit.stats.additions,
+            totaldeletions: commit.stats.deletions,
+            branch: commit.branch,
+            commitdate: new Date(commit.commit.author.date).toISOString(),
+            committedfiles: [1],
+            repository: repositoryId,
+            authorname: commit.author.login,
+          };
+          const uploadCommitDataModel = await strapi.db
+            .query("api::commit.commit")
+            .create({
+              data: commitDataModel,
+            });
+          results.push(commitDataModel);
         })
       );
       return commitEntries;
@@ -104,13 +120,11 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
     let contributors = {};
     allCommitsForRepo.map((commitData) => {
       const { authorid } = commitData;
-
       if (!contributors[authorid]) {
         contributors[authorid] = {};
         contributors[authorid].sumadditions = 0;
         contributors[authorid].sumdeletions = 0;
         contributors[authorid].sumchanges = 0;
-        contributors[authorid].name = commitData.authorname;
       }
       contributors[authorid].sumadditions =
         contributors[authorid].sumadditions + commitData.totaladditions;
@@ -126,13 +140,13 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
         async ([authorid, contribObj], index) => {
           console.log("key", authorid), console.log("value", contribObj);
           const contribEntry = {
-            name: contribObj.name,
+            name: "",
             author_id: authorid,
             sumadditions: contribObj.sumadditions,
             sumdeletions: contribObj.sumdeletions,
             sumchanges: contribObj.sumchanges,
             // publishedAt: new Date().toISOString,
-            repository: repoId,
+            repositories: [repoId],
           };
           console.log("contribEntry", contribEntry);
           const entry = await strapi.entityService.create(
