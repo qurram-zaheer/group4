@@ -1,6 +1,6 @@
 import Repositories from "views/Repositories";
 import Commits from "./views/subviews/Commits";
-import PullRequests from "./views/subviews/PullRequests";
+import PullRequestsRepo from "./views/subviews/PullRequestsRepo";
 
 const repoRoutes = [
   {
@@ -21,7 +21,7 @@ const repoRoutes = [
     path: "/repositories/pull-requests",
     name: "Pull Requests",
     icon: "ni ni-circle-08 text-pink",
-    component: PullRequests,
+    component: PullRequestsRepo,
     layout: "/admin",
   },
 ];

@@ -318,7 +318,7 @@ let chartExample1 = {
           },
           ticks: {
             callback: function (value) {
-                return value + " days";
+                return value + " Pull Requests";
             },
           },
         },
@@ -335,7 +335,7 @@ let chartExample1 = {
             content += label;
           }
 
-          content += yLabel + " days";
+          content += yLabel + " Pull Requests";
           return content;
         },
       },

@@ -93,6 +93,14 @@ const getContributors = (info, headers) => {
   return get("/contributors");
 };
 
+const getPullRequestsCountsByBranch = (info, headers) => {
+  return get(
+    `/pull-request/getPullRequestsCountsByBranch?repositoryId=${info.repository}`,
+    null,
+    headers
+  );
+};
+
 export const api = {
   authGithubUser,
   createAuths,
@@ -111,5 +119,6 @@ export const api = {
   getContributorsCount,
   getCommmitCountsByBranch,
   getCommitsFrequencyByRepository,
+  getPullRequestsCountsByBranch,
   // fetchGithubRepo
 };
