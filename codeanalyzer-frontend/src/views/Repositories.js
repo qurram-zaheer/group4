@@ -78,31 +78,31 @@ const Repositories = () => {
         labels.push(entry.attributes.author_id);
       });
       const addObj = {
-        labels: ["guy1", "guy2", "guy3"],
+        labels,
         datasets: [
           {
             label: "LOC",
-            data: [0, 0, 0],
+            data: addArr,
             backgroundColor: "rgba(53, 162, 235, 0.5)",
           },
         ],
       };
       const delObj = {
-        labels: ["guy1", "guy2", "guy3"],
+        labels,
         datasets: [
           {
             label: "LOC",
-            data: [873, 3482, 109],
+            data: delArr,
             backgroundColor: "rgba(255, 206, 86, 0.2)",
           },
         ],
       };
       const totalObj = {
-        labels: ["guy1", "guy2", "guy3"],
+        labels,
         datasets: [
           {
             label: "LOC",
-            data: [183, 2384, 1823],
+            data: totalArr,
             backgroundColor: "rgba(153, 102, 255, 0.2)",
           },
         ],
@@ -177,9 +177,9 @@ const Repositories = () => {
           <Row style={{ marginTop: "20px" }}>
             <Col>
               <Card
-                className="card-stats mb-4 mb-xl-0"
+                className="card-stats mb-4 mb-xl-0 p-2"
                 style={{
-                  height: "350px",
+                  height: "450px",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-evenly",
@@ -193,42 +193,35 @@ const Repositories = () => {
                   Top contributors
                 </CardTitle>
 
-                <FormGroup tag="fieldset">
-                  {/* <legend>Radio Buttons</legend> */}
-                  <FormGroup check>
-                    <Label check>
-                      <Input
-                        type="radio"
-                        name="radio1"
-                        onChange={() => setSelectedContrib("total")}
-                        checked={selectedContrib === "total"}
-                      />{" "}
-                      Total changes
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check>
-                    <Label check>
-                      <Input
-                        type="radio"
-                        name="radio1"
-                        onChange={() => setSelectedContrib("add")}
-                        checked={selectedContrib === "add"}
-                      />{" "}
+                <FormGroup>
+                  {/* <Label for="exampleSelect">Select</Label> */}
+                  <Input
+                    type="select"
+                    name="select"
+                    id="exampleSelect"
+                    onChange={(e) => setSelectedContrib(e.target.value)}
+                  >
+                    <option
+                      onChange={() => setSelectedContrib("total")}
+                      value="total"
+                    >
+                      Total Changes
+                    </option>
+                    <option
+                      onChange={() => setSelectedContrib("add")}
+                      value="add"
+                    >
                       Additions
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check>
-                    <Label check>
-                      <Input
-                        type="radio"
-                        name="radio1"
-                        onChange={() => setSelectedContrib("del")}
-                        checked={selectedContrib === "del"}
-                      />{" "}
+                    </option>
+                    <option
+                      onChange={() => setSelectedContrib("del")}
+                      value="del"
+                    >
                       Deletions
-                    </Label>
-                  </FormGroup>
+                    </option>
+                  </Input>
                 </FormGroup>
+
                 {contribDataTotal ? (
                   <BarComponent data={selectBarData()} />
                 ) : null}
