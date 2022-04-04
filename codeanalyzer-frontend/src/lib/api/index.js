@@ -94,8 +94,6 @@ const getContributorsForRepo = (info, headers) => {
   return get(`/contributors?filters[repository][id][$eq]=${info.repoId}`);
 };
 
-<<<<<<< HEAD
-=======
 const getPullRequestsCountsByBranch = (info, headers) => {
   return get(
     `/pull-request/getPullRequestsCountsByBranch?repositoryId=${info.repository}`,
@@ -114,7 +112,6 @@ const getUserLanguageEffort = (info, headers) => {
   return get(`/commit/getUserLanguageEffort?repositoryId=${info.repositoryId}`);
 };
 
->>>>>>> 3a7ebe2b (chart dump)
 export const api = {
   authGithubUser,
   createAuths,
@@ -133,11 +130,8 @@ export const api = {
   getContributorsCount,
   getCommmitCountsByBranch,
   getCommitsFrequencyByRepository,
-<<<<<<< HEAD
-=======
   getPullRequestsCountsByBranch,
   getCommitCountPerHour,
   getUserLanguageEffort,
->>>>>>> 3a7ebe2b (chart dump)
   // fetchGithubRepo
 };
