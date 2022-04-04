@@ -133,6 +133,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
           "totaladditions",
           "totaldeletions",
           "authorid",
+          "repository",
         ],
         filters: { repository: { id: { $eq: repoId } } },
       }
