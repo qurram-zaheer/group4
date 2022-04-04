@@ -66,4 +66,36 @@ module.exports = createCoreController('api::pull-request.pull-request', ({ strap
         }
     },
 
+    // To Fetch all commits by branches
+    async getPullRequestsCountsByBranch(ctx, next) {
+        const repository = ctx.request.query['repositoryId'];
+        try {
+            let result = [];
+            const branches = await strapi.db.query('api::pull-request.pull-request').findMany({
+                select: ['branch'],
+                where: {
+                    repository: repository
+                },
+            });
+            const uniqBranches = [...new Set(branches)];
+            for (var i = 0; i < uniqBranches.length; i++) {
+                const branch = uniqBranches[i].branch;
+                const count = await strapi.query('api::pull-request.pull-request').count({
+                    select: ['branch'],
+                    where: {
+                        branch: branch
+                    }
+                });
+                result.push({
+                    "branch": branch,
+                    "commits": count
+                });
+            }
+            ctx.body = result;
+        } catch (err) {
+            console.log(err);
+            ctx.body = err;
+        }
+    },
+
 }));
