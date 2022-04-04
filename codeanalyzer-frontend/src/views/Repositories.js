@@ -67,7 +67,7 @@ const Repositories = () => {
     return data;
   };
 
-  const processLangData = async () => {
+  const processLangData = () => {
     if (repos.selectedRepo.attributes) {
       const languageObj = repos.selectedRepo.attributes.languages;
       console.log(languageObj);
@@ -85,7 +85,7 @@ const Repositories = () => {
           },
         ],
       };
-      await setLangPieData(data);
+      setLangPieData(data);
     }
   };
 
@@ -200,7 +200,6 @@ const Repositories = () => {
 
   return (
     <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
-      {console.log(repos)}
       <Container fluid>
         <div className="header-body">
           <Row style={{ marginBottom: "20px" }}>
