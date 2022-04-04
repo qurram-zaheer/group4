@@ -93,27 +93,23 @@ const getContributors = (info, headers) => {
   return get("/contributors");
 };
 
-const getPullRequestsCountsByBranch = (info, headers) => {
-    return get(`/pull-request/getPullRequestsCountsByBranch?repositoryId=${info.repository}`, null, headers);
-}
-
 export const api = {
-    authGithubUser,
-    createAuths,
-    getJiraAuthCode,
-    getJiraAccessToken,
-    getJiraCloudId,
-    jiraOAuthFlow,
-    postRepos,
-    getUserRepos,
-    getPullRequestFrequencyPerUser,
-    getRepositories,
-    getPullRequests,
-    getPullRequestsUniqueUsers,
-    getRepositoriesCount,
-    getContributorsCount,
-    getCommmitCountsByBranch,
-    getCommitsFrequencyByRepository,
-    getPullRequestsCountsByBranch
-    // fetchGithubRepo
-}
+  authGithubUser,
+  createAuths,
+  getJiraAuthCode,
+  getContributors,
+  getJiraAccessToken,
+  getJiraCloudId,
+  jiraOAuthFlow,
+  postRepos,
+  getUserRepos,
+  getPullRequestFrequencyPerUser,
+  getRepositories,
+  getPullRequests,
+  getPullRequestsUniqueUsers,
+  getRepositoriesCount,
+  getContributorsCount,
+  getCommmitCountsByBranch,
+  getCommitsFrequencyByRepository,
+  // fetchGithubRepo
+};
