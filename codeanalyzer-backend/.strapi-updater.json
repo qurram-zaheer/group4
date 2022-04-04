@@ -1,4 +1,8 @@
 {
 	"latest": "4.1.7",
+<<<<<<< HEAD
 	"lastUpdateCheck": 1649128647769
+=======
+	"lastUpdateCheck": 1649036361419
+>>>>>>> 294a974a (fixing sidebar changing)
 }
