@@ -49,7 +49,7 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.12.12 
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "code-analyzer-backend"
+          heroku_app_name: "codeanalyzer"
           heroku_email: "qr620423@dal.ca"
           appdir: codeanalyzer-frontend
   
