@@ -62,6 +62,10 @@ const getCommmitCountsByBranch = (info, headers) => {
     return get(`/commit/getCommmitCountsByBranch?repositoryId=${info.repository}`, null, headers);
 }
 
+const getCommitsFrequencyByRepository = (info, headers) => {
+    return get(`/commit/getAvgTimeDifferenceBetweenCommits?repository=${info.repository}`, null, headers);
+}
+
 export const api = {
     authGithubUser,
     createAuths,
@@ -77,6 +81,7 @@ export const api = {
     getPullRequestsUniqueUsers,
     getRepositoriesCount,
     getContributorsCount,
-    getCommmitCountsByBranch
+    getCommmitCountsByBranch,
+    getCommitsFrequencyByRepository
     // fetchGithubRepo
 }

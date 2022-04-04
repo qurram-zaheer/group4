@@ -56,12 +56,12 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
         const accessToken = ctx.request.query['accessToken'];
         const differenceResult = [], createdOn = [];
         const prs = await strapi.db.query('api::commit.commit').findMany({
-            select: ['id', 'createdOn'],
-            orderBy: { createdOn: 'desc' }
+            select: ['id', 'commitdate'],
+            orderBy: { commitdate: 'desc' }
         });
         for (let i = 0; i < prs.length - 1; i++) {
-            let difference = (new Date(prs[i].createdOn).getTime() - new Date(prs[i + 1].createdOn).getTime()) / (1000 * 60 * 60 * 24);
-            createdOn.push(prs[i].createdOn);
+            let difference = (new Date(prs[i].commitdate).getTime() - new Date(prs[i + 1].commitdate).getTime()) / (1000 * 60 * 60 * 24);
+            createdOn.push(prs[i].commitdate);
             if (difference != 0) {
                 differenceResult.push(difference);
             }
