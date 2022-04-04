@@ -22,12 +22,36 @@ jobs:
         with:
           node-version: 16.14.0
       - run: npm install
+      
+  deploy-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run: 
+        working-directory: ./codeanalyzer-backend
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v3
       - uses: akhileshns/heroku-deploy@v3.12.12 
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "code-analyzer-backend" #Must be unique in Heroku
+          heroku_app_name: "code-analyzer-backend"
           heroku_email: "qr620423@dal.ca"
           appdir: codeanalyzer-backend
+  
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run: 
+        working-directory: ./codeanalyzer-backend
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: akhileshns/heroku-deploy@v3.12.12 
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "code-analyzer-backend"
+          heroku_email: "qr620423@dal.ca"
+          appdir: codeanalyzer-frontend
   
   sonarcloud:
     name: SonarCloud
