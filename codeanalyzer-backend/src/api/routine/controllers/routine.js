@@ -96,10 +96,13 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
           "totaldeletions",
           "authorid",
 <<<<<<< HEAD
+<<<<<<< HEAD
           "authorname",
 =======
           "repository",
 >>>>>>> 2a9132df (contribs)
+=======
+>>>>>>> 52920824 (pushing new commit model)
         ],
         filters: { repository: { id: { $eq: repoId } } },
       }
