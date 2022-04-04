@@ -15,13 +15,13 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import {useEffect, useState, useContext} from "react";
+import { useEffect, useState, useContext } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import {Bar, Line} from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 
 import useQuery from "../hooks/useQuery";
 // reactstrap components
@@ -41,9 +41,9 @@ import {
 } from "reactstrap";
 
 // core components
-import {chartExample1, chartExample2, chartOptions, parseOptions,} from "variables/charts.js";
+import { chartExample1, chartExample2, chartOptions, parseOptions, } from "variables/charts.js";
 import GithubContext from "../contexts/GithubContext"
-import {api} from "../lib/api"
+import { api } from "../lib/api"
 
 import Header from "components/Headers/Header.js";
 
@@ -53,10 +53,10 @@ const Dashboard = (props) => {
     const [chartExample1Data, setChartExample1Data] = useState("data1");
     const [repositoryCounts, setRepositoryCounts] = useState(0);
     const [contributorCounts, setContributorCounts] = useState(0);
-    const {user, setUser} = useContext(GithubContext);
+    const { user, setUser } = useContext(GithubContext);
 
     useEffect(() => {
-        ;(async () => {
+        ; (async () => {
             const accessToken = query.get('access_token');
             console.log(accessToken)
             const refreshToken = query.get('refresh_token');
@@ -74,10 +74,16 @@ const Dashboard = (props) => {
                 });
                 if (createGithubAuth) {
                     console.log('User Registration was Successful!');
+                    console.log("CGA", createGithubAuth.data.data.attributes.user.data, createGithubAuth, accessToken);
                     await setUser({
                         ...createGithubAuth.data.data.attributes.user.data,
                         accessToken,
-                      });
+                    });
+                    console.log('user', user);
+                    await localStorage.setItem(
+                        "strapiUserId",
+                        createGithubAuth.data.data.attributes.user.data.id
+                    );
                 }
             }
             console.log('user', user);
@@ -96,7 +102,7 @@ const Dashboard = (props) => {
                 'Authorization': 'Bearer ' + accessToken
             }
         });
-        if(repoCount){
+        if (repoCount) {
             console.log("RC", repoCount);
             setRepositoryCounts(repoCount.data);
         }
@@ -105,7 +111,7 @@ const Dashboard = (props) => {
                 'Authorization': 'Bearer ' + accessToken
             }
         });
-        if(contCount){
+        if (contCount) {
             console.log("CC", contCount);
             setContributorCounts(contCount.data);
         }
@@ -139,7 +145,7 @@ const Dashboard = (props) => {
     };
     return (
         <>
-            <Header showCards={true} repositoryCounts={repositoryCounts} contributorCounts={contributorCounts}/>
+            <Header showCards={true} repositoryCounts={repositoryCounts} contributorCounts={contributorCounts} />
             {/* Page content */}
             <Container className="mt--7" fluid>
                 <Row>
@@ -243,57 +249,57 @@ const Dashboard = (props) => {
                             <></>
                             <Table className="align-items-center table-flush" responsive>
                                 <thead className="thead-light">
-                                <tr>
-                                    <th scope="col">Page name</th>
-                                    <th scope="col">Visitors</th>
-                                    <th scope="col">Unique users</th>
-                                    <th scope="col">Bounce rate</th>
-                                </tr>
+                                    <tr>
+                                        <th scope="col">Page name</th>
+                                        <th scope="col">Visitors</th>
+                                        <th scope="col">Unique users</th>
+                                        <th scope="col">Bounce rate</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <th scope="row">/argon/</th>
-                                    <td>4,569</td>
-                                    <td>340</td>
-                                    <td>
-                                        <i className="fas fa-arrow-up text-success mr-3"/> 46,53%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">/argon/index.html</th>
-                                    <td>3,985</td>
-                                    <td>319</td>
-                                    <td>
-                                        <i className="fas fa-arrow-down text-warning mr-3"/>{" "}
-                                        46,53%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">/argon/charts.html</th>
-                                    <td>3,513</td>
-                                    <td>294</td>
-                                    <td>
-                                        <i className="fas fa-arrow-down text-warning mr-3"/>{" "}
-                                        36,49%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">/argon/tables.html</th>
-                                    <td>2,050</td>
-                                    <td>147</td>
-                                    <td>
-                                        <i className="fas fa-arrow-up text-success mr-3"/> 50,87%
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">/argon/profile.html</th>
-                                    <td>1,795</td>
-                                    <td>190</td>
-                                    <td>
-                                        <i className="fas fa-arrow-down text-danger mr-3"/>{" "}
-                                        46,53%
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <th scope="row">/argon/</th>
+                                        <td>4,569</td>
+                                        <td>340</td>
+                                        <td>
+                                            <i className="fas fa-arrow-up text-success mr-3" /> 46,53%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">/argon/index.html</th>
+                                        <td>3,985</td>
+                                        <td>319</td>
+                                        <td>
+                                            <i className="fas fa-arrow-down text-warning mr-3" />{" "}
+                                            46,53%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">/argon/charts.html</th>
+                                        <td>3,513</td>
+                                        <td>294</td>
+                                        <td>
+                                            <i className="fas fa-arrow-down text-warning mr-3" />{" "}
+                                            36,49%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">/argon/tables.html</th>
+                                        <td>2,050</td>
+                                        <td>147</td>
+                                        <td>
+                                            <i className="fas fa-arrow-up text-success mr-3" /> 50,87%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">/argon/profile.html</th>
+                                        <td>1,795</td>
+                                        <td>190</td>
+                                        <td>
+                                            <i className="fas fa-arrow-down text-danger mr-3" />{" "}
+                                            46,53%
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </Table>
                         </Card>
@@ -319,89 +325,89 @@ const Dashboard = (props) => {
                             </CardHeader>
                             <Table className="align-items-center table-flush" responsive>
                                 <thead className="thead-light">
-                                <tr>
-                                    <th scope="col">Referral</th>
-                                    <th scope="col">Visitors</th>
-                                    <th scope="col"/>
-                                </tr>
+                                    <tr>
+                                        <th scope="col">Referral</th>
+                                        <th scope="col">Visitors</th>
+                                        <th scope="col" />
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <th scope="row">Facebook</th>
-                                    <td>1,480</td>
-                                    <td>
-                                        <div className="d-flex align-items-center">
-                                            <span className="mr-2">60%</span>
-                                            <div>
-                                                <Progress
-                                                    max="100"
-                                                    value="60"
-                                                    barClassName="bg-gradient-danger"
-                                                />
+                                    <tr>
+                                        <th scope="row">Facebook</th>
+                                        <td>1,480</td>
+                                        <td>
+                                            <div className="d-flex align-items-center">
+                                                <span className="mr-2">60%</span>
+                                                <div>
+                                                    <Progress
+                                                        max="100"
+                                                        value="60"
+                                                        barClassName="bg-gradient-danger"
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Facebook</th>
-                                    <td>5,480</td>
-                                    <td>
-                                        <div className="d-flex align-items-center">
-                                            <span className="mr-2">70%</span>
-                                            <div>
-                                                <Progress
-                                                    max="100"
-                                                    value="70"
-                                                    barClassName="bg-gradient-success"
-                                                />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Facebook</th>
+                                        <td>5,480</td>
+                                        <td>
+                                            <div className="d-flex align-items-center">
+                                                <span className="mr-2">70%</span>
+                                                <div>
+                                                    <Progress
+                                                        max="100"
+                                                        value="70"
+                                                        barClassName="bg-gradient-success"
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Google</th>
-                                    <td>4,807</td>
-                                    <td>
-                                        <div className="d-flex align-items-center">
-                                            <span className="mr-2">80%</span>
-                                            <div>
-                                                <Progress max="100" value="80"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Google</th>
+                                        <td>4,807</td>
+                                        <td>
+                                            <div className="d-flex align-items-center">
+                                                <span className="mr-2">80%</span>
+                                                <div>
+                                                    <Progress max="100" value="80" />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Instagram</th>
-                                    <td>3,678</td>
-                                    <td>
-                                        <div className="d-flex align-items-center">
-                                            <span className="mr-2">75%</span>
-                                            <div>
-                                                <Progress
-                                                    max="100"
-                                                    value="75"
-                                                    barClassName="bg-gradient-info"
-                                                />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Instagram</th>
+                                        <td>3,678</td>
+                                        <td>
+                                            <div className="d-flex align-items-center">
+                                                <span className="mr-2">75%</span>
+                                                <div>
+                                                    <Progress
+                                                        max="100"
+                                                        value="75"
+                                                        barClassName="bg-gradient-info"
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">twitter</th>
-                                    <td>2,645</td>
-                                    <td>
-                                        <div className="d-flex align-items-center">
-                                            <span className="mr-2">30%</span>
-                                            <div>
-                                                <Progress
-                                                    max="100"
-                                                    value="30"
-                                                    barClassName="bg-gradient-warning"
-                                                />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">twitter</th>
+                                        <td>2,645</td>
+                                        <td>
+                                            <div className="d-flex align-items-center">
+                                                <span className="mr-2">30%</span>
+                                                <div>
+                                                    <Progress
+                                                        max="100"
+                                                        value="30"
+                                                        barClassName="bg-gradient-warning"
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </Table>
                         </Card>

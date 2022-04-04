@@ -78,7 +78,7 @@ const Sidebar = (props) => {
           (entry) => `${entry.attributes.owner}/${entry.attributes.name}`
         )
       );
-      await setRepos({ repos: repoData, selectedRepo: repoData[0] });
+      await setRepos({...{ repos: repoData, selectedRepo: repoData[0] }});
       console.log(repoData);
       // console.log('REPOOOOOS', repos)
     };

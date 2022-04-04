@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 // react component that copies the given text inside your clipboard
 import { CopyToClipboard } from "react-copy-to-clipboard";
 // reactstrap components
@@ -43,27 +43,32 @@ import {
 import Header from "components/Headers/Header.js";
 import axios from "axios";
 import { api } from "../../lib/api";
+import RepositoriesContext from "../../contexts/RepositoriesContext";
 
 const Commits = () => {
 
   const [commitsByBranch, setCommitsByBranch] = useState([]);
+  const [repos, setRepos] = useContext(RepositoriesContext);
 
   useEffect(() => {
     ; (async () => {
+      console.log('repo', repos);
       await fetchCommitsByBranch();
     })()
-  }, []);
+  }, [repos]);
 
   const fetchCommitsByBranch = async () => {
     const accessToken = await localStorage.getItem("token");
+    console.log('selectedRepoId', repos.selectedRepo.id);
     const data = await api.getCommmitCountsByBranch({
-      repository: 146 // TODO : Fetch from context
+      repository: repos?.selectedRepo?.id
     }, {
       headers: {
         'Authorization': 'Bearer ' + accessToken
       }
     });
     if (data) {
+      console.log('data', data);
       data.data.sort((a, b) => parseInt(b.commits) - parseInt(a.commits));
       setCommitsByBranch(data.data);
     }
@@ -93,11 +98,6 @@ const Commits = () => {
                   <tbody>
                     {commitsByBranch.map((commitByBranch, index) => {
                       return (
-                        // <tr key={index}>
-                        //   <td>{listValue.id}</td>
-                        //   <td>{listValue.title}</td>
-                        //   <td>{listValue.price}</td>
-                        // </tr>
                         <tr key={index}>
                         <th scope="row">
                           <span className="mb-0 text-sm">

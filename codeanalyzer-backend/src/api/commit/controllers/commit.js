@@ -50,4 +50,29 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
             ctx.body = err;
         }
     },
+
+    // Get the time difference between pull requests of a user
+    async getAvgTimeDifferenceBetweenCommits(ctx, next) {
+        const accessToken = ctx.request.query['accessToken'];
+        const differenceResult = [], createdOn = [];
+        const prs = await strapi.db.query('api::commit.commit').findMany({
+            select: ['id', 'createdOn'],
+            orderBy: { createdOn: 'desc' }
+        });
+        for (let i = 0; i < prs.length - 1; i++) {
+            let difference = (new Date(prs[i].createdOn).getTime() - new Date(prs[i + 1].createdOn).getTime()) / (1000 * 60 * 60 * 24);
+            createdOn.push(prs[i].createdOn);
+            if (difference != 0) {
+                differenceResult.push(difference);
+            }
+        }
+        ctx.body = {
+            "createdOn": createdOn,
+            "difference": differenceResult
+        };
+        console.log('data', {
+            "createdOn": createdOn,
+            "difference": differenceResult
+        });
+    },
 }));
