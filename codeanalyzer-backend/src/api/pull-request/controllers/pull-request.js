@@ -83,12 +83,12 @@ module.exports = createCoreController('api::pull-request.pull-request', ({ strap
                 const count = await strapi.query('api::pull-request.pull-request').count({
                     select: ['targetBranch'],
                     where: {
-                        branch: branch
+                        targetBranch: branch
                     }
                 });
                 result.push({
                     "branch": branch,
-                    "commits": count
+                    "prs": count
                 });
             }
             ctx.body = result;
