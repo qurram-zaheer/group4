@@ -47,9 +47,15 @@
     },
     "contributors": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "oneToMany",
       "target": "api::contributor.contributor",
-      "inversedBy": "repositories"
+      "mappedBy": "repository"
+    },
+    "committedfiles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::committedfile.committedfile",
+      "mappedBy": "repository"
     }
   }
 }

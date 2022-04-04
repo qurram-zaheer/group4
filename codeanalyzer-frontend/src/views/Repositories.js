@@ -19,14 +19,13 @@ import BarComponent from "components/Charts/BarComponent";
 const Repositories = () => {
   const [repos, setRepos] = useContext(RepositoriesContext);
   const [langPieData, setLangPieData] = useState(null);
-  const [contribDataTotal, setContribDataTotal] = useState([null]);
+  const [contribDataTotal, setContribDataTotal] = useState(null);
   const [contribDataAdd, setContribDataAdd] = useState(null);
   const [contribDataDel, setContribDataDel] = useState(null);
   const [selectedContrib, setSelectedContrib] = useState("total");
 
   const processLangData = async () => {
     if (repos.selectedRepo.attributes) {
-      console.log("in here33");
       const languageObj = repos.selectedRepo.attributes.languages;
       console.log(languageObj);
       const labels = Object.keys(languageObj);
@@ -55,13 +54,17 @@ const Repositories = () => {
   };
 
   const processContribData = async () => {
-    if (true) {
+    const selRep = repos.selectedRepo;
+    const repoId = repos.selectedRepo.id;
+    console.log("OUTERSELREP", selRep);
+    if (repos.selectedRepo.attributes) {
       let totalArr = [];
       let addArr = [];
       let delArr = [];
+      console.log("kjasdkljasjdasd", repos.selectedRepo.id);
       const contribData = await api
-        .getContributors(
-          {},
+        .getContributorsForRepo(
+          { repoId },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
