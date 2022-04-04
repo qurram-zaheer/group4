@@ -15,6 +15,14 @@ module.exports = {
         config: {
           auth: false,
         },
+      },
+      {
+        method: 'GET',
+        path: '/pull-request/getPullRequestsCountsByBranch',
+        handler: 'pull-request.getPullRequestsCountsByBranch',
+        config: {
+          auth: false,
+        }
       }
     ]
 }

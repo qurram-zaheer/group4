@@ -38,5 +38,9 @@ module.exports = createCoreController(
       );
       return { msg: "Success" };
     },
+
+    async getCounts(ctx) {
+      return strapi.query("api::repository.repository").count();
+    },
   })
 );
