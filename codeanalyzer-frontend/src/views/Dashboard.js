@@ -53,6 +53,9 @@ const Dashboard = (props) => {
     const [chartExample1Data, setChartExample1Data] = useState("data1");
     const [repositoryCounts, setRepositoryCounts] = useState(0);
     const [contributorCounts, setContributorCounts] = useState(0);
+    const [refactoringCounts, setRefactoringCounts] = useState(0);
+    const [refactoringsChartData, setRefactoringsChartData] = useState([]);
+    const [commitsChartData, setCommitsChartData] = useState([]);
     const { user, setUser } = useContext(GithubContext);
 
     useEffect(() => {
@@ -115,6 +118,53 @@ const Dashboard = (props) => {
             console.log("CC", contCount);
             setContributorCounts(contCount.data);
         }
+        const refactoringCount = await api.getTotalRefactorings(null, {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        if(refactoringCount){
+            console.log("RC", refactoringCount);
+            setRefactoringCounts(refactoringCount.data);
+        }
+        const refactoringChartData = await api.getRefactoringData(null, {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        if(refactoringChartData){
+            console.log('RCD', refactoringChartData)
+            setRefactoringsChartData(refactoringChartData.data.data);
+        }
+        const commitChartData = await api.getCommitsCountByRepo(null, {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        if(commitChartData){
+            console.log('CCD', commitChartData)
+            setCommitsChartData(commitChartData.data);
+        }
+    }
+
+    var refactoringChartDataFeed = {
+        labels: refactoringsChartData.map(function (item) {
+            return item.attributes.commitdate.slice(0, 10);
+          }),
+          datasets: [{
+            label: "Total Refactorings Done Across Repos By Date",
+            data: refactoringsChartData.map(function (item) {
+              return item.attributes.totalchanges;
+            }),
+          }]
+    }
+
+    var commitByRepoDataFeed = {
+        labels: Object.keys(commitsChartData),
+          datasets: [{
+            label: "Commits By Repo",
+            data: Object.values(commitsChartData),
+          }]
     }
 
     const createGithubAuths = async (user, accessToken, refreshToken, expiresIn, headers) => {
@@ -145,7 +195,7 @@ const Dashboard = (props) => {
     };
     return (
         <>
-            <Header showCards={true} repositoryCounts={repositoryCounts} contributorCounts={contributorCounts} />
+            <Header showCards={true} repositoryCounts={repositoryCounts} contributorCounts={contributorCounts} refactoringCounts={refactoringCounts} />
             {/* Page content */}
             <Container className="mt--7" fluid>
                 <Row>
@@ -157,36 +207,7 @@ const Dashboard = (props) => {
                                         <h6 className="text-uppercase text-light ls-1 mb-1">
                                             Overview
                                         </h6>
-                                        <h2 className="text-white mb-0">Sales value</h2>
-                                    </div>
-                                    <div className="col">
-                                        <Nav className="justify-content-end" pills>
-                                            <NavItem>
-                                                <NavLink
-                                                    className={classnames("py-2 px-3", {
-                                                        active: activeNav === 1,
-                                                    })}
-                                                    href="#pablo"
-                                                    onClick={(e) => toggleNavs(e, 1)}
-                                                >
-                                                    <span className="d-none d-md-block">Month</span>
-                                                    <span className="d-md-none">M</span>
-                                                </NavLink>
-                                            </NavItem>
-                                            <NavItem>
-                                                <NavLink
-                                                    className={classnames("py-2 px-3", {
-                                                        active: activeNav === 2,
-                                                    })}
-                                                    data-toggle="tab"
-                                                    href="#pablo"
-                                                    onClick={(e) => toggleNavs(e, 2)}
-                                                >
-                                                    <span className="d-none d-md-block">Week</span>
-                                                    <span className="d-md-none">W</span>
-                                                </NavLink>
-                                            </NavItem>
-                                        </Nav>
+                                        <h2 className="text-white mb-0">Refactorings across Repositories</h2>
                                     </div>
                                 </Row>
                             </CardHeader>
@@ -194,8 +215,8 @@ const Dashboard = (props) => {
                                 {/* Chart */}
                                 <div className="chart">
                                     <Line
-                                        data={chartExample1[chartExample1Data]}
-                                        options={chartExample1.options}
+                                        data={refactoringChartDataFeed}
+                                        options={chartExample1.options2}
                                         getDatasetAtEvent={(e) => console.log(e)}
                                     />
                                 </div>
@@ -208,9 +229,9 @@ const Dashboard = (props) => {
                                 <Row className="align-items-center">
                                     <div className="col">
                                         <h6 className="text-uppercase text-muted ls-1 mb-1">
-                                            Performance
+                                            Trending Repositories
                                         </h6>
-                                        <h2 className="mb-0">Total orders</h2>
+                                        <h2 className="mb-0">Total commits by Repository</h2>
                                     </div>
                                 </Row>
                             </CardHeader>
@@ -218,7 +239,7 @@ const Dashboard = (props) => {
                                 {/* Chart */}
                                 <div className="chart">
                                     <Bar
-                                        data={chartExample2.data}
+                                        data={commitByRepoDataFeed}
                                         options={chartExample2.options}
                                     />
                                 </div>

@@ -98,8 +98,9 @@ const PullRequestsRepo = () => {
     });
     if (data) {
       console.log('data', data);
-      data.data.sort((a, b) => parseInt(b.prs) - parseInt(a.prs));
-      await setPRSByBranch(data.data);
+      const myData = data.data;
+      myData.sort((a, b) => parseInt(b.prs) - parseInt(a.prs));
+      await setPRSByBranch(myData);
     }
   }
 

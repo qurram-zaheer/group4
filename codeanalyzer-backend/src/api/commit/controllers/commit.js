@@ -519,12 +519,18 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
   // Get the time difference between pull requests of a user
   async getAvgTimeDifferenceBetweenCommits(ctx, next) {
     const accessToken = ctx.request.query["accessToken"];
+    const repository = ctx.request.query['repositoryId'];
+    console.log('repository', repository);
     const differenceResult = [],
       createdOn = [];
     const prs = await strapi.db.query("api::commit.commit").findMany({
       select: ["id", "commitdate"],
+      where: {
+        repository: repository
+      },
       orderBy: { commitdate: "desc" },
     });
+    console.log('prs', prs);
     for (let i = 0; i < prs.length - 1; i++) {
       let difference =
         (new Date(prs[i].commitdate).getTime() -
@@ -548,7 +554,7 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
   async getCommitsByHour(ctx) {
     const repositoryId = ctx.request.query.repositoryId;
     const repoCommits = await strapi.db.query("api::commit.commit").findMany({
-      select: ["id", "commit_id", "commitdate", "commitavatar"],
+      select: ["id", "commit_id", "commitdate", "authoravatar"],
       populate: { repository: true },
       where: {
         repository: {
@@ -618,4 +624,60 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
     });
     return userEffortObj;
   },
+
+  async getCommitRefactoringsByTime(ctx) {
+    const repositoryId = ctx.request.query.repositoryId;
+    const repoCommits = await strapi.db.query("api::commit.commit").findMany({
+      select: ["id", "commit_id", "commitdate", "totalchanges"],
+      populate: { repository: true },
+      where: {
+        repository: {
+          id: {
+            $eq: repositoryId,
+          },
+        },
+      },
+      orderBy: { commitdate: "desc" },
+    });
+    return repoCommits;
+  },
+
+  async getTotalRefactoringsForRepo(ctx){
+    const repositoryId = ctx.request.query.repositoryId;
+    const repoCommits = await strapi.db.query("api::commit.commit").count({
+      where: {
+        repository: {
+          id: {
+            $eq: repositoryId,
+          },
+        },
+        orderBy: { commitdate: "desc" },
+      },
+    });
+    return repoCommits;
+  },
+
+  async getTotalRefactorings(ctx){
+    const repoCommits = await strapi.db.query("api::commit.commit").findMany({
+      select: ['totalchanges']
+    });
+    console.log('repoCommits', repoCommits);
+    return repoCommits.map(changes => changes.totalchanges).reduce((a, b) => a + b);
+  },
+
+  async getCommitsCountByRepo(ctx){
+    const repoCommits = await strapi.db.query("api::commit.commit").findMany({
+      select: ['id'],
+      populate: { repository: true }
+    });
+    const result = {};
+    repoCommits.map(commit => {
+      if(result[commit.repository.name] == null || result[commit.repository.name] == undefined){
+        result[commit.repository.name] = 0;
+      }else{
+        result[commit.repository.name] = result[commit.repository.name] + 1;
+      }
+    });
+    return result;
+  }
 }));

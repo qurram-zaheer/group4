@@ -74,13 +74,17 @@ const Commits = () => {
       }
     });
     if (data) {
-      console.log('data', data);
-      data.data.sort((a, b) => parseInt(b.commits) - parseInt(a.commits));
-      setCommitsByBranch(data.data);
+      console.log('fetchCommitsByBranch', data.data.length);
+      if (data.data?.length > 0 && Array.isArray(data.data)) {
+        const myData = data.data;
+        console.log('fetchCommitsByBranchIns', data.data, myData, typeof(myData));
+        myData.sort((a, b) => parseInt(b.commits) - parseInt(a.commits));
+        setCommitsByBranch(myData);
+      }
     }
   }
-  
-  const fetchCommitsFrequency = async(accessToken) => {
+
+  const fetchCommitsFrequency = async (accessToken) => {
     const data = await api.getCommitsFrequencyByRepository({
       repository: repos?.selectedRepo?.id
     }, {
@@ -89,9 +93,10 @@ const Commits = () => {
       }
     });
     setCreatedOn(data.data.createdOn);
-    const differenceRoundArray =  data.data.difference.map(function(each_element){
+    const differenceRoundArray = data.data.difference.map(function (each_element) {
       return Number(each_element.toFixed(2));
     });
+    differenceRoundArray.shift();
     setDifference(differenceRoundArray);
     console.log('data', difference, createdOn);
   }
@@ -134,13 +139,13 @@ const Commits = () => {
                     {commitsByBranch.map((commitByBranch, index) => {
                       return (
                         <tr key={index}>
-                        <th scope="row">
-                          <span className="mb-0 text-sm">
-                            {commitByBranch.branch}
-                          </span>
-                        </th>
-                        <td>{commitByBranch.commits}</td>
-                      </tr>
+                          <th scope="row">
+                            <span className="mb-0 text-sm">
+                              {commitByBranch.branch}
+                            </span>
+                          </th>
+                          <td>{commitByBranch.commits}</td>
+                        </tr>
                       );
                     })}
                   </tbody>
