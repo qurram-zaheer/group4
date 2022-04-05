@@ -308,8 +308,9 @@ const Sidebar = (props) => {
                   caret
                   style={{ width: "100%", overflow: "hidden" }}
                 >
-                  {repos.selectedRepo.attributes
-                    ? `${repos.selectedRepo.attributes.owner}/${repos.selectedRepo.attributes.name}`
+                  {
+                  repos.selectedRepo?.attributes
+                    ? `${repos.selectedRepo?.attributes.owner}/${repos.selectedRepo?.attributes?.name}`
                     : "Loading ..."}
                 </DropdownToggle>
                 {repos.repos.length > 0 ? (
