@@ -54,7 +54,7 @@ const getPullRequestFrequencyPerUser = (info, headers) => {
 };
 
 const getRepositories = (headers) => {
-  return get(`/repositories`, null, headers);
+  return get(`/repositories?pagination[page]=1&pagination[pageSize]=100`, null, headers);
 };
 
 const getPullRequests = (headers) => {

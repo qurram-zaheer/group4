@@ -76,36 +76,34 @@ const PullRequests = () => {
   useEffect(() => {
     ; (async () => {
       const strapiToken = await localStorage.getItem("token");
-      const repos = await api.getRepositories({
-        headers: {
-          'Authorization': 'Bearer ' + strapiToken
-        }
-      });
+      const userId = localStorage.getItem("strapiUserId");
+      const repos = await api.getUserRepos(userId);
       if (repos.data) {
         setRepositories(repos.data.data);
+        console.log('datarepo', repos.data.data);
         setChosenRepo(repos.data.data[0].attributes.name);
         setLoadedRepos(true);
-        loadPullRequestUsers(repos.data.data[0].attributes.name);
+        loadPullRequestUsers(repos.data.data[0].id);
       }
     })()
   }, []);
 
   const loadPullRequestUsers = async (repo) => {
-      const accessToken = await localStorage.getItem("githubToken");
-      const strapiToken = await localStorage.getItem("token");
-      const pullRequests = await api.getPullRequestsUniqueUsers({
-        repository: repo,
-        accessToken: accessToken,
-      } ,{
-        headers: {
-          'Authorization': 'Bearer ' + strapiToken
-        }
-      });
-      console.log(pullRequests);
-      if(pullRequests){
-        setPRS(pullRequests.data.contributors);
-        setChosenPR(pullRequests.data.contributors[0])
+    const accessToken = await localStorage.getItem("githubToken");
+    const strapiToken = await localStorage.getItem("token");
+    const pullRequests = await api.getPullRequestsUniqueUsers({
+      repository: repo,
+      accessToken: accessToken,
+    }, {
+      headers: {
+        'Authorization': 'Bearer ' + strapiToken
       }
+    });
+    console.log(pullRequests);
+    if (pullRequests) {
+      setPRS(pullRequests.data.contributors);
+      setChosenPR(pullRequests.data.contributors[0])
+    }
   }
 
   const generatePullRequestsFrequencyPerUser = async (e) => {
@@ -127,7 +125,7 @@ const PullRequests = () => {
       setUserNotFound(false);
     }
     setCreatedOn(data.data.createdOn);
-    const differenceRoundArray =  data.data.difference.map(function(each_element){
+    const differenceRoundArray = data.data.difference.map(function (each_element) {
       return Number(each_element.toFixed(2));
     });
     setDifference(differenceRoundArray);
@@ -176,10 +174,10 @@ const PullRequests = () => {
                         Repository
                       </h6>
                       <div className="input-group mb-4">
-                        <select class="form-control" data-toggle="select" title="Choose a repository" onChange={async e => {
+                        <select className="form-control" data-toggle="select" title="Choose a repository" onChange={async e => {
                           await setChosenRepo(e.target.value);
                           loadPullRequestUsers(e.target.value);
-                          }}>
+                        }}>
                           {Object.entries(repositories).map((repo) => {
                             return <option value={repo[1].id} >{repo[1].attributes.name}</option>
                           })}
@@ -192,7 +190,7 @@ const PullRequests = () => {
                               Contributor
                             </h6>
                             <div className="input-group mb-4">
-                              <select class="form-control" data-toggle="select" title="Choose a contributor" value={chosenPR} onChange={e => setChosenPR(e.target.value)}>
+                              <select className="form-control" data-toggle="select" title="Choose a contributor" value={chosenPR} onChange={e => setChosenPR(e.target.value)}>
                                 {Object.entries(prs).map((pr) => {
                                   return <option value={pr[1]} >{pr[1]}</option>
                                 })}
@@ -226,14 +224,12 @@ const PullRequests = () => {
               </CardHeader>
               <CardBody>
                 {/* Chart */}
-                <div className="chart">
                   <Line
                     data={data}
                     options={chartExample1.options}
-                    height={100}
                     getDatasetAtEvent={(e) => console.log(e)}
+                    height={150}
                   />
-                </div>
               </CardBody>
             </Card>
           </div>
