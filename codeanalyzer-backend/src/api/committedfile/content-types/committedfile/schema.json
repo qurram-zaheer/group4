@@ -45,6 +45,9 @@
     },
     "authorname": {
       "type": "string"
+    },
+    "commitdate": {
+      "type": "datetime"
     }
   }
 }
