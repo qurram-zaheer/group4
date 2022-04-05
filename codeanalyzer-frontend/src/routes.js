@@ -20,6 +20,7 @@ import Profile from "views/subviews/Profile.js";
 import Register from "views/Register.js";
 import Login from "views/Login.js";
 import PullRequests from "views/subviews/PullRequests.js";
+import FileModifications from "views/subviews/FileModifications.js";
 import JiraAuth from "views/JiraAuth";
 import Commits from "views/subviews/Commits";
 import Tables from "views/subviews/Tables";
