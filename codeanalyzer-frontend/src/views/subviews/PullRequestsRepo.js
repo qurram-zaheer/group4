@@ -97,24 +97,26 @@ const PullRequestsRepo = () => {
       }
     });
     if (data) {
-      console.log('data', data);
-      const myData = data.data;
-      myData.sort((a, b) => parseInt(b.prs) - parseInt(a.prs));
-      await setPRSByBranch(myData);
+      console.log('PullRequestRepodata', data);
+      if (data.data?.length > 0 && Array.isArray(data.data)) {
+        const myData = data.data;
+        myData.sort((a, b) => parseInt(b.prs) - parseInt(a.prs));
+        await setPRSByBranch(myData);
+      }
     }
   }
 
-  var data = {
+  var commitByRepoDataFeed = {
     labels: prsByBranch.map(function (item) {
       return item.branch;
     }),
-    datasets: [{
-      label: "Difference in number of days between PRs",
-      data: prsByBranch.map(function (item) {
-        return item.prs;
-      }),
-    }]
-  };
+      datasets: [{
+        label: "Commits By Repo",
+        data: prsByBranch.map(function (item) {
+          return item.prs;
+        }),
+      }]
+  }
 
   return (
     <>
@@ -138,9 +140,9 @@ const PullRequestsRepo = () => {
                 {/* Chart */}
                 <div className="chart">
                   <Bar
-                    data={data}
-                    options={chartExample1.options}
-                    height={"100%"}
+                    data={commitByRepoDataFeed}
+                    options={chartExample2.options}
+                    height={100}
                   />
                 </div>
               </CardBody>
