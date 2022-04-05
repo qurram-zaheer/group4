@@ -1,11 +1,14 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 
-const BarComponent = (props) => {
+const HorizontaBarComponent = (props) => {
   const options = {
+    indexAxis: "y",
     legend: {
       display: false,
     },
+    responsive: true,
+    maintainAspectRatio: false,
   };
   return (
     <div style={{ height: "90%" }}>
@@ -18,4 +21,4 @@ const BarComponent = (props) => {
   );
 };
 
-export default BarComponent;
+export default HorizontaBarComponent;

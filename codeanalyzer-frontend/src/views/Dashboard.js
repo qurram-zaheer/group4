@@ -41,10 +41,15 @@ import {
 } from "reactstrap";
 
 // core components
-import { chartExample1, chartExample2, chartOptions, parseOptions, } from "variables/charts.js";
-import GithubContext from "../contexts/GithubContext"
-import { api } from "../lib/api"
-
+import {
+    chartExample1,
+    chartExample2,
+    chartOptions,
+    parseOptions,
+} from "variables/charts.js";
+import GithubContext from "../contexts/GithubContext";
+import { api } from "../lib/api";
+import { useHistory } from "react-router-dom";
 import Header from "components/Headers/Header.js";
 
 const Dashboard = (props) => {
@@ -53,86 +58,170 @@ const Dashboard = (props) => {
     const [chartExample1Data, setChartExample1Data] = useState("data1");
     const [repositoryCounts, setRepositoryCounts] = useState(0);
     const [contributorCounts, setContributorCounts] = useState(0);
+    const [refactoringCounts, setRefactoringCounts] = useState(0);
+    const [refactoringsChartData, setRefactoringsChartData] = useState([]);
+    const [commitsChartData, setCommitsChartData] = useState([]);
     const { user, setUser } = useContext(GithubContext);
+    const history = useHistory();
 
     useEffect(() => {
-        ; (async () => {
-            const accessToken = query.get('access_token');
-            console.log(accessToken)
-            const refreshToken = query.get('refresh_token');
-            const expiresIn = query.get('raw[expires_in]');
+        (async () => {
+            const accessToken = query.get("access_token");
+            console.log(accessToken);
+            const refreshToken = query.get("refresh_token");
+            const expiresIn = query.get("raw[expires_in]");
             // console.log('AT->', accessToken, refreshToken, expiresIn);
-            const userRegistration = await api.authGithubUser(accessToken);
-            console.log('UR', userRegistration);
-            // console.log('UR->', userRegistration);
-            if (userRegistration && userRegistration.data.user) {
-                // console.log('CGA', userRegistration.data.user, userRegistration.data.user, accessToken, refreshToken, expiresIn);
-                const createGithubAuth = await createGithubAuths(userRegistration.data.user, accessToken, refreshToken, expiresIn, {
-                    headers: {
-                        'Authorization': 'Bearer ' + userRegistration.data.jwt
-                    }
-                });
-                if (createGithubAuth) {
-                    console.log('User Registration was Successful!');
-                    console.log("CGA", createGithubAuth.data.data.attributes.user.data, createGithubAuth, accessToken);
-                    await setUser({
-                        ...createGithubAuth.data.data.attributes.user.data,
+            if (accessToken) {
+                const userRegistration = await api.authGithubUser(accessToken);
+                console.log("UR", userRegistration);
+                // console.log('UR->', userRegistration);
+                if (userRegistration && userRegistration.data.user) {
+                    // console.log('CGA', userRegistration.data.user, userRegistration.data.user, accessToken, refreshToken, expiresIn);
+                    const createGithubAuth = await createGithubAuths(
+                        userRegistration.data.user,
                         accessToken,
-                    });
-                    console.log('user', user);
-                    await localStorage.setItem(
-                        "strapiUserId",
-                        createGithubAuth.data.data.attributes.user.data.id
+                        refreshToken,
+                        expiresIn,
+                        {
+                            headers: {
+                                Authorization: "Bearer " + userRegistration.data.jwt,
+                            },
+                        }
                     );
-                }
-            }
-            console.log('user', user);
-            await localStorage.setItem("token", userRegistration.data.jwt)
-            await localStorage.setItem("githubToken", accessToken)
+                    if (createGithubAuth) {
+                        console.log("User Registration was Successful!");
+                        console.log(
+                            "CGA",
+                            createGithubAuth.data.data.attributes.user.data,
+                            createGithubAuth,
+                            accessToken
+                        );
+                        await setUser({
+                            ...createGithubAuth.data.data.attributes.user.data,
+                            accessToken,
+                        });
+                        console.log("user", user);
+                        await localStorage.setItem(
+                            "strapiUserId",
+                            createGithubAuth.data.data.attributes.user.data.id
+                        );
 
+                    }
+                }
+
+                console.log("user", user);
+                await localStorage.setItem("token", userRegistration.data.jwt);
+                await localStorage.setItem("githubToken", accessToken);
+
+                fetchDashboardData();
+            }
+
+        const token = localStorage.getItem("token");
+        if(token){
             fetchDashboardData();
-        })()
+        }
+    })();
     }, []);
 
     const fetchDashboardData = async () => {
-        console.log('inside!!!');
+        console.log("inside!!!");
         const accessToken = await localStorage.getItem("token");
-        const repoCount = await api.getRepositoriesCount(null, {
-            headers: {
-                'Authorization': 'Bearer ' + accessToken
-            }
-        });
+        const userId = localStorage.getItem("strapiUserId");
+        const repoCount = await api.getUserRepos(userId);
         if (repoCount) {
             console.log("RC", repoCount);
-            setRepositoryCounts(repoCount.data);
+            if (repoCount.data.data.length === 0) {
+                history.push("/add-repos");
+            }
+            setRepositoryCounts(repoCount.data.data.length);
         }
         const contCount = await api.getContributorsCount(null, {
             headers: {
-                'Authorization': 'Bearer ' + accessToken
-            }
+                Authorization: "Bearer " + accessToken,
+            },
         });
         if (contCount) {
             console.log("CC", contCount);
             setContributorCounts(contCount.data);
         }
-    }
-
-    const createGithubAuths = async (user, accessToken, refreshToken, expiresIn, headers) => {
-        try {
-            console.log('Headers', headers);
-            return await api.createAuths({
-                data: {
-                    accessToken: accessToken,
-                    refreshToken: refreshToken,
-                    expiresIn: expiresIn,
-                    'user': user.id,
-                    kind: 'Github',
-                }
-            }, headers);
-        } catch (err) {
-            console.error('Unable to add Github Auths -> ', err)
+        const refactoringCount = await api.getTotalRefactorings(null, {
+            headers: {
+                Authorization: "Bearer " + accessToken,
+            },
+        });
+        if (refactoringCount) {
+            console.log("RC", refactoringCount);
+            setRefactoringCounts(refactoringCount.data);
         }
-    }
+        const refactoringChartData = await api.getRefactoringData(null, {
+            headers: {
+                Authorization: "Bearer " + accessToken,
+            },
+        });
+        if (refactoringChartData) {
+            console.log("RCD", refactoringChartData);
+            setRefactoringsChartData(refactoringChartData.data.data);
+        }
+        const commitChartData = await api.getCommitsCountByRepo(null, {
+            headers: {
+                Authorization: "Bearer " + accessToken,
+            },
+        });
+        if (commitChartData) {
+            console.log("CCD", commitChartData);
+            setCommitsChartData(commitChartData.data);
+        }
+    };
+
+    var refactoringChartDataFeed = {
+        labels: refactoringsChartData.map(function (item) {
+            return item.attributes.commitdate?.slice(0, 10);
+        }),
+        datasets: [
+            {
+                label: "Total Refactorings Done Across Repos By Date",
+                data: refactoringsChartData.map(function (item) {
+                    return item.attributes.totalchanges;
+                }),
+            },
+        ],
+    };
+
+    var commitByRepoDataFeed = {
+        labels: Object.keys(commitsChartData),
+        datasets: [
+            {
+                label: "Commits By Repo",
+                data: Object.values(commitsChartData),
+            },
+        ],
+    };
+
+    const createGithubAuths = async (
+        user,
+        accessToken,
+        refreshToken,
+        expiresIn,
+        headers
+    ) => {
+        try {
+            console.log("Headers", headers);
+            return await api.createAuths(
+                {
+                    data: {
+                        accessToken: accessToken,
+                        refreshToken: refreshToken,
+                        expiresIn: expiresIn,
+                        user: user.id,
+                        kind: "Github",
+                    },
+                },
+                headers
+            );
+        } catch (err) {
+            console.error("Unable to add Github Auths -> ", err);
+        }
+    };
 
     if (window.Chart) {
         parseOptions(Chart, chartOptions());
@@ -145,7 +234,12 @@ const Dashboard = (props) => {
     };
     return (
         <>
-            <Header showCards={true} repositoryCounts={repositoryCounts} contributorCounts={contributorCounts} />
+            <Header
+                showCards={true}
+                repositoryCounts={repositoryCounts}
+                contributorCounts={contributorCounts}
+                refactoringCounts={refactoringCounts}
+            />
             {/* Page content */}
             <Container className="mt--7" fluid>
                 <Row>
@@ -157,48 +251,20 @@ const Dashboard = (props) => {
                                         <h6 className="text-uppercase text-light ls-1 mb-1">
                                             Overview
                                         </h6>
-                                        <h2 className="text-white mb-0">Sales value</h2>
-                                    </div>
-                                    <div className="col">
-                                        <Nav className="justify-content-end" pills>
-                                            <NavItem>
-                                                <NavLink
-                                                    className={classnames("py-2 px-3", {
-                                                        active: activeNav === 1,
-                                                    })}
-                                                    href="#pablo"
-                                                    onClick={(e) => toggleNavs(e, 1)}
-                                                >
-                                                    <span className="d-none d-md-block">Month</span>
-                                                    <span className="d-md-none">M</span>
-                                                </NavLink>
-                                            </NavItem>
-                                            <NavItem>
-                                                <NavLink
-                                                    className={classnames("py-2 px-3", {
-                                                        active: activeNav === 2,
-                                                    })}
-                                                    data-toggle="tab"
-                                                    href="#pablo"
-                                                    onClick={(e) => toggleNavs(e, 2)}
-                                                >
-                                                    <span className="d-none d-md-block">Week</span>
-                                                    <span className="d-md-none">W</span>
-                                                </NavLink>
-                                            </NavItem>
-                                        </Nav>
+                                        <h2 className="text-white mb-0">
+                                            Refactorings across Repositories
+                                        </h2>
                                     </div>
                                 </Row>
                             </CardHeader>
                             <CardBody>
                                 {/* Chart */}
-                                <div className="chart">
-                                    <Line
-                                        data={chartExample1[chartExample1Data]}
-                                        options={chartExample1.options}
-                                        getDatasetAtEvent={(e) => console.log(e)}
-                                    />
-                                </div>
+                                <Line
+                                    data={refactoringChartDataFeed}
+                                    options={chartExample1.options2}
+                                    height={150}
+                                    getDatasetAtEvent={(e) => console.log(e)}
+                                />
                             </CardBody>
                         </Card>
                     </Col>
@@ -208,20 +274,19 @@ const Dashboard = (props) => {
                                 <Row className="align-items-center">
                                     <div className="col">
                                         <h6 className="text-uppercase text-muted ls-1 mb-1">
-                                            Performance
+                                            Trending Repos
                                         </h6>
-                                        <h2 className="mb-0">Total orders</h2>
+                                        <h2 className="mb-0">Total commits by Repository</h2>
                                     </div>
                                 </Row>
                             </CardHeader>
                             <CardBody>
                                 {/* Chart */}
-                                <div className="chart">
-                                    <Bar
-                                        data={chartExample2.data}
-                                        options={chartExample2.options}
-                                    />
-                                </div>
+                                <Bar
+                                    data={commitByRepoDataFeed}
+                                    options={chartExample2.options}
+                                    height={150}
+                                />
                             </CardBody>
                         </Card>
                     </Col>

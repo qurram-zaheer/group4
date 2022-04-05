@@ -41,6 +41,9 @@
     },
     "targetBranch": {
       "type": "string"
+    },
+    "body": {
+      "type": "text"
     }
   }
 }
