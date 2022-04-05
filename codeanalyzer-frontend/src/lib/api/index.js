@@ -53,6 +53,10 @@ const getPullRequestFrequencyPerUser = (info, headers) => {
   );
 };
 
+const getCommitsQuery = (info, headers) => {
+  return get(`/commits?filters[repository][id][$eq]=${info.repositoryId}&${info.query}`);
+}
+
 const getRepositories = (headers) => {
   return get(`/repositories?pagination[page]=1&pagination[pageSize]=100`, null, headers);
 };
@@ -152,6 +156,7 @@ export const api = {
   getTotalRefactoringsForRepo,
   getTotalRefactorings,
   getRefactoringData,
-  getCommitsCountByRepo
+  getCommitsCountByRepo,
+  getCommitsQuery
   // fetchGithubRepo
 };
