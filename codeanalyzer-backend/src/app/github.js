@@ -92,7 +92,7 @@ exports.getCommits = async (info) => {
     .request(`GET /repos/{owner}/{repo}/commits`, {
       owner: info.owner,
       repo: info.repositoryName,
-      per_page: 5,
+      per_page: 30,
     })
     .then((res) => res.data);
   // console.log(commitBrief);
