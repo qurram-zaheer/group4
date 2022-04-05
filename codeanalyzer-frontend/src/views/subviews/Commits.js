@@ -46,6 +46,7 @@ import { api } from "../../lib/api";
 import RepositoriesContext from "../../contexts/RepositoriesContext";
 import { Line } from "react-chartjs-2";
 import { chartExample1, chartExample2, chartOptions, parseOptions, } from "variables/charts.js";
+const qs = require('qs');
 
 const Commits = () => {
 
@@ -78,7 +79,7 @@ const Commits = () => {
       console.log('fetchCommitsByBranch', data.data.length);
       if (data.data?.length > 0 && Array.isArray(data.data)) {
         const myData = data.data;
-        console.log('fetchCommitsByBranchIns', data.data, myData, typeof(myData));
+        console.log('fetchCommitsByBranchIns', data.data, myData, typeof (myData));
         myData.sort((a, b) => parseInt(b.commits) - parseInt(a.commits));
         setCommitsByBranch(myData);
       }
@@ -107,13 +108,34 @@ const Commits = () => {
   }
 
   const fetchCommitsAcrossBranchByDay = async (accessToken) => {
-    const data = await api.getCommitsFrequencyByRepository({
-      repository: repos?.selectedRepo?.id
+    const query = qs.stringify({
+      fields: ['branch', 'commitdate', 'commit_id'],
+    }, {
+      encodeValuesOnly: true,
+    });
+    const data = await api.getCommitsQuery({
+      repositoryId: repos?.selectedRepo?.id,
+      query: query
     }, {
       headers: {
         'Authorization': 'Bearer ' + accessToken
       }
     });
+    if (data) {
+      var result = {};
+      console.log('data123', data);
+      if (data.data?.data?.length > 0 && Array.isArray(data.data?.data)) {
+        data.data.data.map((commit) => {
+          console.log('mycm', commit);
+          if (result[commit.attributes?.commitdate.slice(0, 10)] == null || result[commit.attributes?.commitdate.slice(0, 10)] == undefined) {
+            result[commit.attributes?.commitdate.slice(0, 10)] = 0
+          } else {
+            result[commit.attributes?.commitdate.slice(0, 10)] = result[commit.attributes?.commitdate.slice(0, 10)] + 1;
+          }
+        })
+      }
+      console.log(result);
+    }
   }
 
   var data = {
@@ -180,12 +202,12 @@ const Commits = () => {
               </CardHeader>
               <CardBody>
                 {/* Chart */}
-                  <Line
-                    data={data}
-                    options={chartExample1.options3}
-                    getDatasetAtEvent={(e) => console.log(e)}
-                    height={150}
-                  />
+                <Line
+                  data={data}
+                  options={chartExample1.options3}
+                  getDatasetAtEvent={(e) => console.log(e)}
+                  height={150}
+                />
               </CardBody>
             </Card>
           </div>

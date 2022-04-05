@@ -69,16 +69,16 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
       });
 
       console.log("Fetched allCommits", repositoryId, allCommits);
-      Promise.all(
+      const commitEntries = Promise.all(
         allCommits.map(async (commit) => {
           const commitDataModel = {
             commit_id: commit.sha.substring(0, 6),
-            message: commit.commit.message,
+            message: commit.message,
             sha: commit.sha,
-            authorid: commit.author.id,
-            totalchanges: commit.stats.total,
-            totaladditions: commit.stats.additions,
-            totaldeletions: commit.stats.deletions,
+            authorid: commit.author?.id || '',
+            totalchanges: commit.stats?.total,
+            totaladditions: commit.stats?.additions,
+            totaldeletions: commit.stats?.deletions,
             branch: commit.branch,
             commitdate: new Date(commit.commit.author.date).toISOString(),
             committedfiles: [1],
