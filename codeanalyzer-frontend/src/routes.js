@@ -77,5 +77,12 @@ var routes = [
     component: Tables,
     layout: "/admin",
   },
+  {
+    path: "/filechanges",
+    name: "File Modifications",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: FileModifications, //FileModifications
+    layout: "/admin",
+},
 ];
 export default routes;
