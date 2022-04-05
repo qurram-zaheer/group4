@@ -187,6 +187,7 @@ const Repositories = () => {
           },
         ],
       };
+      console.log("TOTAL OBJ", totalObj);
       await setContribDataAdd(addObj);
       await setContribDataDel(delObj);
       await setContribDataTotal(totalObj);
@@ -328,24 +329,9 @@ const Repositories = () => {
                     id="exampleSelect"
                     onChange={(e) => setSelectedContrib(e.target.value)}
                   >
-                    <option
-                      onChange={() => setSelectedContrib("total")}
-                      value="total"
-                    >
-                      Total Changes
-                    </option>
-                    <option
-                      onChange={() => setSelectedContrib("add")}
-                      value="add"
-                    >
-                      Additions
-                    </option>
-                    <option
-                      onChange={() => setSelectedContrib("del")}
-                      value="del"
-                    >
-                      Deletions
-                    </option>
+                    <option value="total">Total Changes</option>
+                    <option value="add">Additions</option>
+                    <option value="del">Deletions</option>
                   </Input>
                 </FormGroup>
 
