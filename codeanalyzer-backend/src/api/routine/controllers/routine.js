@@ -78,12 +78,14 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
             authorid: commit.author?.id,
             totalchanges: commit.stats?.total,
             totaladditions: commit.stats?.additions,
-            totaldeletions: commit.stats.deletions,
+            totaldeletions: commit.stats?.deletions,
             branch: commit.branch,
-            commitdate: new Date(commit.commit.author.date).toISOString(),
-            committedfiles: [1],
+            commitdate: commit.commit?.author?.date
+              ? new Date(commit.commit?.author.date)?.toISOString()
+              : null,
+            committedfiles: commit.committedfiles,
             repository: repositoryId,
-            authorname: commit.author.login,
+            authorname: commit.author?.login,
           };
           const uploadCommitDataModel = await strapi.db
             .query("api::commit.commit")
