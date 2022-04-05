@@ -120,11 +120,13 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
     let contributors = {};
     allCommitsForRepo.map((commitData) => {
       const { authorid } = commitData;
+
       if (!contributors[authorid]) {
         contributors[authorid] = {};
         contributors[authorid].sumadditions = 0;
         contributors[authorid].sumdeletions = 0;
         contributors[authorid].sumchanges = 0;
+        contributors[authorid].name = commitData.authorname;
       }
       contributors[authorid].sumadditions =
         contributors[authorid].sumadditions + commitData.totaladditions;
@@ -140,13 +142,13 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
         async ([authorid, contribObj], index) => {
           console.log("key", authorid), console.log("value", contribObj);
           const contribEntry = {
-            name: "",
+            name: contribObj.name,
             author_id: authorid,
             sumadditions: contribObj.sumadditions,
             sumdeletions: contribObj.sumdeletions,
             sumchanges: contribObj.sumchanges,
             // publishedAt: new Date().toISOString,
-            repositories: [repoId],
+            repository: repoId,
           };
           console.log("contribEntry", contribEntry);
           const entry = await strapi.entityService.create(
