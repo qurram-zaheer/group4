@@ -174,7 +174,7 @@ const Commits = () => {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="bg-transparent">
-                <h3 className="mb-0">Top commits by Branch</h3>
+                <h3 className="mb-0">Top Branches Based on Commits</h3>
               </CardHeader>
               <CardBody>
                 <Table className="align-items-center table-flush" responsive>
