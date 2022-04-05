@@ -100,14 +100,11 @@ const Dashboard = (props) => {
     const fetchDashboardData = async () => {
         console.log('inside!!!');
         const accessToken = await localStorage.getItem("token");
-        const repoCount = await api.getRepositoriesCount(null, {
-            headers: {
-                'Authorization': 'Bearer ' + accessToken
-            }
-        });
+        const userId = localStorage.getItem("strapiUserId");
+        const repoCount = await api.getUserRepos(userId);
         if (repoCount) {
             console.log("RC", repoCount);
-            setRepositoryCounts(repoCount.data);
+            setRepositoryCounts(repoCount.data.data.length);
         }
         const contCount = await api.getContributorsCount(null, {
             headers: {
@@ -229,7 +226,7 @@ const Dashboard = (props) => {
                                 <Row className="align-items-center">
                                     <div className="col">
                                         <h6 className="text-uppercase text-muted ls-1 mb-1">
-                                            Trending Repositories
+                                            Trending Repos
                                         </h6>
                                         <h2 className="mb-0">Total commits by Repository</h2>
                                     </div>
