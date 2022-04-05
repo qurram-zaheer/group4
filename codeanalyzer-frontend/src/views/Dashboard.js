@@ -53,6 +53,7 @@ const Dashboard = (props) => {
     const [chartExample1Data, setChartExample1Data] = useState("data1");
     const [repositoryCounts, setRepositoryCounts] = useState(0);
     const [contributorCounts, setContributorCounts] = useState(0);
+    const [refactoringCounts, setRefactoringCounts] = useState(0);
     const { user, setUser } = useContext(GithubContext);
 
     useEffect(() => {
@@ -114,6 +115,15 @@ const Dashboard = (props) => {
         if (contCount) {
             console.log("CC", contCount);
             setContributorCounts(contCount.data);
+        }
+        const refactoringCount = await api.getTotalRefactoringsForRepo(null, {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        if(refactoringCount){
+            console.log("RC", contCount);
+            setRefactoringCounts(contCount.data);
         }
     }
 

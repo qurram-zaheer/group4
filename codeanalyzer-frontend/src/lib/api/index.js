@@ -112,6 +112,10 @@ const getUserLanguageEffort = (info, headers) => {
   return get(`/commit/getUserLanguageEffort?repositoryId=${info.repositoryId}`);
 };
 
+const getTotalRefactoringsForRepo = (info, headers) => {
+  return get(`/commit/getTotalRefactoringsForRepo?repositoryId=${info.repositoryId}`)
+}
+
 export const api = {
   authGithubUser,
   createAuths,
@@ -133,5 +137,6 @@ export const api = {
   getPullRequestsCountsByBranch,
   getCommitCountPerHour,
   getUserLanguageEffort,
+  getTotalRefactoringsForRepo
   // fetchGithubRepo
 };
