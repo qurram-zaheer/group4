@@ -655,5 +655,13 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
       },
     });
     return repoCommits;
+  },
+
+  async getTotalRefactorings(ctx){
+    const repoCommits = await strapi.db.query("api::commit.commit").findMany({
+      select: ['totalchanges']
+    });
+    console.log('repoCommits', repoCommits);
+    return repoCommits.map(changes => changes.totalchanges).reduce((a, b) => a + b);
   }
 }));

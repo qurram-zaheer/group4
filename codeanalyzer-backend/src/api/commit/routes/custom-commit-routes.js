@@ -34,6 +34,11 @@ module.exports = {
       method: "GET",
       path: "/commit/getTotalRefactoringsForRepo",
       handler: "commit.getTotalRefactoringsForRepo"
+    },
+    {
+      method: "GET",
+      path: "/commit/getTotalRefactorings",
+      handler: "commit.getTotalRefactorings"
     }
   ],
 };
