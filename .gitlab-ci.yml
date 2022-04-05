@@ -18,7 +18,11 @@ build:
     - dalfcs_gitlab_docker_ci
   script:
     - cd codeanalyzer-backend
-    # - npm install
+    - npm install
+    - cd ../codeanalyzer-frontend
+    - npm install
+    - cd ..
+    - npm run full-prod-mode
 
 test:
   stage: test
@@ -26,6 +30,9 @@ test:
     - echo "Pipeline test started"
   tags:
     - dalfcs_gitlab_docker_ci
+  script:
+    - cd codeanalyzer-backend
+    - npm run test
 
 deploy_uat:
   stage: deploy_uat
@@ -46,6 +53,7 @@ deploy_uat:
     - uat
 
 sonarqube-check:
+  stage: sonarqube-check
   image:
     name: sonarsource/sonar-scanner-cli:latest
     entrypoint: [""]
@@ -57,7 +65,7 @@ sonarqube-check:
     - sonar-scanner -Dsonar.organization=csci5308g4 -Dsonar.projectKey=code_at -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io
   allow_failure: true
   only:
-    - qurram # or the name of your main branch
+    - main # or the name of your main branch
 
 deploy_backend_prod:
   stage: deploy_backend_prod

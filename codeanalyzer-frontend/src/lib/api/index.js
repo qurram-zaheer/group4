@@ -24,6 +24,10 @@ const getRepositoriesCount = (info, headers) => {
   return get("/repository/count", info, headers);
 };
 
+const getUserFromId = (info, headers) => {
+  return get(`/users/${info.userId}`, headers);
+}
+
 // const fetchGithubRepo = async (username)=>{
 //     const url = "https://api.github.com/users/tushartushar/repos";
 
@@ -162,6 +166,7 @@ export const api = {
   getTotalRefactorings,
   getRefactoringData,
   getCommitsCountByRepo,
-  getCommitsQuery
+  getCommitsQuery,
+  getUserFromId
   // fetchGithubRepo
 };
