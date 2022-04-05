@@ -406,7 +406,7 @@ let chartExample1 = {
         },
       },
     },
-  }
+  },
   data1: (canvas) => {
     return {
       labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
