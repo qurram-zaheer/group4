@@ -46,6 +46,7 @@ import { api } from "../../lib/api";
 import RepositoriesContext from "../../contexts/RepositoriesContext";
 import { Line } from "react-chartjs-2";
 import { chartExample1, chartExample2, chartOptions, parseOptions, } from "variables/charts.js";
+const qs = require('qs');
 
 const Commits = () => {
 
@@ -61,6 +62,7 @@ const Commits = () => {
       const accessToken = await localStorage.getItem("token");
       await fetchCommitsByBranch(accessToken);
       await fetchCommitsFrequency(accessToken);
+      await fetchCommitsAcrossBranchByDay(accessToken);
     })()
   }, [repos]);
 
@@ -74,13 +76,17 @@ const Commits = () => {
       }
     });
     if (data) {
-      console.log('data', data);
-      data.data.sort((a, b) => parseInt(b.commits) - parseInt(a.commits));
-      setCommitsByBranch(data.data);
+      console.log('fetchCommitsByBranch', data.data.length);
+      if (data.data?.length > 0 && Array.isArray(data.data)) {
+        const myData = data.data;
+        console.log('fetchCommitsByBranchIns', data.data, myData, typeof (myData));
+        myData.sort((a, b) => parseInt(b.commits) - parseInt(a.commits));
+        setCommitsByBranch(myData);
+      }
     }
   }
-  
-  const fetchCommitsFrequency = async(accessToken) => {
+
+  const fetchCommitsFrequency = async (accessToken) => {
     const data = await api.getCommitsFrequencyByRepository({
       repository: repos?.selectedRepo?.id
     }, {
@@ -89,15 +95,47 @@ const Commits = () => {
       }
     });
     setCreatedOn(data.data.createdOn);
-    const differenceRoundArray =  data.data.difference.map(function(each_element){
+    const differenceRoundArray = data.data.difference.map(function (each_element) {
       return Number(each_element.toFixed(2));
     });
+    differenceRoundArray.shift();
     setDifference(differenceRoundArray);
     console.log('data', difference, createdOn);
   }
 
   const range = (start, end) => {
     return Array(end - start + 1).fill().map((_, idx) => start + idx)
+  }
+
+  const fetchCommitsAcrossBranchByDay = async (accessToken) => {
+    const query = qs.stringify({
+      fields: ['branch', 'commitdate', 'commit_id'],
+    }, {
+      encodeValuesOnly: true,
+    });
+    const data = await api.getCommitsQuery({
+      repositoryId: repos?.selectedRepo?.id,
+      query: query
+    }, {
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    });
+    if (data) {
+      var result = {};
+      console.log('data123', data);
+      if (data.data?.data?.length > 0 && Array.isArray(data.data?.data)) {
+        data.data.data.map((commit) => {
+          console.log('mycm', commit);
+          if (result[commit.attributes?.commitdate.slice(0, 10)] == null || result[commit.attributes?.commitdate.slice(0, 10)] == undefined) {
+            result[commit.attributes?.commitdate.slice(0, 10)] = 0
+          } else {
+            result[commit.attributes?.commitdate.slice(0, 10)] = result[commit.attributes?.commitdate.slice(0, 10)] + 1;
+          }
+        })
+      }
+      console.log(result);
+    }
   }
 
   var data = {
@@ -134,13 +172,13 @@ const Commits = () => {
                     {commitsByBranch.map((commitByBranch, index) => {
                       return (
                         <tr key={index}>
-                        <th scope="row">
-                          <span className="mb-0 text-sm">
-                            {commitByBranch.branch}
-                          </span>
-                        </th>
-                        <td>{commitByBranch.commits}</td>
-                      </tr>
+                          <th scope="row">
+                            <span className="mb-0 text-sm">
+                              {commitByBranch.branch}
+                            </span>
+                          </th>
+                          <td>{commitByBranch.commits}</td>
+                        </tr>
                       );
                     })}
                   </tbody>
@@ -164,14 +202,12 @@ const Commits = () => {
               </CardHeader>
               <CardBody>
                 {/* Chart */}
-                <div className="chart">
-                  <Line
-                    data={data}
-                    options={chartExample1.options}
-                    height={100}
-                    getDatasetAtEvent={(e) => console.log(e)}
-                  />
-                </div>
+                <Line
+                  data={data}
+                  options={chartExample1.options3}
+                  getDatasetAtEvent={(e) => console.log(e)}
+                  height={150}
+                />
               </CardBody>
             </Card>
           </div>

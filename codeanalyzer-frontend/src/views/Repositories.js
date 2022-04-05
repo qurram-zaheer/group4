@@ -4,46 +4,122 @@ import { BACKGROUND_COLORS, BORDER_COLORS } from "../COLORS.js";
 import Pie from "components/Charts/Pie";
 import {
   Card,
-  CardBody,
   Col,
   Container,
   Row,
   CardTitle,
   FormGroup,
-  Label,
   Input,
 } from "reactstrap";
 import { api } from "../lib/api";
 import BarComponent from "components/Charts/BarComponent";
+import LineComponent from "components/Charts/LineComponent";
+import HorizontaBarComponent from "components/Charts/HorizontalBarComponent";
 
 const Repositories = () => {
   const [repos, setRepos] = useContext(RepositoriesContext);
   const [langPieData, setLangPieData] = useState(null);
-  const [contribDataTotal, setContribDataTotal] = useState([null]);
+  const [contribDataTotal, setContribDataTotal] = useState(null);
   const [contribDataAdd, setContribDataAdd] = useState(null);
   const [contribDataDel, setContribDataDel] = useState(null);
   const [selectedContrib, setSelectedContrib] = useState("total");
+  const [hourChartData, setHourChartData] = useState(null);
+  const [userLangData, setUserLangData] = useState(null);
+  const [selectedLangEffort, setSelectedLangEffort] = useState(null);
+
+  const getUserLangData = async () => {
+    if (repos.selectedRepo.attributes) {
+      const repositoryId = repos.selectedRepo.id;
+      const d = await api
+        .getUserLanguageEffort(
+          { repositoryId },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((res) => res.data);
+      console.log("USER LANG DATA HERE WOWIEEEEE", d);
+      if (d && Object.keys(d).length !== 0) {
+        console.log("COMIONG IN HTEREEERE");
+        setSelectedLangEffort(Object.keys(d)[0]);
+        setUserLangData(d);
+      }
+    }
+  };
+
+  const getSelectedUserLangEffortData = () => {
+    const obj = userLangData[selectedLangEffort];
+
+    const labels = Object.keys(obj);
+    const data = {
+      labels,
+      datasets: [
+        {
+          label: "Total Changes",
+          data: Object.values(obj),
+          borderColor: "rgb(255, 99, 132)",
+          backgroundColor: "rgba(255, 99, 132, 0.5)",
+        },
+      ],
+    };
+    return data;
+  };
 
   const processLangData = async () => {
     if (repos.selectedRepo.attributes) {
-      console.log("in here33");
       const languageObj = repos.selectedRepo.attributes.languages;
-      console.log(languageObj);
-      const labels = Object.keys(languageObj);
-      const vals = Object.values(languageObj);
-      const data = {
+      if (languageObj) {
+        console.log("languageObj", languageObj);
+        const labels = Object.keys(languageObj);
+        const vals = Object.values(languageObj);
+        const data = {
+          labels,
+          datasets: [
+            {
+              label: "Share of language in repository",
+              data: vals,
+              backgroundColor: BACKGROUND_COLORS,
+              borderColor: BORDER_COLORS,
+              borderWidth: 1,
+            },
+          ],
+        };
+        await setLangPieData(data);
+      }
+    }
+  };
+
+  const commitHourData = async () => {
+    console.log("OUT HERE");
+    if (repos.selectedRepo.attributes) {
+      console.log("asjdhaknsdbkjhqhIN HEEEREE");
+      const repositoryId = repos.selectedRepo.id;
+      const hourData = await api
+        .getCommitCountPerHour(
+          { repositoryId },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((res) => res.data);
+      console.log("HOUUUUUR DATA", hourData);
+      const labels = Object.keys(hourData);
+      const chartData = {
         labels,
         datasets: [
           {
-            label: "Share of language in repository",
-            data: vals,
-            backgroundColor: BACKGROUND_COLORS,
-            borderColor: BORDER_COLORS,
-            borderWidth: 1,
+            label: "# of Commits",
+            data: Object.values(hourData),
+            borderColor: "rgb(255, 99, 132)",
+            backgroundColor: "rgba(255, 99, 132, 0.5)",
           },
         ],
       };
-      await setLangPieData(data);
+      setHourChartData(chartData);
     }
   };
 
@@ -55,13 +131,17 @@ const Repositories = () => {
   };
 
   const processContribData = async () => {
-    if (true) {
+    const selRep = repos.selectedRepo;
+    const repoId = repos.selectedRepo.id;
+    console.log("OUTERSELREP", selRep);
+    if (repos.selectedRepo.attributes) {
       let totalArr = [];
       let addArr = [];
       let delArr = [];
+      console.log("kjasdkljasjdasd", repos.selectedRepo.id);
       const contribData = await api
-        .getContributors(
-          {},
+        .getContributorsForRepo(
+          { repoId },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -75,7 +155,7 @@ const Repositories = () => {
         addArr.push(entry.attributes.sumadditions);
         delArr.push(entry.attributes.sumdeletions);
         totalArr.push(entry.attributes.sumchanges);
-        labels.push(entry.attributes.author_id);
+        labels.push(entry.attributes.name);
       });
       const addObj = {
         labels,
@@ -116,6 +196,8 @@ const Repositories = () => {
   useEffect(() => {
     processLangData();
     processContribData();
+    commitHourData();
+    getUserLangData();
   }, [repos]);
 
   return (
@@ -123,21 +205,73 @@ const Repositories = () => {
       {console.log(repos)}
       <Container fluid>
         <div className="header-body">
+          <Row style={{ marginBottom: "20px" }}>
+            <Col>
+              <Card
+                className="card-stats mb-4 mb-xl-0"
+                style={{
+                  height: "400px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: userLangData ? "space-between" : "start",
+                  width: "100%",
+                  padding: "20px",
+                }}
+              >
+                <CardTitle
+                  tag="h5"
+                  className="text-uppercase text-muted mb-2 ml-3"
+                  style={{ marginTop: 0 }}
+                >
+                  Language-wise contribution
+                </CardTitle>
+                <FormGroup>
+                  {/* <Label for="exampleSelect">Select</Label> */}
+                  <Input
+                    type="select"
+                    name="select"
+                    id="exampleSelect"
+                    onChange={(e) => setSelectedLangEffort(e.target.value)}
+                  >
+                    {userLangData ? (
+                      <>
+                        {console.log(
+                          "WHY AM I NULL BRO WHAT BRO",
+                          userLangData
+                        )}
+                        {Object.keys(userLangData).map((lang) => (
+                          <option value={lang} key={lang}>
+                            {lang}
+                          </option>
+                        ))}
+                      </>
+                    ) : (
+                      <option>Loading</option>
+                    )}
+                  </Input>
+                </FormGroup>
+                {userLangData ? (
+                  <HorizontaBarComponent data={getSelectedUserLangEffortData} />
+                ) : null}
+              </Card>
+            </Col>
+          </Row>
           <Row>
             <Col>
               <Card
                 className="card-stats mb-4 mb-xl-0"
                 style={{
-                  height: "250px",
+                  height: "300px",
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-evenly",
+                  justifyContent: "space-around",
                   width: "60%",
                 }}
               >
                 <CardTitle
                   tag="h5"
                   className="text-uppercase text-muted mb-2 ml-3"
+                  style={{ marginTop: 0 }}
                 >
                   Share of Languages
                 </CardTitle>
@@ -145,32 +279,25 @@ const Repositories = () => {
               </Card>
             </Col>
 
-            <Col lg="6" xl="3">
-              <Card className="card-stats mb-4 mb-xl-0">
-                <CardBody>
-                  <Row>
-                    <div className="col">
-                      <CardTitle
-                        tag="h5"
-                        className="text-uppercase text-muted mb-0"
-                      >
-                        Performance
-                      </CardTitle>
-                      <span className="h2 font-weight-bold mb-0">49,65%</span>
-                    </div>
-                    <Col className="col-auto">
-                      <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                        <i className="fas fa-percent" />
-                      </div>
-                    </Col>
-                  </Row>
-                  <p className="mt-3 mb-0 text-muted text-sm">
-                    <span className="text-success mr-2">
-                      <i className="fas fa-arrow-up" /> 12%
-                    </span>{" "}
-                    <span className="text-nowrap">Since last month</span>
-                  </p>
-                </CardBody>
+            <Col>
+              <Card
+                className="card-stats mb-4 mb-xl-0"
+                style={{
+                  height: "300px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-evenly",
+                  width: "100%",
+                  padding: "20px",
+                }}
+              >
+                <CardTitle
+                  tag="h5"
+                  className="text-uppercase text-muted mb-2 ml-3"
+                >
+                  Most productive hours
+                </CardTitle>
+                {hourChartData ? <LineComponent data={hourChartData} /> : null}
               </Card>
             </Col>
           </Row>

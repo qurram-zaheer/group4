@@ -58,8 +58,6 @@ import { chartExample1, chartExample2, chartOptions, parseOptions, } from "varia
 import { api } from "../../lib/api"
 // react plugin used to create charts
 import { Bar, Line } from "react-chartjs-2";
-import axios from "axios";
-import { createEmitAndSemanticDiagnosticsBuilderProgram } from "typescript";
 
 
 
@@ -97,23 +95,26 @@ const PullRequestsRepo = () => {
       }
     });
     if (data) {
-      console.log('data', data);
-      data.data.sort((a, b) => parseInt(b.prs) - parseInt(a.prs));
-      await setPRSByBranch(data.data);
+      console.log('PullRequestRepodata', data);
+      if (data.data?.length > 0 && Array.isArray(data.data)) {
+        const myData = data.data;
+        myData.sort((a, b) => parseInt(b.prs) - parseInt(a.prs));
+        await setPRSByBranch(myData);
+      }
     }
   }
 
-  var data = {
+  var commitByRepoDataFeed = {
     labels: prsByBranch.map(function (item) {
       return item.branch;
     }),
-    datasets: [{
-      label: "Difference in number of days between PRs",
-      data: prsByBranch.map(function (item) {
-        return item.prs;
-      }),
-    }]
-  };
+      datasets: [{
+        label: "Commits By Repo",
+        data: prsByBranch.map(function (item) {
+          return item.prs;
+        }),
+      }]
+  }
 
   return (
     <>
@@ -135,13 +136,11 @@ const PullRequestsRepo = () => {
               </CardHeader>
               <CardBody>
                 {/* Chart */}
-                <div className="chart">
                   <Bar
-                    data={data}
-                    options={chartExample1.options}
-                    height={"100%"}
+                    data={commitByRepoDataFeed}
+                    options={chartExample2.options}
+                    height={150}
                   />
-                </div>
               </CardBody>
             </Card>
           </Col>
