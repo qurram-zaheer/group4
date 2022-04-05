@@ -61,7 +61,11 @@ import axios from "axios";
 import { createEmitAndSemanticDiagnosticsBuilderProgram } from "typescript";
 
 const FileModifications = () => {
-
+    const [committedFiles, setCommittedFiles] = useState([]);
+    const [loadedCommittedFiles, setLoadedCommittedFiles] = useState(false);
+    const [dataByMonth, setDataByMonth] = useState({});
+  
+    const userId = localStorage.getItem("strapiUserId");
 
 
 
