@@ -18,6 +18,10 @@ build:
     - dalfcs_gitlab_docker_ci
   script:
     - cd codeanalyzer-backend
+    - npm install
+    - cd ../codeanalyzer-frontend
+    - npm install
+    - cd ..
     - npm run full-prod-mode
 
 test:
