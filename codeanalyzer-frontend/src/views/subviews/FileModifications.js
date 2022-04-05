@@ -91,11 +91,46 @@ const FileModifications = () => {
         })()
       }, []);
 
-  const generateChartData = (data) => {
-  }
-
-  var data = {
-  };
+      const generateChartData = (data) => {
+        console.log('entered with data', data)
+        const addCountByMonth = [0,0,0,0,0,0,0,0,0,0,0,0]
+        const deleteCountByMonth = [0,0,0,0,0,0,0,0,0,0,0,0]
+        const modificationsCountByMonth = [0,0,0,0,0,0,0,0,0,0,0,0]
+        for(const committedFile of data){
+          console.log("teadsa", committedFile, new Date(committedFile.createdD))
+          if(committedFile.status === "added" ){
+            addCountByMonth[new Date(committedFile.commitdate).toISOString().getMonth()]++;
+          }else if(committedFile.status === "deleted" ){
+            deleteCountByMonth[new Date(committedFile.commitdate).toISOString().getMonth()]++;
+          }else if(committedFile.status === "modified" ){
+            modificationsCountByMonth[new Date(committedFile.commitdate).toISOString().getMonth()]++;
+          }
+        }
+        setDataByMonth({"addition":addCountByMonth, "modification":modificationsCountByMonth, "deletion":deleteCountByMonth});
+        console.log("DBM", dataByMonth)
+        console.log("dsad",addCountByMonth)
+        console.log("dsad",modificationsCountByMonth)
+        console.log("dsad",deleteCountByMonth)
+      }
+    
+      var data = {
+        labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", ],
+        datasets: [{
+          label: "Aditions ",
+          data: dataByMonth.addition,
+          borderColor: 'rgb(42, 157, 143)',
+        },
+        {
+          label: "Modifications ",
+          data: dataByMonth.modification,
+          borderColor: 'rgb(233, 196, 106)',
+        },
+        {
+          label: "Deletions ",
+          data: dataByMonth.deletion,
+          borderColor: 'rgb(231, 111, 81)',
+        }]
+      };
 
   return (
      <></>
