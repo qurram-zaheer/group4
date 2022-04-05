@@ -54,6 +54,9 @@
     },
     "authorname": {
       "type": "string"
+    },
+    "authoravatar": {
+      "type": "string"
     }
   }
 }

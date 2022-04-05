@@ -92,7 +92,7 @@ exports.getCommits = async (info) => {
     .request(`GET /repos/{owner}/{repo}/commits`, {
       owner: info.owner,
       repo: info.repositoryName,
-      per_page: 5,
+      per_page: 10,
     })
     .then((res) => res.data);
   // console.log(commitBrief);
@@ -118,6 +118,7 @@ exports.getCommits = async (info) => {
           deletions,
           changes,
           repository: info.repositoryId,
+          authorname: res.committer.login,
         };
         return fileEntityObj;
       });
@@ -126,7 +127,9 @@ exports.getCommits = async (info) => {
       const fileEntries = await Promise.all(
         fileEntityArray.map(async (obj) => {
           const entry = await axios
-            .post("http://localhost:1337/api/committedfiles", { data: obj })
+            .post("http://localhost:1337/api/committedfiles", {
+              data: { ...obj, totalchanges: obj.changes },
+            })
             .then((res) => res.data);
           return entry.data.id;
         })
@@ -145,70 +148,13 @@ exports.getCommits = async (info) => {
         branch: "master",
         repository: info.repositoryId,
         authorname: res.committer.login,
+        authoravatar: res.committer.avatar_url,
       };
 
       console.log("entityObj", entityObj);
       return entityObj;
     })
   );
-  // const getAllCommitsSha = async (allBranches) => {
-  //   const allCommitsSha = [];
-  //   for (const branch of allBranches) {
-  //     const data = await octokit.paginate(
-  //       "GET /repos/{owner}/{repo}/commits?sha={branch_name}",
-  //       {
-  //         owner: info.owner,
-  //         repo: info.repositoryName,
-  //         branch_name: branch,
-  //       }
-  //     );
-
-  //     for (const commit of data) {
-  //       allCommitsSha.push({
-  //         branch: branch,
-  //         sha: commit.sha,
-  //       });
-  //     }
-  //   }
-  //   return allCommitsSha;
-  // };
-
-  // const getAllCommitsDetails = async (allCommitsSha) => {
-  //   const allCommitsDetails = [];
-  //   for (var i = 0; i < allCommitsSha.length; i++) {
-  //     const sha = allCommitsSha[i].sha;
-  //     const branch = allCommitsSha[i].branch;
-  //     const data = await octokit.paginate(
-  //       "GET /repos/{owner}/{repo}/commits/{commit_sha}",
-  //       {
-  //         owner: info.owner,
-  //         repo: info.repositoryName,
-  //         commit_sha: sha,
-  //       }
-  //     );
-
-  //     for (const commitDetails of data) {
-  //       commitDetails.branch = branch;
-  //       allCommitsDetails.push(commitDetails);
-  //     }
-  //   }
-  //   return allCommitsDetails;
-  // };
-
-  // const allBranches = await this.getBranches(info).then((branches) => {
-  //   const allBranches = [];
-  //   for (const branch of branches) {
-  //     allBranches.push(branch.name);
-  //   }
-  //   return allBranches;
-  // });
-  // console.log('here2')
-  // const allCommitsSha = await getAllCommitsSha(allBranches);
-  // console.log(allCommitsSha);
-  // const allCommitsDetails = await getAllCommitsDetails(allCommitsSha);
-  // console.log(allCommitsDetails);
-
-  // return allCommitsDetails;
   return commitEntityArray;
 };
 
