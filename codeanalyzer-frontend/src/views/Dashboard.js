@@ -55,6 +55,7 @@ const Dashboard = (props) => {
     const [contributorCounts, setContributorCounts] = useState(0);
     const [refactoringCounts, setRefactoringCounts] = useState(0);
     const [refactoringsChartData, setRefactoringsChartData] = useState([]);
+    const [commitsChartData, setCommitsChartData] = useState([]);
     const { user, setUser } = useContext(GithubContext);
 
     useEffect(() => {
@@ -135,6 +136,15 @@ const Dashboard = (props) => {
             console.log('RCD', refactoringChartData)
             setRefactoringsChartData(refactoringChartData.data.data);
         }
+        const commitChartData = await api.getCommitsCountByRepo(null, {
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        });
+        if(commitChartData){
+            console.log('CCD', commitChartData)
+            setCommitsChartData(commitChartData.data);
+        }
     }
 
     var refactoringChartDataFeed = {
@@ -146,6 +156,14 @@ const Dashboard = (props) => {
             data: refactoringsChartData.map(function (item) {
               return item.attributes.totalchanges;
             }),
+          }]
+    }
+
+    var commitByRepoDataFeed = {
+        labels: Object.keys(commitsChartData),
+          datasets: [{
+            label: "Commits By Repo",
+            data: Object.values(commitsChartData),
           }]
     }
 
@@ -211,9 +229,9 @@ const Dashboard = (props) => {
                                 <Row className="align-items-center">
                                     <div className="col">
                                         <h6 className="text-uppercase text-muted ls-1 mb-1">
-                                            Performance
+                                            Trending Repositories
                                         </h6>
-                                        <h2 className="mb-0">Total orders</h2>
+                                        <h2 className="mb-0">Total commits by Repository</h2>
                                     </div>
                                 </Row>
                             </CardHeader>
@@ -221,7 +239,7 @@ const Dashboard = (props) => {
                                 {/* Chart */}
                                 <div className="chart">
                                     <Bar
-                                        data={chartExample2.data}
+                                        data={commitByRepoDataFeed}
                                         options={chartExample2.options}
                                     />
                                 </div>

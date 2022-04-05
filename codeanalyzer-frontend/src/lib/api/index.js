@@ -124,6 +124,10 @@ const getTotalRefactorings = (info, headers) => {
   return get(`/commit/getTotalRefactorings`)
 }
 
+const getCommitsCountByRepo = (info, headers) => {
+  return get(`/commit/getCommitsCountByRepo`)
+}
+
 export const api = {
   authGithubUser,
   createAuths,
@@ -147,6 +151,7 @@ export const api = {
   getUserLanguageEffort,
   getTotalRefactoringsForRepo,
   getTotalRefactorings,
-  getRefactoringData
+  getRefactoringData,
+  getCommitsCountByRepo
   // fetchGithubRepo
 };

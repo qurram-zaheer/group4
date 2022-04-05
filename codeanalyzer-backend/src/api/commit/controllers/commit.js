@@ -663,5 +663,21 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
     });
     console.log('repoCommits', repoCommits);
     return repoCommits.map(changes => changes.totalchanges).reduce((a, b) => a + b);
+  },
+
+  async getCommitsCountByRepo(ctx){
+    const repoCommits = await strapi.db.query("api::commit.commit").findMany({
+      select: ['id'],
+      populate: { repository: true }
+    });
+    const result = {};
+    repoCommits.map(commit => {
+      if(result[commit.repository.name] == null || result[commit.repository.name] == undefined){
+        result[commit.repository.name] = 0;
+      }else{
+        result[commit.repository.name] = result[commit.repository.name] + 1;
+      }
+    });
+    return result;
   }
 }));
