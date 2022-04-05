@@ -83,7 +83,7 @@ const getCommmitCountsByBranch = (info, headers) => {
 
 const getCommitsFrequencyByRepository = (info, headers) => {
   return get(
-    `/commit/getAvgTimeDifferenceBetweenCommits?repository=${info.repository}`,
+    `/commit/getAvgTimeDifferenceBetweenCommits?repositoryId=${info.repository}`,
     null,
     headers
   );

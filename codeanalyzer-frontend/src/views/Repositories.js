@@ -70,22 +70,24 @@ const Repositories = () => {
   const processLangData = async () => {
     if (repos.selectedRepo.attributes) {
       const languageObj = repos.selectedRepo.attributes.languages;
-      console.log(languageObj);
-      const labels = Object.keys(languageObj);
-      const vals = Object.values(languageObj);
-      const data = {
-        labels,
-        datasets: [
-          {
-            label: "Share of language in repository",
-            data: vals,
-            backgroundColor: BACKGROUND_COLORS,
-            borderColor: BORDER_COLORS,
-            borderWidth: 1,
-          },
-        ],
-      };
-      await setLangPieData(data);
+      if (languageObj) {
+        console.log("languageObj", languageObj);
+        const labels = Object.keys(languageObj);
+        const vals = Object.values(languageObj);
+        const data = {
+          labels,
+          datasets: [
+            {
+              label: "Share of language in repository",
+              data: vals,
+              backgroundColor: BACKGROUND_COLORS,
+              borderColor: BORDER_COLORS,
+              borderWidth: 1,
+            },
+          ],
+        };
+        await setLangPieData(data);
+      }
     }
   };
 

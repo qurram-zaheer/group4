@@ -25,5 +25,15 @@ module.exports = {
       path: "/commit/getUserLanguageEffort",
       handler: "commit.getUserLanguageEffort",
     },
+    {
+      method: "GET",
+      path: "/commit/getCommitRefactoringsByTime",
+      handler: "commit.getCommitRefactoringsByTime",
+    },
+    {
+      method: "GET",
+      path: "/commit/getTotalRefactoringsForRepo",
+      handler: "commit.getTotalRefactoringsForRepo"
+    }
   ],
 };
