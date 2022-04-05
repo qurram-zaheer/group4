@@ -12,7 +12,6 @@ const BarComponent = (props) => {
       {console.log("bar props", props.data)}
       <Bar
         data={props.data}
-        width={"50%"}
         options={{ ...options, maintainAspectRatio: false }}
       />
     </div>

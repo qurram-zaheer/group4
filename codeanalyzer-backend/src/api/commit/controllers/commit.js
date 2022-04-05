@@ -5,50 +5,54 @@
  */
 
 const htmlTemplate = "../../../config/templates/daily-summary.html";
-const { createCoreController } = require('@strapi/strapi').factories;
+const { createCoreController } = require("@strapi/strapi").factories;
 
-module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
-    // To Fetch and store Pull Requests from Github into our Database
-    async getAll(ctx, next) {
-        try {
-
-            try {
-                const users = [{
-                    email: "bharatwaaj@dal.ca",
-                    repos: 40,
-                    commits: 100,
-                    prs: 20,
-                    devs:12
-                },{
-                    email: "ar899345@dal.ca",
-                    repos: 40,
-                    commits: 100,
-                    prs: 20,
-                    devs:12
-                },{
-                    email: "kv286760@dal.ca",
-                    repos: 40,
-                    commits: 100,
-                    prs: 20,
-                    devs:12
-                },{
-                    email: "ks317715@dal.ca",
-                    repos: 40,
-                    commits: 100,
-                    prs: 20,
-                    devs:12
-                },{
-                    email: "qr620423@dal.ca",
-                    repos: 40,
-                    commits: 100,
-                    prs: 20,
-                    devs:12
-                }
-                ]
-                const emailTemplate = {
-                    subject: 'Daily Summary Report <%= user.email %>',
-                    text: `Daily Summary Report <%= user.email %>.`,
-                    html: `<!DOCTYPE html>
+module.exports = createCoreController("api::commit.commit", ({ strapi }) => ({
+  // To Fetch and store Pull Requests from Github into our Database
+  async getAll(ctx, next) {
+    try {
+      try {
+        const users = [
+          {
+            email: "bharatwaaj@dal.ca",
+            repos: 40,
+            commits: 100,
+            prs: 20,
+            devs: 12,
+          },
+          {
+            email: "ar899345@dal.ca",
+            repos: 40,
+            commits: 100,
+            prs: 20,
+            devs: 12,
+          },
+          {
+            email: "kv286760@dal.ca",
+            repos: 40,
+            commits: 100,
+            prs: 20,
+            devs: 12,
+          },
+          {
+            email: "ks317715@dal.ca",
+            repos: 40,
+            commits: 100,
+            prs: 20,
+            devs: 12,
+          },
+          {
+            email: "qr620423@dal.ca",
+            repos: 40,
+            commits: 100,
+            prs: 20,
+            devs: 12,
+          },
+        ];
+        const emailTemplate = {
+          subject: "Daily Summary Report <%= user.email %>",
+          text: `Daily Summary Report <%= user.email %>.`,
+          html: `<!DOCTYPE html>
 
                     <html lang="en" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
                     <head>
@@ -457,32 +461,31 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
                     </table>
                     </body>
                     </html>`,
-                };
-                for (let i = 0; i < users.length; i++) {
-                    const user = users[i];
-                    await strapi.plugins['email'].services.email.sendTemplatedEmail(
-                        {
-                            to: user.email,
-                            from: user.email
-                        },
-                        emailTemplate,
-                        {
-                            user: user
-                        }
-                    );
-                }
+        };
+        for (let i = 0; i < users.length; i++) {
+          const user = users[i];
+          await strapi.plugins["email"].services.email.sendTemplatedEmail(
+            {
+              to: user.email,
+              from: user.email,
+            },
+            emailTemplate,
+            {
+              user: user,
             }
-            catch (err) {
-                console.log('Daily summary report not sent', err);
-            }
-            ctx.body = {
-                success: true,
-            };
-        } catch (err) {
-            console.log(err);
-            ctx.body = err;
+          );
         }
-    },
+      } catch (err) {
+        console.log("Daily summary report not sent", err);
+      }
+      ctx.body = {
+        success: true,
+      };
+    } catch (err) {
+      console.log(err);
+      ctx.body = err;
+    }
+  },
 
   // To Fetch all commits by branches
   async getCommmitCountsByBranch(ctx, next) {
@@ -519,18 +522,18 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
   // Get the time difference between pull requests of a user
   async getAvgTimeDifferenceBetweenCommits(ctx, next) {
     const accessToken = ctx.request.query["accessToken"];
-    const repository = ctx.request.query['repositoryId'];
-    console.log('repository', repository);
+    const repository = ctx.request.query["repositoryId"];
+    console.log("repository", repository);
     const differenceResult = [],
       createdOn = [];
     const prs = await strapi.db.query("api::commit.commit").findMany({
       select: ["id", "commitdate"],
       where: {
-        repository: repository
+        repository: repository,
       },
       orderBy: { commitdate: "desc" },
     });
-    console.log('prs', prs);
+    console.log("prs", prs);
     for (let i = 0; i < prs.length - 1; i++) {
       let difference =
         (new Date(prs[i].commitdate).getTime() -
@@ -616,12 +619,13 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
         }
         if (!userEffortObj[lastToken][authorname]) {
           userEffortObj[lastToken][authorname] = 0;
-          userEffortObj[lastToken][authoravatar] = authoravatar;
+          // userEffortObj[lastToken][authorname] = authoravatar;
         }
         userEffortObj[lastToken][authorname] =
           userEffortObj[lastToken][authorname] + file.totalchanges;
       });
     });
+
     return userEffortObj;
   },
 
@@ -642,7 +646,7 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
     return repoCommits;
   },
 
-  async getTotalRefactoringsForRepo(ctx){
+  async getTotalRefactoringsForRepo(ctx) {
     const repositoryId = ctx.request.query.repositoryId;
     const repoCommits = await strapi.db.query("api::commit.commit").count({
       where: {
@@ -657,27 +661,32 @@ module.exports = createCoreController('api::commit.commit', ({ strapi }) => ({
     return repoCommits;
   },
 
-  async getTotalRefactorings(ctx){
+  async getTotalRefactorings(ctx) {
     const repoCommits = await strapi.db.query("api::commit.commit").findMany({
-      select: ['totalchanges']
+      select: ["totalchanges"],
     });
-    console.log('repoCommits', repoCommits);
-    return repoCommits.map(changes => changes.totalchanges).reduce((a, b) => a + b);
+    console.log("repoCommits", repoCommits);
+    return repoCommits
+      .map((changes) => changes.totalchanges)
+      .reduce((a, b) => a + b);
   },
 
-  async getCommitsCountByRepo(ctx){
+  async getCommitsCountByRepo(ctx) {
     const repoCommits = await strapi.db.query("api::commit.commit").findMany({
-      select: ['id'],
-      populate: { repository: true }
+      select: ["id"],
+      populate: { repository: true },
     });
     const result = {};
-    repoCommits.map(commit => {
-      if(result[commit.repository.name] == null || result[commit.repository.name] == undefined){
+    repoCommits.map((commit) => {
+      if (
+        result[commit.repository.name] == null ||
+        result[commit.repository.name] == undefined
+      ) {
         result[commit.repository.name] = 0;
-      }else{
+      } else {
         result[commit.repository.name] = result[commit.repository.name] + 1;
       }
     });
     return result;
-  }
+  },
 }));
