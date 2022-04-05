@@ -132,9 +132,38 @@ const FileModifications = () => {
         }]
       };
 
-  return (
-     <></>
-  );
-};
-
+      return (
+        <>
+          <Header />
+          {/* Page content */}
+          <Container className="mt--7" fluid>
+            <Row className="mt-5">
+              <div className="col">
+                <Card className="bg-gradient-default shadow">
+                  <CardHeader className="bg-transparent">
+                    <Row className="align-items-center">
+                      <div className="col">
+                        <h2 className="text-white mb-0">File Changes By User In The Past Year</h2>
+                      </div>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    {/* Chart */}
+                    <div className="chart">
+                      <Line
+                        data={data}
+                        options={chartExample1.options4}
+                        height={100}
+                      />
+                    </div>
+                  </CardBody>
+                </Card>
+              </div>
+            </Row>
+          </Container>
+        </>
+      );
+    };
+    
 export default FileModifications;
+    
