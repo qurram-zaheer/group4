@@ -69,12 +69,28 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
       });
 
       console.log("Fetched allCommits", repositoryId, allCommits);
-
-      const commitEntries = await Promise.all(
-        allCommits.map(async (commitObj) => {
-          await strapi.entityService.create("api::commit.commit", {
-            data: commitObj,
-          });
+      Promise.all(
+        allCommits.map(async (commit) => {
+          const commitDataModel = {
+            commit_id: commit.sha.substring(0, 6),
+            message: commit.commit.message,
+            sha: commit.sha,
+            authorid: commit.author.id,
+            totalchanges: commit.stats.total,
+            totaladditions: commit.stats.additions,
+            totaldeletions: commit.stats.deletions,
+            branch: commit.branch,
+            commitdate: new Date(commit.commit.author.date).toISOString(),
+            committedfiles: [1],
+            repository: repositoryId,
+            authorname: commit.author.login,
+          };
+          const uploadCommitDataModel = await strapi.db
+            .query("api::commit.commit")
+            .create({
+              data: commitDataModel,
+            });
+          results.push(commitDataModel);
         })
       );
       return commitEntries;

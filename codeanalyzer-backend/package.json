@@ -13,7 +13,8 @@
     "start-backend-dev": "NODE_ENV=development npm run develop",
     "start-backend-prod": "NODE_ENV=production npm run develop",
     "full-dev-mode": "concurrently \"npm run start-backend-dev\" \"npm run start-frontend-dev\"",
-    "full-prod-mode": "concurrently \"npm run start-backend-prod\" \"npm run start-frontend-prod\""
+    "full-prod-mode": "concurrently \"npm run start-backend-prod\" \"npm run start-frontend-prod\"",
+    "test": "jest --forceExit --detectOpenHandles"
   },
   "dependencies": {
     "@octokit/core": "^3.6.0",
@@ -34,7 +35,6 @@
     "react-dom": "^18.0.0",
     "react-scripts": "^5.0.0",
     "sharp": "^0.30.2",
-    "sqlite3": "5.0.2",
     "strapi-utils": "^3.6.8"
   },
   "author": {
@@ -47,5 +47,18 @@
     "node": "16.x",
     "npm": ">=6.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "sqlite3": "^5.0.2",
+    "supertest": "^6.2.2"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".tmp",
+      ".cache"
+    ],
+    "testEnvironment": "node"
+  }
 }
