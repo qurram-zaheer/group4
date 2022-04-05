@@ -115,7 +115,12 @@ const Dashboard = (props) => {
 
                 fetchDashboardData();
             }
-        })();
+
+        const token = localStorage.getItem("token");
+        if(token){
+            fetchDashboardData();
+        }
+    })();
     }, []);
 
     const fetchDashboardData = async () => {

@@ -17,9 +17,25 @@
 */
 
 // reactstrap components
+import { useEffect, useState } from "react";
 import { Button, Container, Row, Col } from "reactstrap";
+import { api } from "lib/api";
 
 const UserHeader = () => {
+
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      const userId = await localStorage.getItem("strapiUserId");
+      console.log('usid', userId);
+      const userData = await api.getUserFromId({
+        userId: userId
+      });
+      setUserName(userData.data.username);
+    })();
+  }, []);
+
   return (
     <>
       <div
@@ -40,7 +56,7 @@ const UserHeader = () => {
         <Container className="d-flex align-items-center" fluid>
           <Row>
             <Col lg="7" md="10">
-              <h1 className="display-2 text-white">Hello </h1>
+              <h1 className="display-2 text-white">Hello {userName}</h1>
               <p className="text-white mt-0 mb-5">
                 We have your repositories and your JIRA board connections to be managed from here
               </p>
