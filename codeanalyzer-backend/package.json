@@ -50,6 +50,7 @@
   "license": "MIT",
   "devDependencies": {
     "jest": "^27.5.1",
+    "jest-sonar-reporter": "^2.0.0",
     "sqlite3": "^5.0.2",
     "supertest": "^6.2.2"
   },
@@ -59,6 +60,7 @@
       ".tmp",
       ".cache"
     ],
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testResultsProcessor": "jest-sonar-reporter"
   }
 }
