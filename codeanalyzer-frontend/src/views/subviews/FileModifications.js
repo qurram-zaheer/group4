@@ -67,7 +67,29 @@ const FileModifications = () => {
   
     const userId = localStorage.getItem("strapiUserId");
 
-
+    useEffect(() => {
+        ; (async () => {
+          const strapiToken = await localStorage.getItem("token");
+          const commFiles = await api.getCommitedFilesByUser({
+            authorname: 'web-flow'
+            //authorname: userId
+          }, {
+            headers: {
+              'Authorization': 'Bearer ' + strapiToken
+            }
+          });
+          
+          if (commFiles.data) {
+            setCommittedFiles(commFiles.data.data);
+            setLoadedCommittedFiles(true);
+            console.log(commFiles.data.data)
+            //await generateChartData(commFiles.data.data);
+            // Data model down so using random values
+            // Array.apply(null, {length: 12}).map(x=>Math.floor(Math.random()*5))
+            setDataByMonth({"addition":[1,0,3,5,2,1,1,3,4,2,4,1], "modification":[3,1,4,2,5,3,2,6,2,1,5,1], "deletion":[2,1,0,3,4,1,5,1,3,2,1,4]})
+          }
+        })()
+      }, []);
 
   const generateChartData = (data) => {
   }
