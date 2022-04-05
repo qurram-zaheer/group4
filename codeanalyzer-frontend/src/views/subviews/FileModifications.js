@@ -59,6 +59,7 @@ import { api } from "../../lib/api"
 import { Bar, Line } from "react-chartjs-2";
 import axios from "axios";
 import { createEmitAndSemanticDiagnosticsBuilderProgram } from "typescript";
+import HeaderFileModifications from "components/Headers/HeaderFileModifications";
 
 const FileModifications = () => {
     const [committedFiles, setCommittedFiles] = useState([]);
@@ -105,10 +106,6 @@ const FileModifications = () => {
           }
         }
         setDataByMonth({"addition":addCountByMonth, "modification":modificationsCountByMonth, "deletion":deleteCountByMonth});
-        console.log("DBM", dataByMonth)
-        console.log("dsad",addCountByMonth)
-        console.log("dsad",modificationsCountByMonth)
-        console.log("dsad",deleteCountByMonth)
       }
     
       var data = {
@@ -130,9 +127,19 @@ const FileModifications = () => {
         }]
       };
 
+      const addData = dataByMonth.addition;
+      const modData = dataByMonth.modification;
+      const delData = dataByMonth.deletion;
+
       return (
         <>
-          <Header />
+          <HeaderFileModifications 
+              showCards="true"
+              additionCounts={addData? addData.reduce((a,b) => a+b,0): 14}
+              modificationCounts={modData? modData.reduce((a,b) => a+b,0): 10}
+              removedCounts={delData? delData.reduce((a,b) => a+b,0): 1}
+          >
+          </HeaderFileModifications>
           {/* Page content */}
           <Container className="mt--7" fluid>
             <Row className="mt-5">
