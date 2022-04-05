@@ -106,8 +106,8 @@ const getPullRequestsCountsByBranch = (info, headers) => {
   );
 };
 
-const getCommitedFilesByUser = (info, headers) => {
-  return get(`/committedfiles?filters[authorname][$eq]=${info.authorname}`)
+const getCommitedFiles = (headers) => {
+  return get(`/committedfiles`)
 };
 
 const getCommitCountPerHour = (info, headers) => {
@@ -155,7 +155,7 @@ export const api = {
   getCommmitCountsByBranch,
   getCommitsFrequencyByRepository,
   getPullRequestsCountsByBranch,
-  getCommitedFilesByUser,
+  getCommitedFiles,
   getCommitCountPerHour,
   getUserLanguageEffort,
   getTotalRefactoringsForRepo,

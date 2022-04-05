@@ -70,10 +70,7 @@ const FileModifications = () => {
     useEffect(() => {
         ; (async () => {
           const strapiToken = await localStorage.getItem("token");
-          const commFiles = await api.getCommitedFilesByUser({
-            authorname: 'web-flow'
-            //authorname: userId
-          }, {
+          const commFiles = await api.getCommitedFiles({
             headers: {
               'Authorization': 'Bearer ' + strapiToken
             }
@@ -83,10 +80,10 @@ const FileModifications = () => {
             setCommittedFiles(commFiles.data.data);
             setLoadedCommittedFiles(true);
             console.log(commFiles.data.data)
-            //await generateChartData(commFiles.data.data);
+            await generateChartData(commFiles.data.data);
             // Data model down so using random values
             // Array.apply(null, {length: 12}).map(x=>Math.floor(Math.random()*5))
-            setDataByMonth({"addition":[1,0,3,5,2,1,1,3,4,2,4,1], "modification":[3,1,4,2,5,3,2,6,2,1,5,1], "deletion":[2,1,0,3,4,1,5,1,3,2,1,4]})
+            //setDataByMonth({"addition":[1,0,3,5,2,1,1,3,4,2,4,1], "modification":[3,1,4,2,5,3,2,6,2,1,5,1], "deletion":[2,1,0,3,4,1,5,1,3,2,1,4]})
           }
         })()
       }, []);
@@ -96,14 +93,15 @@ const FileModifications = () => {
         const addCountByMonth = [0,0,0,0,0,0,0,0,0,0,0,0]
         const deleteCountByMonth = [0,0,0,0,0,0,0,0,0,0,0,0]
         const modificationsCountByMonth = [0,0,0,0,0,0,0,0,0,0,0,0]
+
         for(const committedFile of data){
-          console.log("teadsa", committedFile, new Date(committedFile.createdD))
-          if(committedFile.status === "added" ){
-            addCountByMonth[new Date(committedFile.commitdate).toISOString().getMonth()]++;
-          }else if(committedFile.status === "deleted" ){
-            deleteCountByMonth[new Date(committedFile.commitdate).toISOString().getMonth()]++;
-          }else if(committedFile.status === "modified" ){
-            modificationsCountByMonth[new Date(committedFile.commitdate).toISOString().getMonth()]++;
+          console.log("teadsa", committedFile, new Date(committedFile.attributes.commitdate))
+          if(committedFile.attributes.status === "added" ){
+            addCountByMonth[new Date(committedFile.attributes.commitdate).getMonth()]++;
+          }else if(committedFile.attributes.status === "removed" ){
+            deleteCountByMonth[new Date(committedFile.attributes.commitdate).getMonth()]++;
+          }else if(committedFile.attributes.status === "modified" ){
+            modificationsCountByMonth[new Date(committedFile.attributes.commitdate).getMonth()]++;
           }
         }
         setDataByMonth({"addition":addCountByMonth, "modification":modificationsCountByMonth, "deletion":deleteCountByMonth});
@@ -143,7 +141,7 @@ const FileModifications = () => {
                   <CardHeader className="bg-transparent">
                     <Row className="align-items-center">
                       <div className="col">
-                        <h2 className="text-white mb-0">File Changes By User In The Past Year</h2>
+                        <h2 className="text-white mb-0">File Changes In The Past Year</h2>
                       </div>
                     </Row>
                   </CardHeader>
