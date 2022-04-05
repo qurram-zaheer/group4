@@ -102,6 +102,16 @@ const getPullRequestsCountsByBranch = (info, headers) => {
   );
 };
 
+const getCommitCountPerHour = (info, headers) => {
+  console.log("info per hour", info);
+  return get(`/commit/getCommitsByHour?repositoryId=${info.repositoryId}`);
+};
+
+const getUserLanguageEffort = (info, headers) => {
+  console.log("info user language effort", info);
+  return get(`/commit/getUserLanguageEffort?repositoryId=${info.repositoryId}`);
+};
+
 export const api = {
   authGithubUser,
   createAuths,
@@ -121,5 +131,7 @@ export const api = {
   getCommmitCountsByBranch,
   getCommitsFrequencyByRepository,
   getPullRequestsCountsByBranch,
+  getCommitCountPerHour,
+  getUserLanguageEffort,
   // fetchGithubRepo
 };

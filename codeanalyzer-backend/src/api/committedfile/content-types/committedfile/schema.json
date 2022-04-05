@@ -14,7 +14,7 @@
   "attributes": {
     "sha": {
       "type": "string",
-      "unique": true
+      "unique": false
     },
     "filename": {
       "type": "string"
@@ -42,6 +42,9 @@
       "relation": "manyToOne",
       "target": "api::repository.repository",
       "inversedBy": "committedfiles"
+    },
+    "authorname": {
+      "type": "string"
     }
   }
 }

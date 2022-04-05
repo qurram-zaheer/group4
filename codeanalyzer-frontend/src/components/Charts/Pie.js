@@ -1,5 +1,4 @@
 import React from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 const Pie = (props) => {
@@ -12,10 +11,7 @@ const Pie = (props) => {
   return (
     <div>
       {console.log(props.data)}
-      <Doughnut
-        data={props.data}
-        options={{ ...options, maintainAspectRatio: false }}
-      />
+      <Doughnut data={props.data} options={{ ...options }} />
     </div>
   );
 };
