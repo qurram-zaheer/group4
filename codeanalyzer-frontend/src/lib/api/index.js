@@ -101,6 +101,10 @@ const getPullRequestsCountsByBranch = (info, headers) => {
   );
 };
 
+const getCommitedFilesByUser = (info, headers) => {
+  return get(`/committedfiles?filters[authorname][$eq]=${info.authorname}`)
+};
+
 export const api = {
   authGithubUser,
   createAuths,
@@ -120,5 +124,6 @@ export const api = {
   getCommmitCountsByBranch,
   getCommitsFrequencyByRepository,
   getPullRequestsCountsByBranch,
+  getCommitedFilesByUser
   // fetchGithubRepo
 };
