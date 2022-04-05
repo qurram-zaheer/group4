@@ -75,17 +75,16 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
             commit_id: commit.sha.substring(0, 6),
             message: commit.message,
             sha: commit.sha,
-            authorid: commit.author?.id,
-            totalchanges: commit.stats?.total,
-            totaladditions: commit.stats?.additions,
-            totaldeletions: commit.stats?.deletions,
+            authorid: commit.authorid,
+            totalchanges: commit.totalchanges,
+            totaladditions: commit.totaladditions,
+            totaldeletions: commit.totaldeletions,
             branch: commit.branch,
-            commitdate: commit.commit?.author?.date
-              ? new Date(commit.commit?.author.date)?.toISOString()
-              : null,
+            commitdate: commit.commitdate,
             committedfiles: commit.committedfiles,
             repository: repositoryId,
-            authorname: commit.author?.login,
+            authorname: commit.authorname,
+            authoravatar: commit.authoravatar,
           };
           const uploadCommitDataModel = await strapi.db
             .query("api::commit.commit")
@@ -114,6 +113,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
           "totaldeletions",
           "authorid",
           "authorname",
+          "authoravatar",
         ],
         filters: { repository: { id: { $eq: repoId } } },
       }
@@ -121,35 +121,35 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
     console.log("ALL COMMITS FOR REPOOO", allCommitsForRepo);
     let contributors = {};
     allCommitsForRepo.map((commitData) => {
-      const { authorid } = commitData;
-
-      if (!contributors[authorid]) {
-        contributors[authorid] = {};
-        contributors[authorid].sumadditions = 0;
-        contributors[authorid].sumdeletions = 0;
-        contributors[authorid].sumchanges = 0;
-        contributors[authorid].name = commitData.authorname;
+      const { authorid, authorname } = commitData;
+      console.log("authorid", authorid, authorname);
+      if (!contributors.hasOwnProperty(authorname)) {
+        console.log("authorname", authorname);
+        contributors[authorname] = {};
+        contributors[authorname].sumadditions = 0;
+        contributors[authorname].sumdeletions = 0;
+        contributors[authorname].sumchanges = 0;
+        contributors[authorname].name = authorname;
       }
-      contributors[authorid].sumadditions =
-        contributors[authorid].sumadditions + commitData.totaladditions;
-      contributors[authorid].sumdeletions =
-        contributors[authorid].sumdeletions + commitData.totaldeletions;
-      contributors[authorid].sumchanges =
-        contributors[authorid].sumchanges + commitData.totalchanges;
+      contributors[authorname].sumadditions =
+        contributors[authorname].sumadditions + commitData.totaladditions;
+      contributors[authorname].sumdeletions =
+        contributors[authorname].sumdeletions + commitData.totaldeletions;
+      contributors[authorname].sumchanges =
+        contributors[authorname].sumchanges + commitData.totalchanges;
     });
     console.log("No. of contributors", Object.keys(contributors).length);
     console.log(contributors);
     await Promise.all(
       Object.entries(contributors).map(
-        async ([authorid, contribObj], index) => {
-          console.log("key", authorid), console.log("value", contribObj);
+        async ([authorname, contribObj], index) => {
+          console.log("key", authorname), console.log("value", contribObj);
           const contribEntry = {
-            name: contribObj.name,
-            author_id: authorid,
+            name: authorname,
             sumadditions: contribObj.sumadditions,
             sumdeletions: contribObj.sumdeletions,
             sumchanges: contribObj.sumchanges,
-            // publishedAt: new Date().toISOString,
+            publishedAt: new Date().toISOString(),
             repository: repoId,
           };
           console.log("contribEntry", contribEntry);
