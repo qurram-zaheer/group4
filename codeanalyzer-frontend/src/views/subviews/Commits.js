@@ -61,6 +61,7 @@ const Commits = () => {
       const accessToken = await localStorage.getItem("token");
       await fetchCommitsByBranch(accessToken);
       await fetchCommitsFrequency(accessToken);
+      await fetchCommitsAcrossBranchByDay(accessToken);
     })()
   }, [repos]);
 
@@ -103,6 +104,16 @@ const Commits = () => {
 
   const range = (start, end) => {
     return Array(end - start + 1).fill().map((_, idx) => start + idx)
+  }
+
+  const fetchCommitsAcrossBranchByDay = async (accessToken) => {
+    const data = await api.getCommitsFrequencyByRepository({
+      repository: repos?.selectedRepo?.id
+    }, {
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    });
   }
 
   var data = {
@@ -169,14 +180,12 @@ const Commits = () => {
               </CardHeader>
               <CardBody>
                 {/* Chart */}
-                <div className="chart">
                   <Line
                     data={data}
-                    options={chartExample1.options}
-                    height={100}
+                    options={chartExample1.options3}
                     getDatasetAtEvent={(e) => console.log(e)}
+                    height={150}
                   />
-                </div>
               </CardBody>
             </Card>
           </div>

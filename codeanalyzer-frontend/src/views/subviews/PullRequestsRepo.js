@@ -58,8 +58,6 @@ import { chartExample1, chartExample2, chartOptions, parseOptions, } from "varia
 import { api } from "../../lib/api"
 // react plugin used to create charts
 import { Bar, Line } from "react-chartjs-2";
-import axios from "axios";
-import { createEmitAndSemanticDiagnosticsBuilderProgram } from "typescript";
 
 
 
@@ -138,13 +136,11 @@ const PullRequestsRepo = () => {
               </CardHeader>
               <CardBody>
                 {/* Chart */}
-                <div className="chart">
                   <Bar
                     data={commitByRepoDataFeed}
                     options={chartExample2.options}
-                    height={100}
+                    height={150}
                   />
-                </div>
               </CardBody>
             </Card>
           </Col>

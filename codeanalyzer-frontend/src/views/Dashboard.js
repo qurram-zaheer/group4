@@ -210,13 +210,12 @@ const Dashboard = (props) => {
                             </CardHeader>
                             <CardBody>
                                 {/* Chart */}
-                                <div className="chart">
                                     <Line
                                         data={refactoringChartDataFeed}
                                         options={chartExample1.options2}
+                                        height={150}
                                         getDatasetAtEvent={(e) => console.log(e)}
                                     />
-                                </div>
                             </CardBody>
                         </Card>
                     </Col>
@@ -234,12 +233,11 @@ const Dashboard = (props) => {
                             </CardHeader>
                             <CardBody>
                                 {/* Chart */}
-                                <div className="chart">
                                     <Bar
                                         data={commitByRepoDataFeed}
                                         options={chartExample2.options}
+                                        height={150}
                                     />
-                                </div>
                             </CardBody>
                         </Card>
                     </Col>
