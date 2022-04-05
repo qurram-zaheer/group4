@@ -213,7 +213,7 @@ const Commits = () => {
                     <h6 className="text-uppercase text-light ls-1 mb-1">
                       Overview
                     </h6>
-                    <h2 className="text-white mb-0">Commits Frequency</h2>
+                    <h2 className="text-white mb-0">Time Take Between Each Commits</h2>
                   </div>
                 </Row>
               </CardHeader>
@@ -236,7 +236,7 @@ const Commits = () => {
                 <Row className="align-items-center">
                   <div className="col">
                     <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Commits Across Branches Per Day
+                      Commits Pushed Across Branches Per Day
                     </h6>
                     <h2 className="mb-0">Total commits by Day</h2>
                   </div>
