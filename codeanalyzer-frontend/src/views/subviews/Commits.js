@@ -19,6 +19,7 @@ import { useState, useEffect, useContext } from "react";
 // react component that copies the given text inside your clipboard
 import { CopyToClipboard } from "react-copy-to-clipboard";
 // reactstrap components
+import moment from 'moment';
 import {
   Badge,
   Card,
@@ -36,6 +37,7 @@ import {
   Table,
   Container,
   Row,
+  Col,
   CardBody,
   UncontrolledTooltip,
 } from "reactstrap";
@@ -44,7 +46,7 @@ import Header from "components/Headers/Header.js";
 import axios from "axios";
 import { api } from "../../lib/api";
 import RepositoriesContext from "../../contexts/RepositoriesContext";
-import { Line } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import { chartExample1, chartExample2, chartOptions, parseOptions, } from "variables/charts.js";
 const qs = require('qs');
 
@@ -53,12 +55,12 @@ const Commits = () => {
   const [commitsByBranch, setCommitsByBranch] = useState([]);
   const [repos, setRepos] = useContext(RepositoriesContext);
   const [difference, setDifference] = useState([]);
+  const [commitsChartData, setCommitsChartData] = useState([]);
   const [createdOn, setCreatedOn] = useState([]);
 
   useEffect(() => {
     ; (async () => {
       console.log('repo', repos);
-
       const accessToken = await localStorage.getItem("token");
       await fetchCommitsByBranch(accessToken);
       await fetchCommitsFrequency(accessToken);
@@ -123,10 +125,8 @@ const Commits = () => {
     });
     if (data) {
       var result = {};
-      console.log('data123', data);
       if (data.data?.data?.length > 0 && Array.isArray(data.data?.data)) {
         data.data.data.map((commit) => {
-          console.log('mycm', commit);
           if (result[commit.attributes?.commitdate.slice(0, 10)] == null || result[commit.attributes?.commitdate.slice(0, 10)] == undefined) {
             result[commit.attributes?.commitdate.slice(0, 10)] = 0
           } else {
@@ -134,7 +134,14 @@ const Commits = () => {
           }
         })
       }
-      console.log(result);
+      const orderedDates = {};
+      Object.keys(result).sort(function(a, b) {
+        return moment(b, 'YYYY-MM-DD').toDate() - moment(a, 'YYYY-MM-DD').toDate();
+    }).forEach(function(key) {
+        orderedDates[key] = result[key];
+    })
+      console.log('Commits Chart Data -> ', result, orderedDates);
+      setCommitsChartData(orderedDates);
     }
   }
 
@@ -146,6 +153,16 @@ const Commits = () => {
       borderColor: 'rgb(255, 255, 255)',
     }]
   };
+
+  var commitByDayDataFeed = {
+    labels: Object.keys(commitsChartData),
+    datasets: [
+      {
+        label: "Commits By Repo",
+        data: Object.values(commitsChartData),
+      },
+    ],
+  }
 
   return (
     <>
@@ -211,6 +228,30 @@ const Commits = () => {
               </CardBody>
             </Card>
           </div>
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <Card className="shadow">
+              <CardHeader className="bg-transparent">
+                <Row className="align-items-center">
+                  <div className="col">
+                    <h6 className="text-uppercase text-muted ls-1 mb-1">
+                      Commits Across Branches Per Day
+                    </h6>
+                    <h2 className="mb-0">Total commits by Day</h2>
+                  </div>
+                </Row>
+              </CardHeader>
+              <CardBody>
+                {/* Chart */}
+                <Bar
+                  data={commitByDayDataFeed}
+                  options={chartExample2.options3}
+                  height={150}
+                />
+              </CardBody>
+            </Card>
+          </Col>
         </Row>
       </Container>
     </>
