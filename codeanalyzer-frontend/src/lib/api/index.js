@@ -110,6 +110,10 @@ const getPullRequestsCountsByBranch = (info, headers) => {
   );
 };
 
+const getCommitedFiles = (headers) => {
+  return get(`/committedfiles`)
+};
+
 const getCommitCountPerHour = (info, headers) => {
   console.log("info per hour", info);
   return get(`/commit/getCommitsByHour?repositoryId=${info.repositoryId}`);
@@ -155,6 +159,7 @@ export const api = {
   getCommmitCountsByBranch,
   getCommitsFrequencyByRepository,
   getPullRequestsCountsByBranch,
+  getCommitedFiles,
   getCommitCountPerHour,
   getUserLanguageEffort,
   getTotalRefactoringsForRepo,
