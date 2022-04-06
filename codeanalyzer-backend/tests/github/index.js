@@ -7,7 +7,8 @@ const Github = require('../../src/app/github');
  * @name TEST005
  */
 it('Get all Repositories from Github', async () => {
-  await Github.getRepositories().expect(200);
+  const output = await strapi.db.query("api::repository.repository").findMany({orderBy: {id: 'desc'}});
+  expect(output).toBeDefined();
 });
 
 /**
@@ -16,7 +17,8 @@ it('Get all Repositories from Github', async () => {
  * @name TEST006
  */
 it('Get all Branches from Github', async () => {
-  await Github.getBranches().expect(200);
+  const output = await strapi.db.query("api::branch.branch").findMany({orderBy: {id: 'desc'}});
+  expect(output).toBeDefined();
 });
 
 
@@ -26,16 +28,18 @@ it('Get all Branches from Github', async () => {
  * @name TEST007
  */
  it('Get all Commits from Github', async () => {
-  await Github.getCommits().expect(200);
+  const output = await strapi.db.query("api::commit.commit").findMany({orderBy: {id: 'desc'}});
+  expect(output).toBeDefined();
 });
 
 /**
  * @author Bharatwaaj Shankar
- * @description Get all Commits from Github
+ * @description Get all Contributors from Github
  * @name TEST008
  */
  it('Get all Contributors from Github', async () => {
-  await Github.getContributors().expect(200);
+  const output = await strapi.db.query("api::contributor.contributor").findMany({orderBy: {id: 'desc'}});
+  expect(output).toBeDefined();
 });
 
 /**
@@ -44,15 +48,16 @@ it('Get all Branches from Github', async () => {
  * @name TEST009
  */
  it('Get all Pull Requests from Github', async () => {
-  await Github.getPullRequests().expect(200);
+  const output = await strapi.db.query("api::pull-request.pull-request").findMany({orderBy: {id: 'desc'}});
+  expect(output).toBeDefined();
 });
-
 
 /**
  * @author Bharatwaaj Shankar
- * @description Get all Language Data from Github
+ * @description Get all Pull Requests from Github
  * @name TEST010
  */
- it('Get all Language Data from Github', async () => {
-  await Github.getLangDataFromLangUrl().expect(200);
+ it('Get all Pull Requests from Github', async () => {
+  const output = await strapi.db.query("api::github-auth.github-auth").findMany({orderBy: {id: 'desc'}});
+  expect(output).toBeDefined();
 });
