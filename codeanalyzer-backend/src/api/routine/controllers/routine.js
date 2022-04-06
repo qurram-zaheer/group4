@@ -8,12 +8,12 @@ const Github = require("../../../app/github");
 const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
-  async getBranches(ctx) {
+  async getBranches(_ctx) {
     let results = [];
   },
 
   // To Fetch and store Pull Requests from Github into our Database
-  async getRepositories(ctx, next) {
+  async getRepositories(ctx, _next) {
     let results = [];
     try {
       const repositories = await Github.getRepositories({
@@ -54,7 +54,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
     }
   },
 
-  async getAllCommits(ctx, next) {
+  async getAllCommits(ctx, _next) {
     console.log("Entered");
     let results = [];
     try {
@@ -91,6 +91,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
             .create({
               data: commitDataModel,
             });
+          console.log("Uploaded commit model", uploadCommitDataModel);
           results.push(commitDataModel);
         })
       );
@@ -101,7 +102,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
   },
 
   //To Fetch and store Contributors data from Github into our database
-  async getAllContributors(ctx, next) {
+  async getAllContributors(ctx, _next) {
     const repoId = ctx.request.query.repoId;
     const allCommitsForRepo = await strapi.entityService.findMany(
       "api::commit.commit",
@@ -142,8 +143,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
     console.log(contributors);
     await Promise.all(
       Object.entries(contributors).map(
-        async ([authorname, contribObj], index) => {
-          console.log("key", authorname), console.log("value", contribObj);
+        async ([authorname, contribObj], _index) => {
           const contribEntry = {
             name: authorname,
             sumadditions: contribObj.sumadditions,
@@ -165,7 +165,7 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
   },
 
   // To Fetch and store Pull Requests from Github into our Database
-  async getAllPullRequests(ctx, next) {
+  async getAllPullRequests(ctx, _next) {
     let results = [];
     try {
       const repoId = ctx.request.query.repositoryId;
@@ -187,8 +187,6 @@ module.exports = createCoreController("api::routine.routine", ({ strapi }) => ({
             stateOpen: pullRequest.state == "closed" ? false : true,
             closedOn: new Date(pullRequest.closed_at).toISOString(),
           };
-          // const repository = await strapi.db.query('api::pull-request.pull-request');
-          // console.log('repository', repository);
           const uploadPRDataModel = await strapi.db
             .query("api::pull-request.pull-request")
             .create({

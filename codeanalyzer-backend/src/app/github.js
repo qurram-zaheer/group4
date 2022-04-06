@@ -28,10 +28,14 @@ const { get } = githubApi;
 exports.getBranches = async (info) => {
   const MyOctokit = Octokit.plugin(paginateRest);
   const octokit = new MyOctokit({ auth: info.accessToken });
-  return await octokit.paginate("GET /repos/{owner}/{repo}/branches", {
-    owner: info.owner,
-    repo: info.repositoryName,
-  });
+  const response = await octokit.paginate(
+    "GET /repos/{owner}/{repo}/branches",
+    {
+      owner: info.owner,
+      repo: info.repositoryName,
+    }
+  );
+  return response;
 };
 
 /**
@@ -42,9 +46,10 @@ exports.getBranches = async (info) => {
 exports.getRepositories = async (info) => {
   const MyOctokit = Octokit.plugin(paginateRest);
   const octokit = new MyOctokit({ auth: info.accessToken });
-  return await octokit.paginate("GET /users/{owner}/repos", {
+  const response = await octokit.paginate("GET /users/{owner}/repos", {
     owner: info.owner,
   });
+  return response;
 };
 
 /**
@@ -74,9 +79,10 @@ exports.getPullRequests = async (info) => {
 exports.searchUsingQuery = async (info) => {
   const MyOctokit = Octokit.plugin(paginateRest);
   const octokit = new MyOctokit({ auth: info.accessToken });
-  return await octokit.paginate("GET /search/issues?q={query}", {
+  const response = await octokit.paginate("GET /search/issues?q={query}", {
     query: info.query,
   });
+  return response;
 };
 
 /**
@@ -168,10 +174,14 @@ exports.getCommits = async (info) => {
 exports.getContributors = async (info) => {
   const MyOctokit = Octokit.plugin(paginateRest);
   const octokit = new MyOctokit({ auth: info.accessToken });
-  return await octokit.paginate("GET /repos/{owner}/{repo}/contributors", {
-    login: info.login,
-    contributions: info.contributions,
-  });
+  const response = await octokit.paginate(
+    "GET /repos/{owner}/{repo}/contributors",
+    {
+      login: info.login,
+      contributions: info.contributions,
+    }
+  );
+  return response;
 };
 
 /**
@@ -213,7 +223,10 @@ exports.getLangDataFromLangUrl = async (info) => {
   const MyOctokit = Octokit.plugin(paginateRest);
   const octokit = new MyOctokit({ auth: info.accessToken });
   const { owner, repo } = info;
-  return await get(`/repos/${owner}/${repo}/languages`).then((res) => res.data);
+  const response = await get(`/repos/${owner}/${repo}/languages`).then(
+    (res) => res.data
+  );
+  return response;
 };
 
 /**
@@ -224,9 +237,10 @@ exports.getLangDataFromLangUrl = async (info) => {
 exports.getCommitMessages = async (info) => {
   const MyOctokit = Octokit.plugin(paginateRest);
   const octokit = new MyOctokit({ auth: info.accessToken });
-
-  return await octokit.paginate("GET /repos/{owner}/{repo}/commits", {
+  const response = await octokit.paginate("GET /repos/{owner}/{repo}/commits", {
     owner: "bharatwaaj",
     repo: "ASDCDemoRepository",
   });
+
+  return response;
 };

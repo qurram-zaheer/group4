@@ -8,9 +8,8 @@ const htmlTemplate = "../../../config/templates/daily-summary.html";
 const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::commit.commit", ({ strapi }) => ({
-
   // To Fetch all commits by branches
-  async getCommmitCountsByBranch(ctx, next) {
+  async getCommmitCountsByBranch(ctx, _next) {
     const repository = ctx.request.query["repositoryId"];
     try {
       let result = [];
@@ -42,8 +41,8 @@ module.exports = createCoreController("api::commit.commit", ({ strapi }) => ({
   },
 
   // Get the time difference between pull requests of a user
-  async getAvgTimeDifferenceBetweenCommits(ctx, next) {
-    const accessToken = ctx.request.query["accessToken"];
+  async getAvgTimeDifferenceBetweenCommits(ctx, _next) {
+    // const accessToken = ctx.request.query["accessToken"];
     const repository = ctx.request.query["repositoryId"];
     console.log("repository", repository);
     const differenceResult = [],
@@ -183,7 +182,7 @@ module.exports = createCoreController("api::commit.commit", ({ strapi }) => ({
     return repoCommits;
   },
 
-  async getTotalRefactorings(ctx) {
+  async getTotalRefactorings(_ctx) {
     const repoCommits = await strapi.db.query("api::commit.commit").findMany({
       select: ["totalchanges"],
     });
@@ -193,7 +192,7 @@ module.exports = createCoreController("api::commit.commit", ({ strapi }) => ({
       .reduce((a, b) => a + b);
   },
 
-  async getCommitsCountByRepo(ctx) {
+  async getCommitsCountByRepo(_ctx) {
     const repoCommits = await strapi.db.query("api::commit.commit").findMany({
       select: ["id"],
       populate: { repository: true },
