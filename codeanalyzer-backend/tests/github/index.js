@@ -54,10 +54,10 @@ it('Get all Branches from Github', async () => {
 
 /**
  * @author Bharatwaaj Shankar
- * @description Get all Pull Requests from Github
+ * @description Get all Github Auths from Github
  * @name TEST010
  */
- it('Get all Pull Requests from Github', async () => {
+ it('Get all Github Auths from Github', async () => {
   const output = await strapi.db.query("api::github-auth.github-auth").findMany({orderBy: {id: 'desc'}});
   expect(output).toBeDefined();
 });
