@@ -1,3 +1,4 @@
+const { doesNotMatch } = require("assert");
 const fs = require("fs");
 const { setupStrapi } = require("./helpers/strapi");
 
@@ -23,11 +24,17 @@ afterAll(async () => {
       fs.unlinkSync(tmpDbFile);
     }
   }
+  await new Promise(resolve => setTimeout(() => resolve(), 500));
 });
 
+/**
+ * @author Bharatwaaj Shankar
+ * @description Creates a User and Checks if the API is returning the new user created by logging in
+ * @name TEST001
+ */
 it('strapi is defined', () => {
   expect(strapi).toBeDefined();
 });
 
-
-// Continue to write test cases here:
+require('./user');
+require('./github');
