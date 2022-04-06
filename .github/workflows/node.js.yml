@@ -54,7 +54,7 @@ jobs:
   
   deploy-frontend:
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [deploy-backend]
     steps:
       - uses: actions/checkout@v3
       - uses: akhileshns/heroku-deploy@v3.12.12 
