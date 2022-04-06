@@ -25,26 +25,6 @@ module.exports = createCoreController(
       if (existingRepos.repositories.length == 0) {
         data.noRepos = true;
       }
-      // const ghAuthId = data.id
-      // const {accessToken} = attributes
-      // const octokit = new Octokit({auth: accessToken})
-      //
-      // const langRes = await octokit.request('GET /repos/{owner}/{repo}/languages', {
-      //   owner: 'Dev-kishan1999',
-      //   repo: 'connect'
-      // })
-      // const size = Object.values(langRes.data).reduce((previousValue, currentValue) => previousValue + currentValue)
-      // const entry = await strapi.db.query('api::repository.repository').create({
-      //   data: {
-      //     name: 'connect',
-      //     users: [user_id],
-      //     url: 'https://github.com/Dev-kishan1999/connect',
-      //     owner: 'Dev-kishan1999',
-      //     languages: langRes.data,
-      //     size,
-      //     publishedAt: new Date().toISOString()
-      //   }
-      // })
 
       return { data, meta };
     },
