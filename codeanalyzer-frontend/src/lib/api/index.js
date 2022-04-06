@@ -16,17 +16,13 @@ const createAuths = (info, headers) => {
   return post("/github-auths?populate=%2A", info, headers);
 };
 
-const getAllRepositories = (info, headers) => {
-  return get("/repositories", info, headers);
-};
-
 const getRepositoriesCount = (info, headers) => {
   return get("/repository/count", info, headers);
 };
 
 const getUserFromId = (info, headers) => {
   return get(`/users/${info.userId}`, headers);
-}
+};
 
 // const fetchGithubRepo = async (username)=>{
 //     const url = "https://api.github.com/users/tushartushar/repos";
@@ -35,10 +31,6 @@ const getUserFromId = (info, headers) => {
 //     //console.log(response.data)
 //     cleanData(response.data)
 // }
-
-const lengthOfFetchedData = async (url) => {
-  return await get(url).length;
-};
 
 const postRepos = (info, headers) => {
   return post("/repositories", info, headers);
@@ -58,11 +50,17 @@ const getPullRequestFrequencyPerUser = (info, headers) => {
 };
 
 const getCommitsQuery = (info, headers) => {
-  return get(`/commits?filters[repository][id][$eq]=${info.repositoryId}&${info.query}`);
-}
+  return get(
+    `/commits?filters[repository][id][$eq]=${info.repositoryId}&${info.query}`
+  );
+};
 
 const getRepositories = (headers) => {
-  return get(`/repositories?pagination[page]=1&pagination[pageSize]=100`, null, headers);
+  return get(
+    `/repositories?pagination[page]=1&pagination[pageSize]=100`,
+    null,
+    headers
+  );
 };
 
 const getPullRequests = (headers) => {
@@ -111,7 +109,7 @@ const getPullRequestsCountsByBranch = (info, headers) => {
 };
 
 const getCommitedFiles = (headers) => {
-  return get(`/committedfiles`)
+  return get(`/committedfiles`);
 };
 
 const getCommitCountPerHour = (info, headers) => {
@@ -125,20 +123,22 @@ const getUserLanguageEffort = (info, headers) => {
 };
 
 const getTotalRefactoringsForRepo = (info, headers) => {
-  return get(`/commit/getTotalRefactoringsForRepo?repositoryId=${info.repositoryId}`)
-}
+  return get(
+    `/commit/getTotalRefactoringsForRepo?repositoryId=${info.repositoryId}`
+  );
+};
 
 const getRefactoringData = (info, headers) => {
-  return get(`/commits?fields[0]=totalchanges&fields[1]=commitdate`)
-}
+  return get(`/commits?fields[0]=totalchanges&fields[1]=commitdate`);
+};
 
 const getTotalRefactorings = (info, headers) => {
-  return get(`/commit/getTotalRefactorings`)
-}
+  return get(`/commit/getTotalRefactorings`);
+};
 
 const getCommitsCountByRepo = (info, headers) => {
-  return get(`/commit/getCommitsCountByRepo`)
-}
+  return get(`/commit/getCommitsCountByRepo`);
+};
 
 export const api = {
   authGithubUser,
@@ -167,6 +167,6 @@ export const api = {
   getRefactoringData,
   getCommitsCountByRepo,
   getCommitsQuery,
-  getUserFromId
+  getUserFromId,
   // fetchGithubRepo
 };

@@ -17,7 +17,7 @@ import LineComponent from "components/Charts/LineComponent";
 import HorizontaBarComponent from "components/Charts/HorizontalBarComponent";
 
 const Repositories = () => {
-  const [repos, setRepos] = useContext(RepositoriesContext);
+  const [repos, _setRepos] = useContext(RepositoriesContext);
   const [langPieData, setLangPieData] = useState(null);
   const [contribDataTotal, setContribDataTotal] = useState(null);
   const [contribDataAdd, setContribDataAdd] = useState(null);
@@ -156,6 +156,7 @@ const Repositories = () => {
         delArr.push(entry.attributes.sumdeletions);
         totalArr.push(entry.attributes.sumchanges);
         labels.push(entry.attributes.name);
+        return true;
       });
       const addObj = {
         labels,
@@ -199,6 +200,7 @@ const Repositories = () => {
     processContribData();
     commitHourData();
     getUserLangData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repos]);
 
   return (
